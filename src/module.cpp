@@ -15,8 +15,8 @@ shared_ptr<ProcContainer> Module::procs() const {
     return _procs;
 }
 
-std::shared_ptr<Var> Module::add_var(int bit) {
-    auto rv = make_shared<Var>(bit);
+std::shared_ptr<Var> Module::add_var(int bit, string name) {
+    auto rv = make_shared<Var>(bit, move(name));
     _vars->push_back(rv);
 
     return rv;

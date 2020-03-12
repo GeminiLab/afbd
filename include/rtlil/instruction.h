@@ -29,6 +29,8 @@ class Instruction {
 public:
     explicit Instruction(InstructionType type);
 
+    InstructionType type() const;
+
     std::shared_ptr<Var> dst() const;
     void dst(const std::shared_ptr<Var>& dst);
 

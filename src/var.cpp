@@ -1,14 +1,19 @@
 #include <rtlil/var.h>
 
+#include <utility>
+
 using namespace std;
 
-Var::Var(int bit) {
+Var::Var(int bit, string name): _name(make_shared<string>(move(name))), _sens_procs(make_shared<ProcContainer>()) {
     _bit = bit;
-    _sens_procs = make_shared<ProcContainer>();
 }
 
 int Var::bit() const {
     return _bit;
+}
+
+shared_ptr<string> Var::name() const {
+    return _name;
 }
 
 std::shared_ptr<ProcContainer> Var::sens_procs() const {

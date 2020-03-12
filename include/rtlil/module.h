@@ -18,6 +18,6 @@ public:
     std::shared_ptr<VarContainer> vars() const;
     std::shared_ptr<ProcContainer> procs() const;
 
-    std::shared_ptr<Var> add_var(int bit);
+    std::shared_ptr<Var> add_var(int bit, std::string name);
     std::shared_ptr<Process> add_proc();
 };

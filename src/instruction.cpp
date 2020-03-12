@@ -4,6 +4,12 @@ using namespace std;
 
 Instruction::Instruction(InstructionType type) {
     _type = type;
+    _src = make_shared<VarContainer>();
+    _succs = make_shared<InstrEdgeContainer>();
+}
+
+InstructionType Instruction::type() const {
+    return _type;
 }
 
 std::shared_ptr<Var> Instruction::dst() const {
