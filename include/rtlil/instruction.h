@@ -14,6 +14,7 @@ enum InstructionType {
 	OR,
     XOR,
 	NOT,
+	ASSIGN,
 	NOOP,
 	//and so on
 };
