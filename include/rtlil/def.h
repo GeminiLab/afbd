@@ -5,6 +5,7 @@
 #include <map>
 
 class Var;
+class Constant;
 class Process;
 class Instruction;
 class Module;
