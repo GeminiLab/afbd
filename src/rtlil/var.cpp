@@ -3,6 +3,7 @@
 #include <utility>
 
 using namespace std;
+using namespace afbd;
 
 Var::Var(int bit, string name): _name(make_shared<string>(move(name))), _sens_procs(make_shared<ProcContainer>()) {
     _bit = bit;

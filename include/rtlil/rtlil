@@ -1,4 +1,5 @@
 #include "def.h"
+#include "expr.h"
 #include "module.h"
 #include "process.h"
 #include "var.h"

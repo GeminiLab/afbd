@@ -16,6 +16,7 @@
 #include <fstream>
 #include <memory>
 using namespace std;
+using namespace afbd;
 
 llvm::LLVMContext context;
 llvm::Module *module;
@@ -36,83 +37,13 @@ void static_llvm_defs() {
 
     // i8 delay_handler (delay_gate* st, int delay, int current)
     auto dsht = llvm::FunctionType::get(i8t, llvm::ArrayRef<llvm::Type*> { delay_struct->getPointerTo(), i32t, i32t }, false);
-    delay_struct_handler = llvm::Function::Create(dsht, llvm::GlobalValue::LinkageTypes::ExternalLinkage, "delay_handler", module);
-
-    llvm::IRBuilder<> builder(context);
-
-    auto bb = llvm::BasicBlock::Create(context, "entry", delay_struct_handler);
-    builder.SetInsertPoint(bb);
-
-    auto ds = delay_struct_handler->arg_begin();
-    ds->setName("ds");
-    auto actvValue = builder.CreateInBoundsGEP(delay_struct,  ds, llvm::ArrayRef<llvm::Value*> {
-            llvm::ConstantInt::get(i32t, 0),
-            llvm::ConstantInt::get(i32t, 0),
-    });
-    auto currValue = builder.CreateInBoundsGEP(delay_struct,  ds, llvm::ArrayRef<llvm::Value*> {
-            llvm::ConstantInt::get(i32t, 0),
-            llvm::ConstantInt::get(i32t, 1),
-    });
-    auto keepTime = builder.CreateInBoundsGEP(delay_struct,  ds, llvm::ArrayRef<llvm::Value*> {
-            llvm::ConstantInt::get(i32t, 0),
-            llvm::ConstantInt::get(i32t, 2),
-    });
-    auto delay = delay_struct_handler->arg_begin() + 1;
-    auto curr = delay + 1;
-
-    delay->setName("delay");
-    curr->setName("curr");
-
-    auto rv = builder.CreateAlloca(i8t, llvm::ConstantInt::get(i8t, 0));
-    auto bbfl = llvm::BasicBlock::Create(context, "flip", delay_struct_handler);
-    auto bbup = llvm::BasicBlock::Create(context, "upgr", delay_struct_handler);
-
-    builder.CreateCondBr(builder.CreateICmpSGE(builder.CreateLoad(keepTime), delay), bbfl, bbup);
-
-    builder.SetInsertPoint(bbfl);
-    builder.CreateStore(llvm::ConstantInt::get(i8t, 1), rv);
-    builder.CreateStore(builder.CreateLoad(currValue), actvValue);
-    builder.CreateStore(curr, currValue);
-    builder.CreateStore(llvm::ConstantInt::get(i32t, 0), keepTime);
-
-    builder.CreateBr(bbup);
-
-    auto bbbkc = llvm::BasicBlock::Create(context, "back_cond", delay_struct_handler);
-    auto bbbke = llvm::BasicBlock::Create(context, "back_exec", delay_struct_handler);
-    auto bbkpc = llvm::BasicBlock::Create(context, "keep_cond", delay_struct_handler);
-    auto bbkpe = llvm::BasicBlock::Create(context, "keep_exec", delay_struct_handler);
-    auto bbnv = llvm::BasicBlock::Create(context, "new_value", delay_struct_handler);
-    auto bbend = llvm::BasicBlock::Create(context, "end", delay_struct_handler);
-
-    builder.SetInsertPoint(bbup);
-    builder.CreateBr(bbbkc);
-
-    builder.SetInsertPoint(bbbkc);
-    builder.CreateCondBr(builder.CreateICmpEQ(builder.CreateLoad(actvValue), curr), bbbke, bbkpc);
-
-    builder.SetInsertPoint(bbbke);
-    builder.CreateStore(llvm::ConstantInt::get(i32t, 0), keepTime);
-    builder.CreateStore(curr, currValue);
-    builder.CreateBr(bbend);
-
-    builder.SetInsertPoint(bbkpc);
-    builder.CreateCondBr(builder.CreateICmpEQ(builder.CreateLoad(currValue), curr), bbkpe, bbnv);
-
-    builder.SetInsertPoint(bbkpe);
-    builder.CreateStore(builder.CreateAdd(builder.CreateLoad(keepTime), llvm::ConstantInt::get(i32t, 1)), keepTime);
-    builder.CreateBr(bbend);
-
-    builder.SetInsertPoint(bbnv);
-    builder.CreateStore(llvm::ConstantInt::get(i32t, 1), keepTime);
-    builder.CreateStore(curr, currValue);
-    builder.CreateBr(bbend);
-
-    builder.SetInsertPoint(bbend);
-    builder.CreateRet(builder.CreateLoad(rv));
+    delay_struct_handler = llvm::Function::Create(dsht, llvm::GlobalValue::LinkageTypes::ExternalLinkage, "delay_gate_handler", module);
 }
 
 llvm::StructType *st;
 map<shared_ptr<Var>, int> varid;
+map<shared_ptr<Var>, int> oldvarid;
+map<shared_ptr<Process>, llvm::Value*> triggered;
 map<pair<shared_ptr<Instruction>, shared_ptr<Var>>, int> instrid;
 llvm::Function *sim;
 
@@ -138,6 +69,8 @@ void process_module(shared_ptr<Module> m) {
         fs << "int " << var->name()->c_str() << ";" << endl;
     }
 
+    fs << "private:" << endl;
+
     for (auto& proc: *m->procs()) {
         if (proc->type() == ProcessType::Continuous) {
             for(auto& pair: *proc->begin()->succs()) {
@@ -152,7 +85,15 @@ void process_module(shared_ptr<Module> m) {
                     }
                 }
             }
+        } else if (proc->type() == ProcessType::Nonblocking) {
+            triggered[proc] = nullptr;
         }
+    }
+
+    for (auto& var: *m->vars()) {
+        oldvarid[var] = member.size();
+        member.push_back(i32t);
+        fs << "int old_" << var->name()->c_str() << ";" << endl;
     }
 
     llvm::IRBuilder<> builder(context);
@@ -166,8 +107,43 @@ void process_module(shared_ptr<Module> m) {
 
     sim->arg_begin()->setName("s");
 
+    auto bbcheck = llvm::BasicBlock::Create(context, "", sim);
+    auto bb = bbcheck;
+
+    builder.SetInsertPoint(bb);
+
+    for (auto& proc: *m->procs()) {
+        // if (triggered.find(proc) != triggered.end()) {
+            triggered[proc] = builder.CreateAlloca(i8t);
+            builder.CreateStore(builder.getInt8(0), triggered[proc]);
+        // }
+    }
+
+    for (auto& var: *m->vars()) {
+        auto bbup = llvm::BasicBlock::Create(context, "", sim);
+        auto bbnx = llvm::BasicBlock::Create(context, "", sim);
+
+        builder.CreateCondBr(builder.CreateICmpNE(builder.CreateLoad(builder.CreateInBoundsGEP(sim->arg_begin(), llvm::ArrayRef<llvm::Value*> {
+                builder.getInt32(0),
+                builder.getInt32(varid[var])
+        })), builder.CreateLoad(builder.CreateInBoundsGEP(sim->arg_begin(), llvm::ArrayRef<llvm::Value*> {
+                builder.getInt32(0),
+                builder.getInt32(oldvarid[var])
+        }))), bbup, bbnx);
+
+        builder.SetInsertPoint(bb = bbup);
+
+        for (auto& proc: *var->sens_procs()) {
+            builder.CreateStore(builder.getInt8(1), triggered[proc]);
+        }
+
+        builder.CreateBr(bbnx);
+        builder.SetInsertPoint(bb = bbnx);
+    }
+
     auto bbbegin = llvm::BasicBlock::Create(context, "", sim);
-    auto bb = bbbegin;
+    bb = bbbegin;
+    builder.CreateBr(bb);
 
     builder.SetInsertPoint(bb);
 
@@ -287,7 +263,51 @@ void process_module(shared_ptr<Module> m) {
                     builder.SetInsertPoint(bb = bbnx);
                 }
             }
+        } else if (proc->type() == ProcessType::Nonblocking) {
+            auto bbug = llvm::BasicBlock::Create(context, "", sim);
+            auto bbnx = llvm::BasicBlock::Create(context, "", sim);
+
+            builder.CreateCondBr(builder.CreateLoad(triggered[proc]), bbug, bbnx);
+
+            builder.SetInsertPoint(bbug);
+
+            for (auto& pair: *proc->begin()->succs()) {
+                auto instr = pair.first;
+                if (instr->type() == InstructionType::XOR) {
+                    builder.CreateStore(builder.CreateXor(builder.CreateLoad(builder.CreateInBoundsGEP(sim->arg_begin(), llvm::ArrayRef<llvm::Value*> {
+                            llvm::ConstantInt::get(i32t, 0),
+                            llvm::ConstantInt::get(i32t, varid[instr->src()->at(0)])
+                    })),builder.CreateLoad(builder.CreateInBoundsGEP(sim->arg_begin(), llvm::ArrayRef<llvm::Value*> {
+                            llvm::ConstantInt::get(i32t, 0),
+                            llvm::ConstantInt::get(i32t, varid[instr->src()->at(1)])
+                    }))),builder.CreateInBoundsGEP(sim->arg_begin(), llvm::ArrayRef<llvm::Value*> {
+                            llvm::ConstantInt::get(i32t, 0),
+                            llvm::ConstantInt::get(i32t, varid[instr->dst()])
+                    }));
+                } else if (instr->type() == InstructionType::ASSIGN) {
+                    builder.CreateStore(builder.CreateLoad(builder.CreateInBoundsGEP(sim->arg_begin(), llvm::ArrayRef<llvm::Value*> {
+                            llvm::ConstantInt::get(i32t, 0),
+                            llvm::ConstantInt::get(i32t, varid[instr->src()->at(0)])
+                    })), builder.CreateInBoundsGEP(sim->arg_begin(), llvm::ArrayRef<llvm::Value*> {
+                            llvm::ConstantInt::get(i32t, 0),
+                            llvm::ConstantInt::get(i32t, varid[instr->dst()])
+                    }));
+                }
+            }
+
+            builder.CreateBr(bbnx);
+            builder.SetInsertPoint(bb = bbnx);
         }
+    }
+
+    for (auto& var: *m->vars()) {
+        builder.CreateStore(builder.CreateLoad(builder.CreateInBoundsGEP(sim->arg_begin(), llvm::ArrayRef<llvm::Value*> {
+                builder.getInt32(0),
+                builder.getInt32(varid[var])
+        })), builder.CreateInBoundsGEP(sim->arg_begin(), llvm::ArrayRef<llvm::Value*> {
+                builder.getInt32(0),
+                builder.getInt32(oldvarid[var])
+        }));
     }
 
     builder.CreateRet(builder.getInt8(0));
@@ -330,7 +350,7 @@ int main() {
     p->begin()->add_succ(instr0, 0);
 
     auto p2 = m->add_proc();
-    p2->type(ProcessType::Blocking);
+    p2->type(ProcessType::Nonblocking);
 
     auto instrx = make_shared<Instruction>(InstructionType::XOR);
     instrx->dst(f);
@@ -343,9 +363,9 @@ int main() {
     instry->add_src(a2);
 
     p2->begin()->add_succ(instrx, 0);
-    instrx->add_succ(instry, 0);
-    m->add_triggered_proc(a, p2);
-    m->add_triggered_proc(b, p2);
+    p2->begin()->add_succ(instry, 0);
+    m->add_triggered_proc(a2, p2);
+    // m->add_triggered_proc(b, p2);
     //
 
     static_llvm_defs();

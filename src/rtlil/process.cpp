@@ -1,6 +1,7 @@
 #include <rtlil/process.h>
 
 using namespace std;
+using namespace afbd;
 
 Process::Process() {
     _type = Continuous;

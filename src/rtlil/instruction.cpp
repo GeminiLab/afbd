@@ -1,6 +1,7 @@
 #include <rtlil/instruction.h>
 
 using namespace std;
+using namespace afbd;
 
 Instruction::Instruction(InstructionType type) {
     _type = type;

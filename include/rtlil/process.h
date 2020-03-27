@@ -7,22 +7,26 @@
 
 #include <memory>
 
+namespace afbd {
+
 enum ProcessType {
-	Blocking,
-	Nonblocking,
-	Continuous,
+    Blocking,
+    Nonblocking,
+    Continuous,
 };
 
 class Process {
-    std::shared_ptr<Instruction> _begin;
-	ProcessType _type;
+    std::shared_ptr <Instruction> _begin;
+    ProcessType _type;
 
 public:
     Process();
 
-	ProcessType type() const;
-	void type(ProcessType type);
+    ProcessType type() const;
 
-	std::shared_ptr<Instruction> begin() const;
+    void type(ProcessType type);
+
+    std::shared_ptr <Instruction> begin() const;
 };
 
+}

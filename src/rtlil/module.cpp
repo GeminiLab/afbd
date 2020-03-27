@@ -1,11 +1,11 @@
 #include <rtlil/module.h>
 
 using namespace std;
+using namespace afbd;
 
 Module::Module() {
     _vars = make_shared<VarContainer>();
     _procs = make_shared<ProcContainer>();
-    _sens = make_shared<SensitiveMap>();
 }
 
 shared_ptr<VarContainer> Module::vars() const {
@@ -30,10 +30,6 @@ std::shared_ptr<Process> Module::add_proc() {
     return rv;
 }
 
-SensitiveMap::iterator Module::get_triggered_proc(shared_ptr<Var> var) {
-    return _sens->find(var);
-}
-
 void Module::add_triggered_proc(shared_ptr<Var> var, shared_ptr<Process> proc) {
-    _sens->insert({ { var, proc } });
+    var->add_sens_proc(proc);
 }

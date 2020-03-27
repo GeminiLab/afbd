@@ -7,38 +7,44 @@
 #include <vector>
 #include <memory>
 
-enum InstructionType {
-	ADD,
-	SUB,
-	AND,
-	OR,
+namespace afbd {
+
+enum class InstructionType {
+    ADD,
+    SUB,
+    AND,
+    OR,
     XOR,
-	NOT,
-	ASSIGN,
-	NOOP,
-	//and so on
+    NOT,
+    ASSIGN,
+    NOOP,
+    //and so on
 };
 
 
 class Instruction {
-    std::shared_ptr<Var> _dst;
-    std::shared_ptr<VarContainer> _src;
+    std::shared_ptr <Var> _dst;
+    std::shared_ptr <VarContainer> _src;
 
-	InstructionType _type;
-	std::shared_ptr<InstrEdgeContainer> _succs;
+    InstructionType _type;
+    std::shared_ptr <InstrEdgeContainer> _succs;
 
 public:
     explicit Instruction(InstructionType type);
 
     InstructionType type() const;
 
-    std::shared_ptr<Var> dst() const;
-    void dst(const std::shared_ptr<Var>& dst);
+    std::shared_ptr <Var> dst() const;
 
-    std::shared_ptr<VarContainer> src() const;
-    void add_src(const std::shared_ptr<Var>& src);
+    void dst(const std::shared_ptr <Var> &dst);
 
-    std::shared_ptr<InstrEdgeContainer> succs();
-    void add_succ(const std::shared_ptr<Instruction>& dst, int delay);
+    std::shared_ptr <VarContainer> src() const;
+
+    void add_src(const std::shared_ptr <Var> &src);
+
+    std::shared_ptr <InstrEdgeContainer> succs();
+
+    void add_succ(const std::shared_ptr <Instruction> &dst, int delay);
 };
 
+}
