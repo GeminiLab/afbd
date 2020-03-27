@@ -4,4 +4,3 @@
 #include "process.h"
 #include "var.h"
 #include "instruction.h"
-#include "constant.h"
