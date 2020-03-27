@@ -14,10 +14,10 @@ Expr::Expr(shared_ptr<Constant> constant): _type(ExprType::CONSTANT), _constant(
     _operands = nullptr;
 }
 
-Expr::Expr(ExprType type): _type(type) {
+Expr::Expr(ExprType type, std::initializer_list<std::shared_ptr<Expr>> operands): _type(type) {
     _var = nullptr;
     _constant = nullptr;
-    _operands = make_shared<std::vector<std::shared_ptr<Expr>>>();
+    _operands = make_shared<std::vector<std::shared_ptr<Expr>>>(operands);
 }
 
 ExprType Expr::type() const {
@@ -38,10 +38,6 @@ int Expr::operand_num() const {
 
 std::shared_ptr<Expr> Expr::get_operand(int i) const {
     return _operands->at(i);
-}
-
-void Expr::add_operand(std::shared_ptr<Expr> operand) {
-    _operands->push_back(operand);
 }
 
 

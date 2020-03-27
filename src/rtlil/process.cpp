@@ -5,7 +5,7 @@ using namespace afbd;
 
 Process::Process() {
     _type = Continuous;
-	_begin = make_shared<Instruction>(InstructionType::NOOP);
+	_begin = make_shared<Instruction>();
 }
 
 ProcessType Process::type() const {

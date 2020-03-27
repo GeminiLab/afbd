@@ -13,15 +13,15 @@ int main() {
     int a[] = { 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, };
     int b[] = { 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, };
 
-    puts("   a   b   t ^:2 ^:0 b:2 ^:t   g");
+    puts("   a   b   t   c   d");
     puts("================================");
     for (int i = 0; i < 16; ++i) {
         s.a = a[i];
         s.b = b[i];
-        s.a2 = ((i & 3) >= 2);
+        s.t = ((i & 3) >= 2);
 
         do_sim(&s);
-        printf("   %d   %d   %d   %d   %d   %d   %d   %d\n", s.a, s.b, s.a2, s.c, s.d, s.e, s.f, s.g);
+        printf("   %d   %d   %d   %d   %d\n", s.a, s.b, s.t, s.c, s.d);
     }
 
     return 0;

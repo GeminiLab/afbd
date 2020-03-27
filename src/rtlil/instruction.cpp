@@ -3,14 +3,8 @@
 using namespace std;
 using namespace afbd;
 
-Instruction::Instruction(InstructionType type) {
-    _type = type;
-    _src = make_shared<VarContainer>();
+Instruction::Instruction() {
     _succs = make_shared<InstrEdgeContainer>();
-}
-
-InstructionType Instruction::type() const {
-    return _type;
 }
 
 std::shared_ptr<Var> Instruction::dst() const {
@@ -21,12 +15,13 @@ void Instruction::dst(const std::shared_ptr<Var> &dst) {
     _dst = dst;
 }
 
-std::shared_ptr<VarContainer> Instruction::src() const {
-    return _src;
+
+shared_ptr<Expr> Instruction::expr() const {
+    return _expr;
 }
 
-void Instruction::add_src(const std::shared_ptr<Var> &src) {
-    _src->push_back(src);
+void Instruction::expr(const shared_ptr<Expr> &expr) {
+    _expr = expr;
 }
 
 std::shared_ptr<InstrEdgeContainer> Instruction::succs() {

@@ -1,3 +1,5 @@
+#pragma once
+
 #include <rtlil/def.h>
 
 #include <memory>
@@ -25,14 +27,13 @@ class Expr {
 public:
     Expr(std::shared_ptr<Var> var);
     Expr(std::shared_ptr<Constant> constant);
-    Expr(ExprType type);
+    Expr(ExprType type, std::initializer_list<std::shared_ptr<Expr>> operands);
 
     ExprType type() const;
     std::shared_ptr<Var> as_var() const;
     std::shared_ptr<Constant> as_constant() const;
     int operand_num() const;
     std::shared_ptr<Expr> get_operand(int i) const;
-    void add_operand(std::shared_ptr<Expr> operand);
 };
 
 class Constant {

@@ -3,6 +3,7 @@
 #include <rtlil/def.h>
 #include <rtlil/var.h>
 #include <rtlil/module.h>
+#include <rtlil/expr.h>
 
 #include <vector>
 #include <memory>
@@ -23,28 +24,25 @@ enum class InstructionType {
 
 
 class Instruction {
-    std::shared_ptr <Var> _dst;
-    std::shared_ptr <VarContainer> _src;
+    std::shared_ptr<Var> _dst;
+    std::shared_ptr<Expr> _expr;
 
-    InstructionType _type;
-    std::shared_ptr <InstrEdgeContainer> _succs;
+    std::shared_ptr<InstrEdgeContainer> _succs;
 
 public:
-    explicit Instruction(InstructionType type);
+    explicit Instruction();
 
-    InstructionType type() const;
+    std::shared_ptr<Var> dst() const;
 
-    std::shared_ptr <Var> dst() const;
+    void dst(const std::shared_ptr<Var> &dst);
 
-    void dst(const std::shared_ptr <Var> &dst);
+    std::shared_ptr<Expr> expr() const;
 
-    std::shared_ptr <VarContainer> src() const;
+    void expr(const std::shared_ptr<Expr> &expr);
 
-    void add_src(const std::shared_ptr <Var> &src);
+    std::shared_ptr<InstrEdgeContainer> succs();
 
-    std::shared_ptr <InstrEdgeContainer> succs();
-
-    void add_succ(const std::shared_ptr <Instruction> &dst, int delay);
+    void add_succ(const std::shared_ptr<Instruction> &dst, int delay);
 };
 
 }
