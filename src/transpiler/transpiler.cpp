@@ -17,23 +17,24 @@ struct TranspilerValues {
     llvm::Function *func;
     shared_ptr<map<shared_ptr<Var>, llvm::Value*>> var_ptr;
     shared_ptr<map<shared_ptr<Var>, llvm::Value*>> last_var_ptr;
-    shared_ptr<map<shared_ptr<Var>, llvm::Value*>> orig_var_ptr;
+    shared_ptr<map<shared_ptr<Var>, llvm::Value*>> updt_var_ptr;
+    shared_ptr<map<shared_ptr<Var>, llvm::Value*>> var_updtd_ptr;
     shared_ptr<map<shared_ptr<Process>, llvm::Value*>> triggered_ptr;
 };
 
-llvm::Value* eval_expr(llvm::IRBuilder<> &builder, bool use_orig, shared_ptr<Expr> expr, TranspilerValues values) {
+llvm::Value* eval_expr(llvm::IRBuilder<> &builder, shared_ptr<Expr> expr, TranspilerValues values) {
     auto type = expr->type();
 
     if (type == ExprType::VAR) {
-        return builder.CreateLoad((use_orig ? values.orig_var_ptr : values.var_ptr)->at(expr->as_var()));
+        return builder.CreateLoad(values.var_ptr->at(expr->as_var()));
     } else if (type == ExprType::CONSTANT) {
         return builder.getInt32(expr->as_constant()->value());
     } else {
         if (type == ExprType::NOT) {
-            return builder.CreateNot(eval_expr(builder, use_orig, expr->get_operand(0), values));
+            return builder.CreateNot(eval_expr(builder, expr->get_operand(0), values));
         } else {
-            auto opl = eval_expr(builder, use_orig, expr->get_operand(0), values);
-            auto opr = eval_expr(builder, use_orig, expr->get_operand(1), values);
+            auto opl = eval_expr(builder, expr->get_operand(0), values);
+            auto opr = eval_expr(builder, expr->get_operand(1), values);
 
             switch (type) {
                 case ExprType::ADD:
@@ -58,7 +59,7 @@ void process_continuous(shared_ptr<Instruction> pseudo_root, TranspilerValues va
 
     for (auto& pair: *pseudo_root->succs()) {
         auto instr = pair.first;
-        auto delay = pair.second;
+        // auto delay = pair.second;
 
         /*
         if (delay > 0) {
@@ -145,7 +146,7 @@ void process_continuous(shared_ptr<Instruction> pseudo_root, TranspilerValues va
             builder.CreateBr(bbnx);
             builder.SetInsertPoint(bb = bbnx);
         } else */ {
-            builder.CreateStore(eval_expr(builder, true, instr->expr(), values), (*values.var_ptr).at(instr->dst()));
+            builder.CreateStore(eval_expr(builder, instr->expr(), values), (*values.var_ptr).at(instr->dst()));
 
             auto bbnx = llvm::BasicBlock::Create(context, "", func);
             builder.CreateBr(bbnx);
@@ -154,29 +155,93 @@ void process_continuous(shared_ptr<Instruction> pseudo_root, TranspilerValues va
     }
 }
 
-void process_nonblock(shared_ptr<Instruction> root, TranspilerValues values) {
+void allocate_bb_for_instr(shared_ptr<Instruction> root, shared_ptr<map<shared_ptr<Instruction>, llvm::BasicBlock*>> bbmap, shared_ptr<map<shared_ptr<Instruction>, bool>> bbvisit, TranspilerValues values) {
+    (*bbmap)[root] = llvm::BasicBlock::Create(*values.context, "", values.func);
+    (*bbvisit)[root] = false;
+
+    for (auto& edge: *root->succs()) {
+        allocate_bb_for_instr(edge.first, bbmap, bbvisit, values);
+    }
+}
+
+void visit_instr_graph(shared_ptr<Instruction> u, bool blocking, shared_ptr<map<shared_ptr<Instruction>, llvm::BasicBlock*>> bbmap, shared_ptr<map<shared_ptr<Instruction>, bool>> bbvisit, TranspilerValues values) {
+    if ((*bbvisit)[u] || u->pseudo_end()) return;
+
+    auto& builder = *values.builder;
+    builder.SetInsertPoint((*bbmap)[u]);
+
+    if (!u->pseudo_begin()) {
+        if (blocking) {
+            builder.CreateStore(eval_expr(builder, u->expr(), values), values.var_ptr->at(u->dst()));
+        } else {
+            builder.CreateStore(eval_expr(builder, u->expr(), values), values.updt_var_ptr->at(u->dst()));
+            builder.CreateStore(builder.getInt8(1), values.var_updtd_ptr->at(u->dst()));
+        }
+    }
+
+    auto bbcd = llvm::BasicBlock::Create(*values.context, "", values.func);
+    builder.CreateBr(bbcd);
+    builder.SetInsertPoint(bbcd);
+
+    for (auto& succ: *u->succs()) {
+        auto instr = succ.first;
+        auto cond = succ.second;
+
+        if (cond == nullptr) {
+            builder.CreateBr((*bbmap)[instr]);
+            break;
+        } else {
+            bbcd = llvm::BasicBlock::Create(*values.context, "", values.func);
+            builder.CreateCondBr(eval_expr(builder, cond, values), (*bbmap)[instr], bbcd);
+            builder.SetInsertPoint(bbcd);
+        }
+    }
+
+    for (auto& succ: *u->succs()) {
+        auto instr = succ.first;
+        auto cond = succ.second;
+
+        visit_instr_graph(instr, blocking, bbmap, bbvisit, values);
+
+        if (cond == nullptr) {
+            break;
+        }
+    }
+}
+
+void process_nonblock(shared_ptr<Process> proc, TranspilerValues values) {
+    auto root = proc->begin();
     auto& builder = *values.builder;
     auto& context = *values.context;
     auto func = values.func;
 
-    auto instr = root->succs()->at(0).first;
+    auto bbmap = make_shared<map<shared_ptr<Instruction>, llvm::BasicBlock*>>();
+    auto bbvisit = make_shared<map<shared_ptr<Instruction>, bool>>();
+    allocate_bb_for_instr(root, bbmap, bbvisit, values);
 
-    builder.CreateStore(eval_expr(builder, true, instr->expr(), values), (*values.var_ptr).at(instr->dst()));
+    builder.CreateBr((*bbmap)[root]);
 
-    auto bbnx = llvm::BasicBlock::Create(context, "", func);
-    builder.CreateBr(bbnx);
+    visit_instr_graph(root, false, bbmap, bbvisit, values);
+
+    auto bbnx = (*bbmap)[proc->end()];
     builder.SetInsertPoint(bbnx);
 }
 
-void process_block(shared_ptr<Instruction> root, TranspilerValues values) {
+void process_block(shared_ptr<Process> proc, TranspilerValues values) {
+    auto root = proc->begin();
     auto& builder = *values.builder;
     auto& context = *values.context;
     auto func = values.func;
 
-    builder.CreateStore(eval_expr(builder, false, root->expr(), values), (*values.var_ptr).at(root->dst()));
+    auto bbmap = make_shared<map<shared_ptr<Instruction>, llvm::BasicBlock*>>();
+    auto bbvisit = make_shared<map<shared_ptr<Instruction>, bool>>();
+    allocate_bb_for_instr(root, bbmap, bbvisit, values);
 
-    auto bbnx = llvm::BasicBlock::Create(context, "", func);
-    builder.CreateBr(bbnx);
+    builder.CreateBr((*bbmap)[root]);
+
+    visit_instr_graph(root, true, bbmap, bbvisit, values);
+
+    auto bbnx = (*bbmap)[proc->end()];
     builder.SetInsertPoint(bbnx);
 }
 
@@ -194,7 +259,7 @@ void process_process(shared_ptr<Process> proc, TranspilerValues values) {
         builder.CreateCondBr(builder.CreateLoad(values.triggered_ptr->at(proc)), bbug, bbnx);
         builder.SetInsertPoint(bbug);
 
-        process_nonblock(proc->begin(), values);
+        process_nonblock(proc, values);
 
         builder.CreateBr(bbnx);
         builder.SetInsertPoint(bbnx);
@@ -205,7 +270,7 @@ void process_process(shared_ptr<Process> proc, TranspilerValues values) {
         builder.CreateCondBr(builder.CreateLoad(values.triggered_ptr->at(proc)), bbug, bbnx);
         builder.SetInsertPoint(bbug);
 
-        process_block(proc->begin(), values);
+        process_block(proc, values);
 
         builder.CreateBr(bbnx);
         builder.SetInsertPoint(bbnx);
@@ -255,7 +320,8 @@ llvm::Module *Transpiler::transpile(shared_ptr<Module> module, shared_ptr<fstrea
 
     auto var_ptr = make_shared<map<shared_ptr<Var>, llvm::Value*>>();
     auto last_var_ptr = make_shared<map<shared_ptr<Var>, llvm::Value*>>();
-    auto orig_var_ptr = make_shared<map<shared_ptr<Var>, llvm::Value*>>();
+    auto updt_var_ptr = make_shared<map<shared_ptr<Var>, llvm::Value*>>();
+    auto var_updtd_ptr = make_shared<map<shared_ptr<Var>, llvm::Value*>>();
     auto triggered_ptr = make_shared<map<shared_ptr<Process>, llvm::Value*>>();
 
     sim->arg_begin()->setName("s");
@@ -269,7 +335,8 @@ llvm::Module *Transpiler::transpile(shared_ptr<Module> module, shared_ptr<fstrea
             builder.getInt32(0),
             builder.getInt32(old_var_idx->at(var))
         });
-        builder.CreateStore(builder.CreateLoad((*var_ptr)[var]), (*orig_var_ptr)[var] = builder.CreateAlloca(builder.getInt32Ty()));
+        builder.CreateStore(builder.CreateLoad((*var_ptr)[var]), (*updt_var_ptr)[var] = builder.CreateAlloca(builder.getInt32Ty()));
+        builder.CreateStore(builder.getInt8(0), (*var_updtd_ptr)[var] = builder.CreateAlloca(builder.getInt8Ty()));
     }
 
     for (auto& proc: *module->procs()) {
@@ -301,10 +368,23 @@ llvm::Module *Transpiler::transpile(shared_ptr<Module> module, shared_ptr<fstrea
     values.func = sim;
     values.var_ptr = var_ptr;
     values.last_var_ptr = last_var_ptr;
-    values.orig_var_ptr = orig_var_ptr;
+    values.updt_var_ptr = updt_var_ptr;
+    values.var_updtd_ptr = var_updtd_ptr;
     values.triggered_ptr = triggered_ptr;
     for (auto& proc: *module->procs()) {
         process_process(proc, values);
+    }
+
+    for (auto& var: *module->vars()) {
+        auto bbup = llvm::BasicBlock::Create(context, "", sim);
+        auto bbnx = llvm::BasicBlock::Create(context, "", sim);
+
+        builder.CreateCondBr(builder.CreateLoad((*var_updtd_ptr)[var]), bbup, bbnx);
+
+        builder.SetInsertPoint(bbup);
+        builder.CreateStore(builder.CreateLoad((*updt_var_ptr)[var]), (*var_ptr)[var]);
+        builder.CreateBr(bbnx);
+        builder.SetInsertPoint(bb = bbnx);
     }
 
     for (auto& var: *module->vars()) {

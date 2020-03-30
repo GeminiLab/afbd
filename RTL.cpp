@@ -21,6 +21,9 @@ using namespace std;
 using namespace afbd;
 
 typedef initializer_list<shared_ptr<Expr>> exl;
+#define lexpr(...) initializer_list<shared_ptr<Expr>> { __VA_ARGS__ }
+#define nexpr(...) make_shared<Expr>(__VA_ARGS__)
+#define nconst(...) make_shared<Constant>(__VA_ARGS__)
 
 int main() {
     auto m = make_shared<Module>();
@@ -31,24 +34,33 @@ int main() {
     auto c = m->add_var(1, "c");
     auto d = m->add_var(1, "d");
 
+
     auto p = m->add_proc();
     p->type(ProcessType::Continuous);
 
     auto instrXor = make_shared<Instruction>();
     instrXor->dst(c);
-    instrXor->expr(make_shared<Expr>(ExprType::XOR, exl { make_shared<Expr>(a), make_shared<Expr>(ExprType::XOR, exl {make_shared<Expr>(t), make_shared<Expr>(b) }) }));
+    instrXor->expr(nexpr(ExprType::XOR, lexpr(nexpr(a), nexpr(ExprType::XOR, lexpr(nexpr(t), nexpr(b))))));
 
-    p->begin()->add_succ(instrXor, 2);
+    p->begin()->add_succ(instrXor, nullptr);
+    instrXor->add_succ(p->end(), nullptr);
+
 
     auto p2 = m->add_proc();
     p2->type(ProcessType::Nonblocking);
 
-    auto exprx = make_shared<Expr>(ExprType::XOR, exl { make_shared<Expr>(a), make_shared<Expr>(b) });
     auto instrx = make_shared<Instruction>();
     instrx->dst(d);
-    instrx->expr(exprx);
+    instrx->expr(nexpr(ExprType::XOR, lexpr(nexpr(a), nexpr(b))));
 
-    p2->begin()->add_succ(instrx, 0);
+    auto instry = make_shared<Instruction>();
+    instry->dst(d);
+    instry->expr(nexpr(nconst(1, 0)));
+
+    p2->begin()->add_succ(instrx, nexpr(t));
+    p2->begin()->add_succ(instry, nullptr);
+    instrx->add_succ(p2->end(), nullptr);
+    instry->add_succ(p2->end(), nullptr);
 
     m->add_triggered_proc(t, p2);
     // m->add_triggered_proc(b, p2);

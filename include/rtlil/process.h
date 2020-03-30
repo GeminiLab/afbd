@@ -16,17 +16,22 @@ enum ProcessType {
 };
 
 class Process {
-    std::shared_ptr <Instruction> _begin;
+    std::shared_ptr<Instruction> _begin;
+    std::shared_ptr<Instruction> _end;
     ProcessType _type;
 
 public:
     Process();
 
+    [[nodiscard]]
     ProcessType type() const;
 
     void type(ProcessType type);
 
-    std::shared_ptr <Instruction> begin() const;
+    [[nodiscard]]
+    std::shared_ptr<Instruction> begin() const;
+    [[nodiscard]]
+    std::shared_ptr<Instruction> end() const;
 };
 
 }
