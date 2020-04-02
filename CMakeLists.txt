@@ -8,6 +8,7 @@ aux_source_directory(src/rtlil SOURCE_RTLIL)
 
 add_library(rtlil STATIC ${SOURCE_RTLIL})
 target_include_directories(rtlil PUBLIC include)
+target_include_directories(rtlil PRIVATE 3rd/include)
 
 
 # target transpiler

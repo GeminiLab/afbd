@@ -13,6 +13,7 @@
 #include "llvm/Target/TargetOptions.h"
 
 #include <transpiler/transpiler.h>
+#include <rtlil/module_serializer.h>
 
 #include <iostream>
 #include <fstream>
@@ -65,6 +66,9 @@ int main() {
     m->add_triggered_proc(t, p2);
     // m->add_triggered_proc(b, p2);
     //
+
+    auto v = make_shared<ofstream>("con");
+    ModuleSerializer::serialize(v, m);
 
     auto header_output = "rtl.h";
     auto fs = make_shared<fstream>();
