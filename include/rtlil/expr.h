@@ -28,6 +28,7 @@ public:
     Expr(std::shared_ptr<Var> var);
     Expr(std::shared_ptr<Constant> constant);
     Expr(ExprType type, std::initializer_list<std::shared_ptr<Expr>> operands);
+    Expr(ExprType type, std::vector<std::shared_ptr<Expr>> operands);
 
     ExprType type() const;
     std::shared_ptr<Var> as_var() const;

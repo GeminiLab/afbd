@@ -69,13 +69,18 @@ int main() {
 
     auto v = make_shared<ofstream>("con");
     ModuleSerializer::serialize(v, m);
+    v->close();
+
+    auto v2 = make_shared<ifstream>("con");
+    auto m2 = make_shared<Module>();
+    ModuleSerializer::deserialize(v2, m2);
 
     auto header_output = "rtl.h";
     auto fs = make_shared<fstream>();
     fs->open(header_output, ios::out | ios::trunc);
 
     Transpiler tr;
-    auto module = tr.transpile(m, fs);
+    auto module = tr.transpile(m2, fs);
 
     module->print(llvm::outs(), nullptr);
 
