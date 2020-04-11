@@ -27,6 +27,7 @@ typedef initializer_list<shared_ptr<Expr>> exl;
 #define nconst(...) make_shared<Constant>(__VA_ARGS__)
 
 int main() {
+    /*
     auto m = make_shared<Module>();
     auto a = m->add_var(1, "a");
     auto b = m->add_var(1, "b");
@@ -70,8 +71,9 @@ int main() {
     auto v = make_shared<ofstream>("con");
     ModuleSerializer::serialize(v, m);
     v->close();
+*/
 
-    auto v2 = make_shared<ifstream>("con");
+    auto v2 = make_shared<ifstream>("../example/example.json");
     auto m2 = make_shared<Module>();
     ModuleSerializer::deserialize(v2, m2);
 

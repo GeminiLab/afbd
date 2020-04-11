@@ -4,11 +4,13 @@ using namespace std;
 using namespace afbd;
 
 void print_common_header(fstream &fs) {
+    /*
     fs << "struct delay_gate {" << endl;
     fs << "  int o;" << endl;
     fs << "  int n;" << endl;
     fs << "  int k;" << endl;
     fs << "};" << endl;
+     */
 }
 
 struct TranspilerValues {
