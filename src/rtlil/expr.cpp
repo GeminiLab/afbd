@@ -47,6 +47,11 @@ std::shared_ptr<Expr> Expr::get_operand(int i) const {
     return _operands->at(i);
 }
 
+bool Expr::is_true() const
+{
+    return _type == ExprType::CONSTANT && _constant->value() != 0;
+}
+
 void Expr::simplify() {
     if(_type == ExprType::VAR || _type == ExprType::CONSTANT)
         return;
@@ -186,6 +191,29 @@ void Expr::all_as_sens(std::shared_ptr<Module>& module, std::shared_ptr<Process>
                 child->all_as_sens(module, proc);
             return;
     }
+}
+
+std::shared_ptr<Expr> Expr::substitute_clone(std::map<std::shared_ptr<Var>, std::shared_ptr<Expr>>& substitute_map)
+{
+    std::shared_ptr<Expr> ret;
+    switch(_type)
+    {
+    case ExprType::CONSTANT:
+    {
+        auto constant = as_constant();
+        ret = std::make_shared<Expr>(std::make_shared<Constant>(constant->bit(), constant->value()));
+        break;
+    }
+    case ExprType::VAR:
+        ret = substitute_map[_var];
+        break;
+    default:
+        ret = std::make_shared<Expr>(_type, exl{});
+        for(auto operand : *_operands)
+            ret->_operands->push_back(operand->substitute_clone(substitute_map));
+        break;
+    }
+    return ret;
 }
 
 namespace afbd {

@@ -11,9 +11,9 @@
 namespace afbd {
 
 class Instruction {
-    std::shared_ptr<Process> _proc;
+    Process* _proc;
 
-    std::shared_ptr<Var> _dst;
+    std::shared_ptr<Expr> _dst;
     std::shared_ptr<Expr> _expr;
 
     std::shared_ptr<InstrEdgeContainer> _succs;
@@ -21,13 +21,16 @@ class Instruction {
     bool _pseudo_begin;
     bool _pseudo_end;
 
+    int _id;
+
 public:
-    explicit Instruction(std::shared_ptr<Process> proc);
+    explicit Instruction(Process* proc);
+	explicit Instruction(std::shared_ptr<Process> proc);
 
     [[nodiscard]]
-    std::shared_ptr<Var> dst() const;
+    std::shared_ptr<Expr> dst() const;
 
-    void dst(const std::shared_ptr<Var> &dst);
+    void dst(const std::shared_ptr<Expr> &dst);
 
     [[nodiscard]]
     std::shared_ptr<Expr> expr() const;
@@ -48,7 +51,11 @@ public:
 
     void pseudo_end(bool value);
 
-    std::shared_ptr<Process> process() const;
+    Process* process() const;
+
+    int id() const;
+
+    json11::Json to_json();
 };
 
 }

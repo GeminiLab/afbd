@@ -26,6 +26,8 @@ public:
     std::shared_ptr <ProcContainer> sens_procs() const;
 
     void add_sens_proc(const std::shared_ptr <Process> &proc);
+
+	json11::Json to_json();
 };
 
 }

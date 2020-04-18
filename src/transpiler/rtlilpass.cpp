@@ -202,7 +202,7 @@ namespace afbd
 
 		begin->add_succ(inst, cond);
 
-		inst->dst(parse_identifier(astnode->children[0], str2expr)->as_var()); ///// !!!!!TODO
+		inst->dst(parse_identifier(astnode->children[0], str2expr));
 		inst->expr(parse_expr(astnode->children[1], str2expr));
 
 		return inst;
@@ -441,8 +441,7 @@ namespace afbd
 								break;
 							}
 							// TODO:
-							// myProc->add_sensitive_var(sensitive_var);
-						    myModule->add_triggered_proc(sensitive_var.first, myProc);
+							myProc->add_sensitive_var(sensitive_var);
 						}
 						if(grandchild->type == AST::AST_BLOCK)
 						{
@@ -479,7 +478,7 @@ namespace afbd
 								auto myProc = myModule->add_proc();
 								auto inst = std::make_shared<Instruction>(myProc);
 								myProc->begin()->add_succ(inst, expr_true);
-								inst->dst(dst_expr->as_var());
+								inst->dst(dst_expr);
 								inst->expr(expr);
 
 								expr->all_as_sens(myModule, myProc);
@@ -521,10 +520,67 @@ namespace afbd
 
 		std::cout << "top module is " << top_module->name() << "\n";
 
-		//auto empty_vector = std::make_shared<std::vector<std::shared_ptr<Expr>>>();
-		//execute_cell(top_module, empty_vector);
+		auto empty_vector = std::make_shared<std::vector<std::shared_ptr<Expr>>>();
+		execute_cell(top_module, empty_vector);
 
-		//std::cout << "generating json:\n" << to_json().dump() << "\n";
-        res = top_module;
+		res = std::make_shared<Module>("");
+		res->modules_in_one(unfolded_modules);
+
+		std::cout << "generating json:\n" << res->to_json().dump() << "\n";
+	}
+
+	void RTLILPass::execute_cell(std::shared_ptr<Module>& curr, std::shared_ptr<std::vector<std::shared_ptr<Expr>>>& cell_vector)
+	{
+		std::map<std::shared_ptr<Var>, std::shared_ptr<Expr>> substitute_map;
+		int occurence_id = module_occurence[curr];
+
+		for(int i = 0; i < curr->vars()->size(); i++)
+		{
+			auto curr_var = (*curr->vars())[i];
+			if(i < cell_vector->size())
+			{
+				substitute_map[curr_var] = (*cell_vector)[i];
+			}
+			else
+			{
+				std::string new_var_name = *(curr_var->name()) + "$" + std::to_string(occurence_id);
+				auto new_var = std::make_shared<Var>(curr_var->bit(), new_var_name);
+				substitute_map[curr_var] = std::make_shared<Expr>(new_var);
+			}
+		}
+
+		unfolded_modules.push_back(curr->substitute_clone(substitute_map, occurence_id));
+
+		module_occurence[curr]++;
+
+		for(auto& cell : curr->cells)
+		{
+			auto& succ = str2module[cell.first];
+			auto new_cell_vector = cell.second;
+
+			auto new_cell_vector_substitute = std::make_shared<std::vector<std::shared_ptr<Expr>>>();
+
+			//std::cout << "cell succ is " << succ->name() << "\n";
+
+			for(auto& new_cell_elem : *new_cell_vector)
+			{
+				/*std::cout << to_string(new_cell_elem->type()) << " ";
+				if(new_cell_elem->type() == EXPR_VAR)
+					std::cout << new_cell_elem->as_var()->name() << " ";
+
+				std::cout << " -> ";*/
+
+				auto new_cell_elem_substitute = new_cell_elem->substitute_clone(substitute_map);
+				new_cell_vector_substitute->push_back(new_cell_elem_substitute);
+
+				/*std::cout << to_string(new_cell_elem_substitute->type()) << " ";
+				if(new_cell_elem_substitute->type() == EXPR_VAR)
+					std::cout << new_cell_elem_substitute->as_var()->name() << " ";
+
+				std::cout << "\n";*/
+			}
+
+			execute_cell(succ, new_cell_vector_substitute);
+		}
 	}
 }

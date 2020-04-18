@@ -177,7 +177,7 @@ void ModuleSerializer::serialize(shared_ptr<ostream> dest, shared_ptr<Module> mo
             in["succs"] = succs;
 
             if (!i->pseudo_begin() && !i->pseudo_end()) {
-                in["dest"] = i->dst()->name()->c_str();
+				in["dest"] = expr_to_json(i->expr());
                 in["expr"] = expr_to_json(i->expr());
             }
 
@@ -230,7 +230,7 @@ void ModuleSerializer::deserialize(shared_ptr<istream> source, shared_ptr<Module
             } else if (i["type"] == "pseudo_end") {
                 instrs[name] = proc->end();
             } else {
-                instrs[name] = make_shared<Instruction>(proc);
+                instrs[name] = make_shared<Instruction>(&(*proc));
             }
         }
 
@@ -241,7 +241,7 @@ void ModuleSerializer::deserialize(shared_ptr<istream> source, shared_ptr<Module
             auto instr = instrs[name];
 
             if (i["type"] != "pseudo_begin" && i["type"] != "pseudo_end") {
-                instr->dst(vars[i["dest"]]);
+                instr->dst(json_to_expr(i["dest"], vars));
                 instr->expr(json_to_expr(i["expr"], vars));
             }
 

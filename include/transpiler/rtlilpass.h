@@ -28,7 +28,7 @@ namespace afbd
 		RTLILPass() : Pass("RTLILPass") { }
 
 		std::map<std::string, std::shared_ptr<Module>> str2module;
-		std::vector<std::shared_ptr<Module>> result;
+		std::vector<std::shared_ptr<Module>> unfolded_modules;
 		std::map<std::shared_ptr<Module>, int> module_occurence;
 
 		std::shared_ptr<Expr> parse_identifier(AST::AstNode* astnode, std::map<std::string, std::shared_ptr<Expr>>& str2expr);
@@ -42,9 +42,8 @@ namespace afbd
 
         void execute(vector<string> args, RTLIL::Design* design) override;
 
-		// void execute_cell(std::shared_ptr<Module>& curr, std::shared_ptr<std::vector<std::shared_ptr<Expr>>>& cell_vector);
+		void execute_cell(std::shared_ptr<Module>& curr, std::shared_ptr<std::vector<std::shared_ptr<Expr>>>& cell_vector);
 
-		// json11::Json to_json();
         std::shared_ptr<Module> res;
 	};
 }

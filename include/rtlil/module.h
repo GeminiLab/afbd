@@ -32,6 +32,13 @@ public:
     std::string name() const;
 
     std::vector<std::pair<std::string, std::shared_ptr<std::vector<std::shared_ptr<Expr>>>>> cells;
+
+    std::shared_ptr<Module> substitute_clone(std::map<std::shared_ptr<Var>, std::shared_ptr<Expr>>& substitute_map, int occurence);
+
+	void modules_in_one(std::vector<std::shared_ptr<Module>>& modules);
+
+    json11::Json to_json();
+
 };
 
 }
