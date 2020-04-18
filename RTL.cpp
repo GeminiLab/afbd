@@ -14,6 +14,8 @@
 
 #include <transpiler/transpiler.h>
 #include <rtlil/module_serializer.h>
+#include <yosys/include/verilog_frontend.h>
+#include <transpiler/rtlilpass.h>
 
 #include <iostream>
 #include <fstream>
@@ -21,12 +23,14 @@
 using namespace std;
 using namespace afbd;
 
+USING_YOSYS_NAMESPACE
+
 typedef initializer_list<shared_ptr<Expr>> exl;
 #define lexpr(...) initializer_list<shared_ptr<Expr>> { __VA_ARGS__ }
 #define nexpr(...) make_shared<Expr>(__VA_ARGS__)
 #define nconst(...) make_shared<Constant>(__VA_ARGS__)
 
-int main() {
+int main(int argc, char** argv) {
     /*
     auto m = make_shared<Module>();
     auto a = m->add_var(1, "a");
@@ -72,14 +76,49 @@ int main() {
     ModuleSerializer::serialize(v, m);
     v->close();
 */
+    // args hack
+    const char *fin = "/home/gemini/source/repos/rtlil/example/example.v";
+    const char *mon = "counter";
 
+    argc = 3;
+    char* new_argv[3] = { argv[0], const_cast<char*>(fin), const_cast<char*>(mon) };
+    argv = new_argv;
+
+    // begin
+    if(argc < 2)
+    {
+        std::cout << "no filename\n";
+        return 0;
+    }
+
+    std::vector<std::string> args;
+    for(int i = 0; i < argc; i++)
+        args.push_back(argv[i]);
+
+    std::istream* f = nullptr;
+
+    RTLIL::Design* design = new RTLIL::Design;
+
+    VerilogFrontend frontend;
+    frontend.execute(f, args[1], args, design);
+
+    afbd::RTLILPass p;
+    p.execute(args, design);
+    auto m2 = p.res;
+
+    /*
     auto v2 = make_shared<ifstream>("../example/example.json");
     auto m2 = make_shared<Module>();
     ModuleSerializer::deserialize(v2, m2);
+*/
 
     auto header_output = "rtl.h";
     auto fs = make_shared<fstream>();
     fs->open(header_output, ios::out | ios::trunc);
+
+    for (auto var: *m2->vars()) {
+        cout << *var->name() << endl;
+    }
 
     Transpiler tr;
     auto module = tr.transpile(m2, fs);

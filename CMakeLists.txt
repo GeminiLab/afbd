@@ -3,12 +3,29 @@ project(rtlil)
 
 set(CMAKE_CXX_STANDARD 17)
 
+# target yosysf
+aux_source_directory(3rd/yosys SOURCE_YOSYS)
+aux_source_directory(3rd/libs/bigint SOURCE_3RD_BIGINT)
+aux_source_directory(3rd/libs/ezsat SOURCE_3RD_EZSAT)
+aux_source_directory(3rd/libs/json11 SOURCE_3RD_JSON11)
+aux_source_directory(3rd/libs/minisat SOURCE_3RD_MINISAT)
+aux_source_directory(3rd/libs/sha1 SOURCE_3RD_SHA1)
+aux_source_directory(3rd/libs/subcircuit SOURCE_3RD_SUBCIRCUIT)
+
+add_library(yosysf STATIC
+        ${SOURCE_YOSYS} ${SOURCE_3RD_BIGINT} ${SOURCE_3RD_EZSAT} ${SOURCE_3RD_JSON11}
+        ${SOURCE_3RD_MINISAT} ${SOURCE_3RD_SHA1} ${SOURCE_3RD_SUBCIRCUIT})
+
+target_include_directories(yosysf PUBLIC 3rd)
+
+
 # target rtlil
 aux_source_directory(src/rtlil SOURCE_RTLIL)
 
 add_library(rtlil STATIC ${SOURCE_RTLIL})
 target_include_directories(rtlil PUBLIC include)
 target_include_directories(rtlil PRIVATE 3rd/include)
+target_include_directories(rtlil PRIVATE 3rd)
 
 
 # target transpiler
@@ -44,4 +61,4 @@ llvm_map_components_to_libnames(llvm_libs support core irreader
         xcoreasmprinter xcorecodegen xcoredesc xcoredisassembler xcoreinfo
         )
 
-target_link_libraries(trans rtlil ${llvm_libs})
+target_link_libraries(trans rtlil ${llvm_libs} yosysf)

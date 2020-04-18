@@ -3,10 +3,12 @@
 using namespace std;
 using namespace afbd;
 
-Instruction::Instruction() {
+Instruction::Instruction(shared_ptr<Process> proc) {
     _succs = make_shared<InstrEdgeContainer>();
     _pseudo_begin = false;
     _pseudo_end = false;
+
+    _proc = proc;
 }
 
 std::shared_ptr<Var> Instruction::dst() const {
@@ -47,4 +49,8 @@ bool Instruction::pseudo_end() const {
 
 void Instruction::pseudo_end(bool value) {
     _pseudo_end = value;
+}
+
+std::shared_ptr<Process> Instruction::process() const {
+    return _proc;
 }

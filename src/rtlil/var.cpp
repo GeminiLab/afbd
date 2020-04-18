@@ -5,12 +5,17 @@
 using namespace std;
 using namespace afbd;
 
-Var::Var(int bit, string name): _name(make_shared<string>(move(name))), _sens_procs(make_shared<ProcContainer>()) {
+Var::Var(int bit, string name, int elem_bit): _name(make_shared<string>(move(name))), _sens_procs(make_shared<ProcContainer>()) {
     _bit = bit;
+    _elem_bit = elem_bit;
 }
 
 int Var::bit() const {
     return _bit;
+}
+
+int Var::elem_bit() const {
+    return _elem_bit;
 }
 
 shared_ptr<string> Var::name() const {

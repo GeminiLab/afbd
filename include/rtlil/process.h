@@ -32,6 +32,8 @@ public:
     std::shared_ptr<Instruction> begin() const;
     [[nodiscard]]
     std::shared_ptr<Instruction> end() const;
+
+    std::shared_ptr<Process> substitute_clone(std::map<std::shared_ptr<Var>, std::shared_ptr<Expr>>& substitute_map);
 };
 
 }

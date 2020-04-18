@@ -230,7 +230,7 @@ void ModuleSerializer::deserialize(shared_ptr<istream> source, shared_ptr<Module
             } else if (i["type"] == "pseudo_end") {
                 instrs[name] = proc->end();
             } else {
-                instrs[name] = make_shared<Instruction>();
+                instrs[name] = make_shared<Instruction>(proc);
             }
         }
 

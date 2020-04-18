@@ -148,7 +148,7 @@ void process_continuous(shared_ptr<Instruction> pseudo_root, TranspilerValues va
             builder.CreateBr(bbnx);
             builder.SetInsertPoint(bb = bbnx);
         } else */ {
-            builder.CreateStore(eval_expr(builder, instr->expr(), values), (*values.var_ptr).at(instr->dst()));
+            if (instr->dst().get() != nullptr) builder.CreateStore(eval_expr(builder, instr->expr(), values), (*values.var_ptr).at(instr->dst()));
 
             auto bbnx = llvm::BasicBlock::Create(context, "", func);
             builder.CreateBr(bbnx);

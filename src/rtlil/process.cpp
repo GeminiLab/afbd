@@ -5,8 +5,9 @@ using namespace afbd;
 
 Process::Process() {
     _type = Continuous;
-	_begin = make_shared<Instruction>();
-	_end = make_shared<Instruction>();
+    auto this_shared = shared_ptr<Process>(this);
+	_begin = make_shared<Instruction>(this_shared);
+	_end = make_shared<Instruction>(this_shared);
 
 	_begin->pseudo_begin(true);
 	_end->pseudo_end(true);

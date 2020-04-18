@@ -9,13 +9,32 @@ namespace afbd {
 enum class ExprType {
     ADD,
     SUB,
+    MUL,
+    DIV,
+    MOD,
+
+    EQ,
+    NE,
+    GT,
+    GE,
+    LT,
+    LE,
+
+    SUBVEC,
+    CONCAT,
+    REDUCE_BOOL,
+
     AND,
     OR,
     XOR,
     NOT,
+
 //and so on
     CONSTANT,
     VAR,
+
+    DEFAULT,
+    UNKNOWN,
 };
 
 class Expr {
@@ -35,6 +54,15 @@ public:
     std::shared_ptr<Constant> as_constant() const;
     int operand_num() const;
     std::shared_ptr<Expr> get_operand(int i) const;
+    inline void add_operand(std::shared_ptr<Expr> operand) { _operands->push_back(operand); }
+
+    void simplify();
+
+    int bit() const;
+
+    json11::Json to_json();
+
+    void all_as_sens(std::shared_ptr<Module>& module, std::shared_ptr<Process>& proc);
 };
 
 class Constant {
@@ -44,7 +72,9 @@ public:
     Constant(int bit, int value);
 
     int bit() const;
+    inline void bit(int v) { _bit = v; }
     int value() const;
 };
 
+typedef std::initializer_list<std::shared_ptr<Expr>> exl;
 }

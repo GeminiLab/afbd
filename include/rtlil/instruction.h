@@ -11,6 +11,8 @@
 namespace afbd {
 
 class Instruction {
+    std::shared_ptr<Process> _proc;
+
     std::shared_ptr<Var> _dst;
     std::shared_ptr<Expr> _expr;
 
@@ -20,7 +22,7 @@ class Instruction {
     bool _pseudo_end;
 
 public:
-    explicit Instruction();
+    explicit Instruction(std::shared_ptr<Process> proc);
 
     [[nodiscard]]
     std::shared_ptr<Var> dst() const;
@@ -45,6 +47,8 @@ public:
     bool pseudo_end() const;
 
     void pseudo_end(bool value);
+
+    std::shared_ptr<Process> process() const;
 };
 
 }
