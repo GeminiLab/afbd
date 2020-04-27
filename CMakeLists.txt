@@ -30,6 +30,7 @@ target_include_directories(rtlil PRIVATE 3rd)
 
 # target transpiler
 set(LLVM_DIR /usr/lib/llvm-8/cmake)
+set(CMAKE_PREFIX_PATH "${CMAKE_PREFIX_PATH};E:/Programming/llvm-8.0.1.src/lib/cmake/llvm")
 find_package(LLVM REQUIRED CONFIG)
 message(STATUS "Found LLVM ${LLVM_PACKAGE_VERSION}")
 message(STATUS "Using LLVMConfig.cmake in: ${LLVM_DIR}")
