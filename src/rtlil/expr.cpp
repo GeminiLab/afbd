@@ -47,8 +47,7 @@ std::shared_ptr<Expr> Expr::get_operand(int i) const {
     return _operands->at(i);
 }
 
-bool Expr::is_true() const
-{
+bool Expr::is_true() const {
     return _type == ExprType::CONSTANT && _constant->value() != 0;
 }
 

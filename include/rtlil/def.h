@@ -28,5 +28,6 @@ enum class Edge {
     POSEDGE
 };
 
-typedef std::pair<std::shared_ptr<Var>, Edge> Sen;
+typedef std::pair<std::shared_ptr<Var>, Edge> Trigger;
+typedef std::vector<Trigger> TriggerContainer;
 }

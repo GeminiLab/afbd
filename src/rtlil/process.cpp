@@ -1,5 +1,7 @@
 #include <rtlil/process.h>
 
+#include <cstdlib>
+#include <cstring>
 #include <iostream>
 
 using namespace std;
@@ -11,12 +13,8 @@ namespace afbd {
 
 Process::Process() {
     inst_num = 0;
-    _type = Continuous;
-	_begin = make_shared<Instruction>(this);
-	_end = make_shared<Instruction>(this);
-
-	_begin->pseudo_begin(true);
-	_end->pseudo_end(true);
+    _type = Always;
+	_begin = nullptr;
 
 }
 
@@ -32,14 +30,11 @@ shared_ptr<Instruction> Process::begin() const {
     return _begin;
 }
 
-shared_ptr<Instruction> Process::end() const {
-    return _end;
+void Process::begin(const std::shared_ptr<Instruction> &begin) {
+    _begin = begin;
 }
 
-void Process::add_sensitive_var(Sen sensitive_var) { 
-    _sensitive_vars.insert(sensitive_var); 
-}
-
+// NEED REWRITE
 std::shared_ptr<Process> Process::substitute_clone(std::map<std::shared_ptr<Var>, std::shared_ptr<Expr>>& substitute_map)
 {
     auto new_process = std::make_shared<Process>();
@@ -47,7 +42,7 @@ std::shared_ptr<Process> Process::substitute_clone(std::map<std::shared_ptr<Var>
 
     for(auto& sensitive_var : _sensitive_vars)
     {
-        Sen new_sensitive_var = std::make_pair(substitute_map[sensitive_var.first]->as_var(), sensitive_var.second);
+        Trigger new_sensitive_var = std::make_pair(substitute_map[sensitive_var.first]->as_var(), sensitive_var.second);
         new_process->add_sensitive_var(new_sensitive_var);
     }
 

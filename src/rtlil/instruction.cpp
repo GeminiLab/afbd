@@ -3,24 +3,15 @@
 using namespace std;
 using namespace afbd;
 
-Instruction::Instruction(Process* proc) {
-    _succs = make_shared<InstrEdgeContainer>();
-    _pseudo_begin = false;
-    _pseudo_end = false;
-
-    _proc = proc;
-    _id = proc->inst_num;
-	proc->inst_num++;
-}
-
 Instruction::Instruction(std::shared_ptr<Process> proc) {
 	_succs = make_shared<InstrEdgeContainer>();
-	_pseudo_begin = false;
-	_pseudo_end = false;
 
-	_proc = &(*proc);
+	_proc = proc;
 	_id = proc->inst_num;
 	proc->inst_num++;
+
+	_delay = 0;
+	_triggers = nullptr;
 }
 
 std::shared_ptr<Expr> Instruction::dst() const {
@@ -28,6 +19,7 @@ std::shared_ptr<Expr> Instruction::dst() const {
 }
 
 void Instruction::dst(const shared_ptr<Expr> &dst) {
+    _type = InstructionType::Assign;
     _dst = dst;
 }
 
@@ -36,7 +28,26 @@ shared_ptr<Expr> Instruction::expr() const {
 }
 
 void Instruction::expr(const shared_ptr<Expr> &expr) {
+    _type = InstructionType::Assign;
     _expr = expr;
+}
+
+int Instruction::delay() const {
+    return _delay;
+}
+
+void Instruction::delay(int value) {
+    _type = InstructionType::Delay;
+    _delay = value;
+}
+
+shared_ptr<TriggerContainer> Instruction::triggers() const {
+    return _triggers;
+}
+
+void Instruction::triggers(const TriggerContainer &triggers) {
+    _type = InstructionType::Trigger;
+    _triggers = make_shared<TriggerContainer>(triggers);
 }
 
 shared_ptr<InstrEdgeContainer> Instruction::succs() {
@@ -47,23 +58,7 @@ void Instruction::add_succ(const shared_ptr<Instruction> &dst, const shared_ptr<
     _succs->push_back(make_pair(dst, cond));
 }
 
-bool Instruction::pseudo_begin() const {
-    return _pseudo_begin;
-}
-
-void Instruction::pseudo_begin(bool value) {
-    _pseudo_begin = value;
-}
-
-bool Instruction::pseudo_end() const {
-    return _pseudo_end;
-}
-
-void Instruction::pseudo_end(bool value) {
-    _pseudo_end = value;
-}
-
-Process* Instruction::process() const {
+shared_ptr<Process> Instruction::process() const {
     return _proc;
 }
 
@@ -71,16 +66,27 @@ int Instruction::id() const {
     return _id;
 }
 
-json11::Json Instruction::to_json()
-{
+InstructionType Instruction::type() const {
+    return _type;
+}
+
+json11::Json Instruction::to_json() {
     std::map<std::string, json11::Json> ret_map;
 
+    /*
     if(pseudo_begin())
         ret_map["type"] = "pseudo_begin";
     else if(pseudo_end())
         ret_map["type"] = "pseudo_end";
     else
         ret_map["type"] = "normal";
+        */
+    if (_type == InstructionType::Assign)
+        ret_map["type"] = "assign";
+    else if (_type == InstructionType::Delay)
+        ret_map["type"] = "delay";
+    else if (_type == InstructionType::Trigger)
+        ret_map["type"] = "trigger";
 
     std::vector<json11::Json> succs_vec;
     for(auto& edge : *_succs)

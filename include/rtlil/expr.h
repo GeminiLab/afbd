@@ -56,7 +56,7 @@ public:
     std::shared_ptr<Expr> get_operand(int i) const;
     inline void add_operand(std::shared_ptr<Expr> operand) { _operands->push_back(operand); }
 
-    bool Expr::is_true() const;
+    bool is_true() const;
 
 	std::shared_ptr<Expr> substitute_clone(std::map<std::shared_ptr<Var>, std::shared_ptr<Expr>>& substitute_map);
 
