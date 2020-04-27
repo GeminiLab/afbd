@@ -320,6 +320,8 @@ llvm::Module *Transpiler::transpile(shared_ptr<Module> module, shared_ptr<fstrea
     auto bb = llvm::BasicBlock::Create(context, "", sim);
     builder.SetInsertPoint(bb);
 
+    builder.CreateStore(sim, builder.CreateAlloca(llvm::FunctionType::get(builder.getInt8Ty(), llvm::ArrayRef<llvm::Type*> { simSt->getPointerTo() }, false)));
+
     auto var_ptr = make_shared<map<shared_ptr<Var>, llvm::Value*>>();
     auto last_var_ptr = make_shared<map<shared_ptr<Var>, llvm::Value*>>();
     auto updt_var_ptr = make_shared<map<shared_ptr<Var>, llvm::Value*>>();

@@ -426,7 +426,7 @@ namespace afbd
 							auto identifierVar = identifierExpr->as_var();
 							myModule->add_triggered_proc(identifierVar, myProc);
 							
-							Sen sensitive_var;
+							Trigger sensitive_var;
 							sensitive_var.first = identifierVar;
 							switch(grandchild->type)
 							{
