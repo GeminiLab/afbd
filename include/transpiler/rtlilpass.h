@@ -35,10 +35,10 @@ namespace afbd
 		std::shared_ptr<Expr> parse_constant(AST::AstNode* astnode);
 		ExprPair parse_range(AST::AstNode* astnode, std::map<std::string, std::shared_ptr<Expr>>& str2expr);
 		std::shared_ptr<Expr> parse_expr(AST::AstNode* astnode, std::map<std::string, std::shared_ptr<Expr>>& str2expr);
-		std::shared_ptr<Instruction> parse_block(std::shared_ptr<Instruction> begin, std::shared_ptr<Instruction> end, AST::AstNode* astnode, std::map<std::string, std::shared_ptr<Expr>>& str2expr, std::shared_ptr<Expr> cond);
-		std::shared_ptr<Instruction> parse_assign(std::shared_ptr<Instruction> begin, std::shared_ptr<Instruction> end, AST::AstNode* astnode, std::map<std::string, std::shared_ptr<Expr>>& str2expr, std::shared_ptr<Expr> cond);
-		std::shared_ptr<Instruction> parse_case(std::shared_ptr<Instruction> begin, std::shared_ptr<Instruction> end, AST::AstNode* astnode, std::map<std::string, std::shared_ptr<Expr>>& str2expr, std::shared_ptr<Expr> cond);
-		std::shared_ptr<Instruction> parse_statement(std::shared_ptr<Instruction> begin, std::shared_ptr<Instruction> end, AST::AstNode* astnode, std::map<std::string, std::shared_ptr<Expr>>& str2expr, std::shared_ptr<Expr> cond);
+		std::shared_ptr<Instruction> parse_block(std::shared_ptr<Instruction> begin, AST::AstNode* astnode, std::map<std::string, std::shared_ptr<Expr>>& str2expr, std::shared_ptr<Expr> cond);
+		std::shared_ptr<Instruction> parse_assign(std::shared_ptr<Instruction> begin, AST::AstNode* astnode, std::map<std::string, std::shared_ptr<Expr>>& str2expr, std::shared_ptr<Expr> cond);
+		std::shared_ptr<Instruction> parse_case(std::shared_ptr<Instruction> begin, AST::AstNode* astnode, std::map<std::string, std::shared_ptr<Expr>>& str2expr, std::shared_ptr<Expr> cond);
+		std::shared_ptr<Instruction> parse_statement(std::shared_ptr<Instruction> begin, AST::AstNode* astnode, std::map<std::string, std::shared_ptr<Expr>>& str2expr, std::shared_ptr<Expr> cond);
 
         void execute(vector<string> args, RTLIL::Design* design) override;
 

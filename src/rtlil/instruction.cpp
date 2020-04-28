@@ -32,6 +32,15 @@ void Instruction::expr(const shared_ptr<Expr> &expr) {
     _expr = expr;
 }
 
+AssignType Instruction::assign_type() const {
+	return _assign_type;
+}
+
+void Instruction::assign_type(AssignType assign_type) {
+	_type = InstructionType::Assign;
+	_assign_type = assign_type;
+}
+
 int Instruction::delay() const {
     return _delay;
 }
@@ -45,9 +54,9 @@ shared_ptr<TriggerContainer> Instruction::triggers() const {
     return _triggers;
 }
 
-void Instruction::triggers(const TriggerContainer &triggers) {
+void Instruction::triggers(std::shared_ptr<TriggerContainer> &triggers) {
     _type = InstructionType::Trigger;
-    _triggers = make_shared<TriggerContainer>(triggers);
+    _triggers = triggers;
 }
 
 shared_ptr<InstrEdgeContainer> Instruction::succs() {
@@ -73,14 +82,6 @@ InstructionType Instruction::type() const {
 json11::Json Instruction::to_json() {
     std::map<std::string, json11::Json> ret_map;
 
-    /*
-    if(pseudo_begin())
-        ret_map["type"] = "pseudo_begin";
-    else if(pseudo_end())
-        ret_map["type"] = "pseudo_end";
-    else
-        ret_map["type"] = "normal";
-        */
     if (_type == InstructionType::Assign)
         ret_map["type"] = "assign";
     else if (_type == InstructionType::Delay)

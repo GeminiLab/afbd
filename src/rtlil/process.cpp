@@ -40,29 +40,19 @@ std::shared_ptr<Process> Process::substitute_clone(std::map<std::shared_ptr<Var>
     auto new_process = std::make_shared<Process>();
     new_process->_type = _type;
 
-    for(auto& sensitive_var : _sensitive_vars)
-    {
-        Trigger new_sensitive_var = std::make_pair(substitute_map[sensitive_var.first]->as_var(), sensitive_var.second);
-        new_process->add_sensitive_var(new_sensitive_var);
-    }
-
     std::vector<std::shared_ptr<Instruction>> tovisits_old;
     std::vector<std::shared_ptr<Instruction>> tovisits_new;
 
     tovisits_old.push_back(begin());
     tovisits_new.push_back(new_process->begin());
-    tovisits_old.push_back(end());
-    tovisits_new.push_back(new_process->end());
 
     std::vector<std::shared_ptr<Instruction>> created_insts;
     created_insts.push_back(new_process->begin());
-    created_insts.push_back(new_process->end());
 
     static bool visited[MAX_INST_NUM];
 
     memset(visited, 0, sizeof(bool) * inst_num);
-
-    visited[0] = visited[1] = true;
+    visited[0] = true;
     while(!tovisits_old.empty())
     {
         auto tovisit_old = tovisits_old.back();
@@ -71,8 +61,12 @@ std::shared_ptr<Process> Process::substitute_clone(std::map<std::shared_ptr<Var>
         tovisits_old.pop_back();
         tovisits_new.pop_back();
 
-        if(tovisit_old->expr())
-            tovisit_new->expr(tovisit_old->expr()->substitute_clone(substitute_map));
+		//For assign
+		if(tovisit_old->expr())
+		{
+			tovisit_new->expr(tovisit_old->expr()->substitute_clone(substitute_map));
+			tovisit_new->assign_type(tovisit_old->assign_type());
+		}
 
         if(tovisit_old->dst())
         {
@@ -80,10 +74,24 @@ std::shared_ptr<Process> Process::substitute_clone(std::map<std::shared_ptr<Var>
             if(dst->type() != ExprType::VAR && (dst->type() != ExprType::SUBVEC))
                 std::cout << "error! dst must be a VAR\n";
             tovisit_new->dst(dst);
+			tovisit_new->assign_type(tovisit_old->assign_type());
         }
 
-        tovisit_new->pseudo_begin(tovisit_old->pseudo_begin());
-        tovisit_new->pseudo_end(tovisit_old->pseudo_end());
+		//For delay
+		if(tovisit_old->delay() != 0)
+			tovisit_new->delay(tovisit_old->delay());
+
+		//For trigger
+		if(tovisit_old->triggers())
+		{
+			auto new_triggers = std::make_shared<TriggerContainer>();
+			for(auto trigger : *(tovisit_old->triggers()))
+			{
+				Trigger new_trigger = std::make_pair(substitute_map[trigger.first]->as_var(), trigger.second);
+				new_triggers->push_back(new_trigger);
+			}
+			tovisit_new->triggers(new_triggers);
+		}
 
         for(auto& succ : *(tovisit_old->succs()))
         {
@@ -109,9 +117,9 @@ std::shared_ptr<Process> Process::substitute_clone(std::map<std::shared_ptr<Var>
             }
         }
 
-        if(tovisit_old->succs()->empty() && !tovisit_old->pseudo_end())
+        if(tovisit_old->succs()->empty() && type() == ProcessType::Always) //link to begin
         {
-            tovisit_new->add_succ(new_process->end(), afbd::expr_true);
+            tovisit_new->add_succ(new_process->begin(), afbd::expr_true);
         }
     }
     return new_process;
@@ -122,14 +130,6 @@ json11::Json Process::to_json()
     std::map<std::string, json11::Json> ret_map;
     ret_map["type"] = "continues"; //todo
     //ret_map["sen"] = json11::Json::array(); //todo
-
-    std::vector<json11::Json> sen_vec;
-    for(auto& sensitive_var : _sensitive_vars)
-    {
-        std::vector<json11::Json> elem{*(sensitive_var.first->name()), int(sensitive_var.second)};
-        sen_vec.push_back(elem);
-    }
-    ret_map["sen"] = sen_vec;
         
     std::map<std::string, json11::Json> instr_map;
 

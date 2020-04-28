@@ -9,20 +9,6 @@ using namespace std;
 using namespace afbd;
 using json = nlohmann::json;
 
-const char* proc_type_to_str(ProcessType pt) {
-    if (pt == ProcessType::Continuous) return "continuous";
-    else if (pt == ProcessType::Blocking) return "blocking";
-    else if (pt == ProcessType::Nonblocking) return "nonblocking";
-    return "continuous";
-}
-
-ProcessType str_to_proc_type(string str) {
-    if (str == "continuous") return ProcessType::Continuous;
-    if (str == "blocking") return ProcessType::Blocking;
-    if (str == "nonblocking") return ProcessType::Nonblocking;
-    return ProcessType::Continuous;
-}
-
 char __itoa[20];
 const char* itoa(int i) {
     sprintf(__itoa, "%d", i);
@@ -155,10 +141,7 @@ void ModuleSerializer::serialize(shared_ptr<ostream> dest, shared_ptr<Module> mo
             auto i = inn.first;
             auto num = inn.second;
 
-            in["type"] =
-                    i->pseudo_begin() ? "pseudo_begin"
-                    : i->pseudo_end() ? "pseudo_end"
-                    : "normal";
+			in["type"] = instruction_type_to_str(i->type());
 
             json succs = json::array();
             for (auto& e: *i->succs()) {
@@ -176,11 +159,11 @@ void ModuleSerializer::serialize(shared_ptr<ostream> dest, shared_ptr<Module> mo
             }
             in["succs"] = succs;
 
-            if (!i->pseudo_begin() && !i->pseudo_end()) {
-				in["dest"] = expr_to_json(i->expr());
+            if(i->dst())
+				in["dest"] = expr_to_json(i->dst());
+			if(i->expr())
                 in["expr"] = expr_to_json(i->expr());
-            }
-
+            
             instrs[itoa(num)]  = in;
         }
         proc["instrs"] = instrs;
@@ -223,15 +206,7 @@ void ModuleSerializer::deserialize(shared_ptr<istream> source, shared_ptr<Module
         auto is = p["instrs"];
         for (auto iter = is.begin(); iter != is.end(); ++iter) {
             auto name = iter.key();
-            auto i = iter.value();
-
-            if (i["type"] == "pseudo_begin") {
-                instrs[name] = proc->begin();
-            } else if (i["type"] == "pseudo_end") {
-                instrs[name] = proc->end();
-            } else {
-                instrs[name] = make_shared<Instruction>(&(*proc));
-            }
+            instrs[name] = make_shared<Instruction>(&(*proc));
         }
 
         for (auto iter = is.begin(); iter != is.end(); ++iter) {

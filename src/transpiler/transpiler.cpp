@@ -167,19 +167,18 @@ void allocate_bb_for_instr(shared_ptr<Instruction> root, shared_ptr<map<shared_p
 }
 
 void visit_instr_graph(shared_ptr<Instruction> u, bool blocking, shared_ptr<map<shared_ptr<Instruction>, llvm::BasicBlock*>> bbmap, shared_ptr<map<shared_ptr<Instruction>, bool>> bbvisit, TranspilerValues values) {
-    if ((*bbvisit)[u] || u->pseudo_end()) return;
+    if ((*bbvisit)[u]) return;
 
     auto& builder = *values.builder;
     builder.SetInsertPoint((*bbmap)[u]);
 
-    if (!u->pseudo_begin()) {
-        if (blocking) {
-            builder.CreateStore(eval_expr(builder, u->expr(), values), values.var_ptr->at(u->dst()));
-        } else {
-            builder.CreateStore(eval_expr(builder, u->expr(), values), values.updt_var_ptr->at(u->dst()));
-            builder.CreateStore(builder.getInt8(1), values.var_updtd_ptr->at(u->dst()));
-        }
+    if (blocking) {
+        builder.CreateStore(eval_expr(builder, u->expr(), values), values.var_ptr->at(u->dst()));
+    } else {
+        builder.CreateStore(eval_expr(builder, u->expr(), values), values.updt_var_ptr->at(u->dst()));
+        builder.CreateStore(builder.getInt8(1), values.var_updtd_ptr->at(u->dst()));
     }
+   
 
     auto bbcd = llvm::BasicBlock::Create(*values.context, "", values.func);
     builder.CreateBr(bbcd);

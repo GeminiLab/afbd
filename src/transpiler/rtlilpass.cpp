@@ -182,18 +182,18 @@ namespace afbd
 		return expr;
 	}
 
-	std::shared_ptr<Instruction> RTLILPass::parse_block(std::shared_ptr<Instruction> begin, std::shared_ptr<Instruction> end, AST::AstNode* astnode, std::map<std::string, std::shared_ptr<Expr>>& str2expr, std::shared_ptr<Expr> cond)
+	std::shared_ptr<Instruction> RTLILPass::parse_block(std::shared_ptr<Instruction> begin, AST::AstNode* astnode, std::map<std::string, std::shared_ptr<Expr>>& str2expr, std::shared_ptr<Expr> cond)
 	{
 		auto curr = begin;
 		for(auto child : astnode->children)
 		{
-			curr = parse_statement(curr, end, child, str2expr, cond);
+			curr = parse_statement(curr, child, str2expr, cond);
 			cond = expr_true;
 		}
 		return curr;
 	}
 
-	std::shared_ptr<Instruction> RTLILPass::parse_assign(std::shared_ptr<Instruction> begin, std::shared_ptr<Instruction> end, AST::AstNode* astnode, std::map<std::string, std::shared_ptr<Expr>>& str2expr, std::shared_ptr<Expr> cond)
+	std::shared_ptr<Instruction> RTLILPass::parse_assign(std::shared_ptr<Instruction> begin, AST::AstNode* astnode, std::map<std::string, std::shared_ptr<Expr>>& str2expr, std::shared_ptr<Expr> cond)
 	{
 		auto inst = std::make_shared<Instruction>(begin->process());
 
@@ -208,7 +208,7 @@ namespace afbd
 		return inst;
 	}
 
-	std::shared_ptr<Instruction> RTLILPass::parse_case(std::shared_ptr<Instruction> begin, std::shared_ptr<Instruction> end, AST::AstNode* astnode, std::map<std::string, std::shared_ptr<Expr>>& str2expr, std::shared_ptr<Expr> cond)
+	std::shared_ptr<Instruction> RTLILPass::parse_case(std::shared_ptr<Instruction> begin, AST::AstNode* astnode, std::map<std::string, std::shared_ptr<Expr>>& str2expr, std::shared_ptr<Expr> cond)
 	{
 		auto leftExpr = parse_expr(astnode->children[0], str2expr);
 
@@ -248,7 +248,7 @@ namespace afbd
 			}
 
 			auto block_node = child->children[1];
-			auto block = parse_block(this_begin, end, block_node, str2expr, new_cond);
+			auto block = parse_block(this_begin, block_node, str2expr, new_cond);
 			block->add_succ(this_end, expr_true);
 		}
 
@@ -258,18 +258,18 @@ namespace afbd
 		return this_end;
 	}
 
-	std::shared_ptr<Instruction> RTLILPass::parse_statement(std::shared_ptr<Instruction> begin, std::shared_ptr<Instruction> end, AST::AstNode* astnode, std::map<std::string, std::shared_ptr<Expr>>& str2expr, std::shared_ptr<Expr> cond)
+	std::shared_ptr<Instruction> RTLILPass::parse_statement(std::shared_ptr<Instruction> begin, AST::AstNode* astnode, std::map<std::string, std::shared_ptr<Expr>>& str2expr, std::shared_ptr<Expr> cond)
 	{
 		switch(astnode->type)
 		{
 		case AST::AST_BLOCK:
-			return parse_block(begin, end, astnode, str2expr, cond);
+			return parse_block(begin, astnode, str2expr, cond);
 		case AST::AST_ASSIGN:
 		case AST::AST_ASSIGN_LE:
 		case AST::AST_ASSIGN_EQ:
-			return parse_assign(begin, end, astnode, str2expr, cond);
+			return parse_assign(begin, astnode, str2expr, cond);
 		case AST::AST_CASE:
-			return parse_case(begin, end, astnode, str2expr, cond);
+			return parse_case(begin, astnode, str2expr, cond);
 		default:
 			std::cout << AST::type2str(astnode->type) << " is not supported as a statement, currently.\n";
 			return begin;
@@ -410,6 +410,11 @@ namespace afbd
 				case AST::AST_ALWAYS:
 				{
 					auto myProc = myModule->add_proc();
+					auto triggers = std::make_shared<TriggerContainer>();
+					auto begin = std::make_shared<Instruction>(myProc);
+					begin->triggers(triggers);
+					myProc->begin(begin);
+
 					for(auto grandchild : child->children)
 					{
 						if(grandchild->type == AST::AST_EDGE || grandchild->type == AST::AST_POSEDGE || grandchild->type == AST::AST_NEGEDGE)
@@ -441,11 +446,11 @@ namespace afbd
 								break;
 							}
 							// TODO:
-							myProc->add_sensitive_var(sensitive_var);
+							triggers->push_back(sensitive_var);
 						}
 						if(grandchild->type == AST::AST_BLOCK)
 						{
-							parse_block(myProc->begin(), myProc->end(), grandchild, str2expr, expr_true);
+							parse_block(myProc->begin(), grandchild, str2expr, expr_true);
 						}
 					}
 					break;
@@ -497,7 +502,7 @@ namespace afbd
 				{
 					auto myProc = myModule->add_proc();
 
-					auto inst = parse_assign(myProc->begin(), myProc->end(), child, str2expr, expr_true);
+					auto inst = parse_assign(myProc->begin(), child, str2expr, expr_true);
 
 					inst->expr()->all_as_sens(myModule, myProc);
 					break;
