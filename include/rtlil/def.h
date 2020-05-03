@@ -22,10 +22,10 @@ typedef std::vector<std::shared_ptr<Instruction>> InstrContainer;
 typedef std::pair<std::shared_ptr<Instruction>, std::shared_ptr<Expr>> InstrEdge;
 typedef std::vector<InstrEdge> InstrEdgeContainer;
 
-enum class Edge {
+enum class Edge: int32_t {
     NEGEDGE = -1,
-    EDGE,
-    POSEDGE
+    EDGE = 0,
+    POSEDGE = 1,
 };
 
 typedef std::pair<std::shared_ptr<Var>, Edge> Trigger;

@@ -6,7 +6,7 @@ typedef void (*process)(void*);
 typedef int32_t tick_t;
 typedef int32_t var_id_t;
 
-enum edge_t {
+enum edge_t: int32_t {
     neg = -1,
     all = 0,
     pos = 1,

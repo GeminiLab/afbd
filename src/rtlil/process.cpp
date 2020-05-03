@@ -100,7 +100,7 @@ std::shared_ptr<Process> Process::substitute_clone(std::map<std::shared_ptr<Var>
 
             while(succ.first->id() >= new_process->inst_num)
             {
-                created_insts.push_back(std::make_shared<Instruction>(&(*new_process)));
+                created_insts.push_back(std::make_shared<Instruction>(new_process));
 
                 if(new_process->inst_num != created_insts.size())
                     std::cout << "error! size not match " << new_process->inst_num << " " << created_insts.size();

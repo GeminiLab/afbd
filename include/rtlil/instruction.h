@@ -18,13 +18,11 @@ enum class InstructionType {
 
 enum class AssignType {
 	Blocking,
-	Non_Blocking
+	NonBlocking
 };
 
-std::string instruction_type_to_str(InstructionType type)
-{
-	switch(type)
-	{
+inline std::string instruction_type_to_str(InstructionType type) {
+	switch(type) {
 	case InstructionType::Assign:
 		return "assign";
 	case InstructionType::Delay:
@@ -34,8 +32,7 @@ std::string instruction_type_to_str(InstructionType type)
 	}
 }
 
-InstructionType str_to_instruction_type(std::string str)
-{
+inline InstructionType str_to_instruction_type(std::string str) {
 	if(str == "assign")
 		return InstructionType::Assign;
 	else if(str == "delay")
@@ -78,11 +75,13 @@ public:
 
 	[[nodiscard]]
 	AssignType assign_type() const;
-	void assign_type(const AssignType assign_type);
+	void assign_type(AssignType assign_type);
 
     [[nodiscard]]
     int delay() const;
     void delay(int value);
+
+    void assign_delay(int value);
 
     [[nodiscard]]
     std::shared_ptr<TriggerContainer> triggers() const;

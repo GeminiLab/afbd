@@ -116,9 +116,11 @@ int main(int argc, char** argv) {
     auto fs = make_shared<fstream>();
     fs->open(header_output, ios::out | ios::trunc);
 
+    /*
     for (auto var: *m2->vars()) {
         cout << *var->name() << endl;
     }
+     */
 
     Transpiler tr;
     auto module = tr.transpile(m2, fs);
