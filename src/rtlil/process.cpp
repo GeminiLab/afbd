@@ -66,7 +66,6 @@ std::shared_ptr<Process> Process::substitute_clone(std::map<std::shared_ptr<Var>
     //tovisits_new.push_back(new_process->begin());
 
     std::vector<std::shared_ptr<Instruction>> created_insts;
-    created_insts.push_back(new_process->begin());
 
     static bool visited[MAX_INST_NUM];
 
@@ -87,6 +86,7 @@ std::shared_ptr<Process> Process::substitute_clone(std::map<std::shared_ptr<Var>
 		else
 		{
 			auto tovisit_begin = std::make_shared<Instruction>(new_process);
+			created_insts.push_back(tovisit_begin);
 			new_process->begin(tovisit_begin);
 			tovisit_new = tovisit_begin;
 		}
@@ -125,15 +125,15 @@ std::shared_ptr<Process> Process::substitute_clone(std::map<std::shared_ptr<Var>
 
         for(auto& succ : *(tovisit_old->succs()))
         {
-            if(new_process->inst_num != created_insts.size())
-                std::cout << "error! size not match " << new_process->inst_num << " " << created_insts.size();
+            //if(new_process->inst_num != created_insts.size())
+            //   std::cout << "error! size not match " << new_process->inst_num << " " << created_insts.size();
 
-            while(succ.first->id() >= new_process->inst_num)
+            while(succ.first->id() >= created_insts.size())
             {
                 created_insts.push_back(std::make_shared<Instruction>(new_process));
 
-                if(new_process->inst_num != created_insts.size())
-                    std::cout << "error! size not match " << new_process->inst_num << " " << created_insts.size();
+                //if(new_process->inst_num != created_insts.size())
+                //    std::cout << "error! size not match " << new_process->inst_num << " " << created_insts.size();
             }
 
             auto& new_succ = created_insts[succ.first->id()];
