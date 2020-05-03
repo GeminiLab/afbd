@@ -1,9 +1,45 @@
+#include "..\..\include\rtlil\instruction.h"
 #include <rtlil/instruction.h>
 
 using namespace std;
 using namespace afbd;
 
+std::string instruction_type_to_str(InstructionType type)
+{
+	switch(type)
+	{
+	case InstructionType::Assign:
+		return "assign";
+	case InstructionType::Delay:
+		return "delay";
+	case InstructionType::Trigger:
+		return "trigger";
+	}
+}
+
+InstructionType str_to_instruction_type(std::string str)
+{
+	if(str == "assign")
+		return InstructionType::Assign;
+	else if(str == "delay")
+		return InstructionType::Delay;
+	else if(str == "trigger")
+		return InstructionType::Trigger;
+}
+
 Instruction::Instruction(std::shared_ptr<Process> proc) {
+	_succs = make_shared<InstrEdgeContainer>();
+
+	_proc = &(*proc);
+	_id = proc->inst_num;
+	proc->inst_num++;
+
+	_delay = 0;
+	_triggers = nullptr;
+}
+
+Instruction::Instruction(Process* proc)
+{
 	_succs = make_shared<InstrEdgeContainer>();
 
 	_proc = proc;
@@ -67,7 +103,7 @@ void Instruction::add_succ(const shared_ptr<Instruction> &dst, const shared_ptr<
     _succs->push_back(make_pair(dst, cond));
 }
 
-shared_ptr<Process> Instruction::process() const {
+Process* Instruction::process() const {
     return _proc;
 }
 

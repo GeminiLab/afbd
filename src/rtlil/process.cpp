@@ -11,6 +11,25 @@ namespace afbd {
 	extern std::shared_ptr<Expr> expr_true;
 }
 
+std::string proc_type_to_str(ProcessType type)
+{
+	switch(type)
+	{
+	case ProcessType::Initial:
+		return "initial";
+	case ProcessType::Always:
+		return "always";
+	}
+}
+
+ProcessType str_to_proc_type(std::string str)
+{
+	if(str == "initial")
+		return ProcessType::Initial;
+	else if(str == "always")
+		return ProcessType::Always;
+}
+
 Process::Process() {
     inst_num = 0;
     _type = Always;

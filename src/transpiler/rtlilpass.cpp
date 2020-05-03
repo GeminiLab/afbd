@@ -193,7 +193,7 @@ namespace afbd
 		return curr;
 	}
 
-	std::shared_ptr<Instruction> RTLILPass::parse_assign(std::shared_ptr<Instruction> begin, AST::AstNode* astnode, std::map<std::string, std::shared_ptr<Expr>>& str2expr, std::shared_ptr<Expr> cond)
+	std::shared_ptr<Instruction> RTLILPass::parse_assign(std::shared_ptr<Instruction> begin, AST::AstNode* astnode, std::map<std::string, std::shared_ptr<Expr>>& str2expr, std::shared_ptr<Expr> cond, bool is_blocking)
 	{
 		auto inst = std::make_shared<Instruction>(begin->process());
 
@@ -204,6 +204,7 @@ namespace afbd
 
 		inst->dst(parse_identifier(astnode->children[0], str2expr));
 		inst->expr(parse_expr(astnode->children[1], str2expr));
+		inst->assign_type(is_blocking ? AssignType::Blocking : AssignType::Non_Blocking);
 
 		return inst;
 	}
@@ -264,10 +265,11 @@ namespace afbd
 		{
 		case AST::AST_BLOCK:
 			return parse_block(begin, astnode, str2expr, cond);
-		case AST::AST_ASSIGN:
 		case AST::AST_ASSIGN_LE:
+			return parse_assign(begin, astnode, str2expr, cond, false);
+		case AST::AST_ASSIGN:
 		case AST::AST_ASSIGN_EQ:
-			return parse_assign(begin, astnode, str2expr, cond);
+			return parse_assign(begin, astnode, str2expr, cond, true);
 		case AST::AST_CASE:
 			return parse_case(begin, astnode, str2expr, cond);
 		default:
@@ -502,7 +504,7 @@ namespace afbd
 				{
 					auto myProc = myModule->add_proc();
 
-					auto inst = parse_assign(myProc->begin(), child, str2expr, expr_true);
+					auto inst = parse_assign(myProc->begin(), child, str2expr, expr_true, true);
 
 					inst->expr()->all_as_sens(myModule, myProc);
 					break;
@@ -527,6 +529,8 @@ namespace afbd
 
 		auto empty_vector = std::make_shared<std::vector<std::shared_ptr<Expr>>>();
 		execute_cell(top_module, empty_vector);
+
+		std::cout << "generate unfolded_modules ok\n";
 
 		res = std::make_shared<Module>("");
 		res->modules_in_one(unfolded_modules);

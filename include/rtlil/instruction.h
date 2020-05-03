@@ -21,31 +21,12 @@ enum class AssignType {
 	Non_Blocking
 };
 
-std::string instruction_type_to_str(InstructionType type)
-{
-	switch(type)
-	{
-	case InstructionType::Assign:
-		return "assign";
-	case InstructionType::Delay:
-		return "delay";
-	case InstructionType::Trigger:
-		return "trigger";
-	}
-}
+std::string instruction_type_to_str(InstructionType type);
 
-InstructionType str_to_instruction_type(std::string str)
-{
-	if(str == "assign")
-		return InstructionType::Assign;
-	else if(str == "delay")
-		return InstructionType::Delay;
-	else if(str == "trigger")
-		return InstructionType::Trigger;
-}
+InstructionType str_to_instruction_type(std::string str);
 
 class Instruction {
-    std::shared_ptr<Process> _proc;
+    Process* _proc;
 
     std::shared_ptr<Expr> _dst;
     std::shared_ptr<Expr> _expr;
@@ -67,6 +48,7 @@ class Instruction {
 
 public:
 	explicit Instruction(std::shared_ptr<Process> proc);
+	explicit Instruction(Process* proc);
 
     [[nodiscard]]
     std::shared_ptr<Expr> dst() const;
@@ -93,7 +75,7 @@ public:
     void add_succ(const std::shared_ptr<Instruction> &dst, const std::shared_ptr<Expr> &cond);
 
     [[nodiscard]]
-    std::shared_ptr<Process> process() const;
+    Process* process() const;
 
     [[nodiscard]]
     int id() const;
