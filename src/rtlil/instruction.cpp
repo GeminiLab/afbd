@@ -1,4 +1,3 @@
-#include "..\..\include\rtlil\instruction.h"
 #include <rtlil/instruction.h>
 
 using namespace std;

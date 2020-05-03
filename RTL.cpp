@@ -129,11 +129,11 @@ int main(int argc, char** argv) {
 
     // gen
     puts("generating...");
-    llvm::InitializeAllTargetInfos();
-    llvm::InitializeAllTargets();
-    llvm::InitializeAllTargetMCs();
-    llvm::InitializeAllAsmParsers();
-    llvm::InitializeAllAsmPrinters();
+    LLVMInitializeX86TargetInfo();
+    LLVMInitializeX86Target();
+    LLVMInitializeX86TargetMC();
+    LLVMInitializeX86AsmParser();
+    LLVMInitializeX86AsmPrinter();
 
     auto targetTriple = llvm::sys::getDefaultTargetTriple();
     module->setTargetTriple(targetTriple);
