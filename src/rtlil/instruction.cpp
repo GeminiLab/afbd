@@ -46,7 +46,7 @@ Instruction::Instruction(Process* proc)
 	_id = proc->inst_num;
 	proc->inst_num++;
 
-	_delay = 0;
+	_delay = -1;
 	_triggers = nullptr;
 }
 
@@ -83,6 +83,11 @@ int Instruction::delay() const {
 
 void Instruction::delay(int value) {
     _type = InstructionType::Delay;
+    _delay = value;
+}
+
+void Instruction::assign_delay(int value) {
+    _type = InstructionType::Assign;
     _delay = value;
 }
 

@@ -63,7 +63,7 @@ std::shared_ptr<Process> Process::substitute_clone(std::map<std::shared_ptr<Var>
     std::vector<std::shared_ptr<Instruction>> tovisits_new;
 
     tovisits_old.push_back(begin());
-    tovisits_new.push_back(new_process->begin());
+    //tovisits_new.push_back(new_process->begin());
 
     std::vector<std::shared_ptr<Instruction>> created_insts;
     created_insts.push_back(new_process->begin());
@@ -75,10 +75,21 @@ std::shared_ptr<Process> Process::substitute_clone(std::map<std::shared_ptr<Var>
     while(!tovisits_old.empty())
     {
         auto tovisit_old = tovisits_old.back();
-        auto tovisit_new = tovisits_new.back();
+		tovisits_old.pop_back();
 
-        tovisits_old.pop_back();
-        tovisits_new.pop_back();
+		std::shared_ptr<Instruction> tovisit_new;
+
+		if(!tovisits_old.empty())
+		{
+			tovisit_new = tovisits_new.back();
+			tovisits_new.pop_back();
+		}
+		else
+		{
+			auto tovisit_begin = std::make_shared<Instruction>(new_process);
+			new_process->begin(tovisit_begin);
+			tovisit_new = tovisit_begin;
+		}
 
 		//For assign
 		if(tovisit_old->expr())
@@ -119,7 +130,7 @@ std::shared_ptr<Process> Process::substitute_clone(std::map<std::shared_ptr<Var>
 
             while(succ.first->id() >= new_process->inst_num)
             {
-                created_insts.push_back(std::make_shared<Instruction>(&(*new_process)));
+                created_insts.push_back(std::make_shared<Instruction>(new_process));
 
                 if(new_process->inst_num != created_insts.size())
                     std::cout << "error! size not match " << new_process->inst_num << " " << created_insts.size();
@@ -136,10 +147,10 @@ std::shared_ptr<Process> Process::substitute_clone(std::map<std::shared_ptr<Var>
             }
         }
 
-        if(tovisit_old->succs()->empty() && type() == ProcessType::Always) //link to begin
+        /*if(tovisit_old->succs()->empty() && type() == ProcessType::Always) //link to begin
         {
             tovisit_new->add_succ(new_process->begin(), afbd::expr_true);
-        }
+        }*/
     }
     return new_process;
 }

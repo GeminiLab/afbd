@@ -3,6 +3,14 @@ project(rtlil)
 
 set(CMAKE_CXX_STANDARD 17)
 
+# target static
+aux_source_directory(static SOURCE_STATIC)
+add_library(rstatic STATIC ${SOURCE_STATIC})
+
+aux_source_directory(static/test SOURCE_STATIC_TEST)
+add_executable(rstatic_test ${SOURCE_STATIC_TEST})
+target_link_libraries(rstatic_test rstatic)
+
 # target yosysf
 aux_source_directory(3rd/yosys SOURCE_YOSYS)
 aux_source_directory(3rd/libs/bigint SOURCE_3RD_BIGINT)

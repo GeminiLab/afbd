@@ -1,3 +1,4 @@
+/*
 #include <rtlil/module_serializer.h>
 
 #include <json/json.hpp>
@@ -232,3 +233,4 @@ void ModuleSerializer::deserialize(shared_ptr<istream> source, shared_ptr<Module
         }
     }
 }
+*/

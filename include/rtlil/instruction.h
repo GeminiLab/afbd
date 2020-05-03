@@ -18,11 +18,10 @@ enum class InstructionType {
 
 enum class AssignType {
 	Blocking,
-	Non_Blocking
+	NonBlocking
 };
 
 std::string instruction_type_to_str(InstructionType type);
-
 InstructionType str_to_instruction_type(std::string str);
 
 class Instruction {
@@ -60,11 +59,13 @@ public:
 
 	[[nodiscard]]
 	AssignType assign_type() const;
-	void assign_type(const AssignType assign_type);
+	void assign_type(AssignType assign_type);
 
     [[nodiscard]]
     int delay() const;
     void delay(int value);
+
+    void assign_delay(int value);
 
     [[nodiscard]]
     std::shared_ptr<TriggerContainer> triggers() const;

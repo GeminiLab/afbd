@@ -204,7 +204,7 @@ namespace afbd
 
 		inst->dst(parse_identifier(astnode->children[0], str2expr));
 		inst->expr(parse_expr(astnode->children[1], str2expr));
-		inst->assign_type(is_blocking ? AssignType::Blocking : AssignType::Non_Blocking);
+		inst->assign_type(is_blocking ? AssignType::Blocking : AssignType::NonBlocking);
 
 		return inst;
 	}
