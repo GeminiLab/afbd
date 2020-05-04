@@ -24,7 +24,7 @@ void y(void *z) {
         prepare_wait();
         add_wait(1, edge_t::neg);
         do_wait();
-        delayed_nonblocking_assign_update(&s->z, s->x * 10 + s->y, 3);
+        delayed_nonblocking_assign_update(&s->z, s->x * 10 + s->y, 2, 3);
     }
 }
 

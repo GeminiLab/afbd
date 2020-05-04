@@ -7,7 +7,10 @@
 #include <queue>
 #include <cstdint>
 #include <functional>
+#include <cstdio>
 using namespace std;
+
+#define debug(...)
 
 struct RoutineInDelay {
     tick_t tick;
@@ -42,16 +45,20 @@ thread_local map<var_id_t, map<coroutine::routine_t, size_t>> _r_wait_list_neg;
 
 
 void push_process(process proc, void *sim) {
+    debug("push_process");
     _r_routines.insert(coroutine::create(bind(proc, sim)));
 }
 
 void process_end() {
+    debug("process_end");
     auto now = coroutine::ordinator.current;
     _r_routines.erase(now);
     _r_routines_to_delete.insert(now);
+    coroutine::yield();
 }
 
 void exec_until(tick_t t) {
+    debug("exec_until");
     if (_r_very_beginning) {
         _r_very_beginning = false;
 
@@ -105,6 +112,7 @@ void exec_until(tick_t t) {
 }
 
 void reset() {
+    debug("reset");
     _r_very_beginning = true;
     _r_tick = 0;
 
@@ -122,6 +130,7 @@ void reset() {
 
 
 void delay(tick_t span) {
+    debug("delay");
     if (span == 0) {
         _r_curr_events.insert(coroutine::ordinator.current);
     } else {
@@ -131,11 +140,13 @@ void delay(tick_t span) {
 }
 
 void delay_for_explicit_zero_delay() {
+    debug("delay_ezd");
     _r_curr_events_inactive.insert(coroutine::ordinator.current);
     coroutine::yield();
 }
 
 void delay_for_nonblocking_assign_update(tick_t span) {
+    debug("delay_nau");
     if (span == 0) {
         _r_curr_events_inactive.insert(coroutine::ordinator.current);
     } else {
@@ -144,10 +155,11 @@ void delay_for_nonblocking_assign_update(tick_t span) {
     coroutine::yield();
 }
 
-void delayed_nonblocking_assign_update(int32_t *dst, int32_t val, tick_t span) {
-    auto r = coroutine::create([dst, val, span](){
+void delayed_nonblocking_assign_update(int32_t *dst, int32_t val, var_id_t v, tick_t span) {
+    debug("delayed_nau");
+    auto r = coroutine::create([dst, val, v, span](){
         delay_for_nonblocking_assign_update(span);
-        *dst = val;
+        update(dst, val, v);
         process_end();
     });
 
@@ -156,6 +168,7 @@ void delayed_nonblocking_assign_update(int32_t *dst, int32_t val, tick_t span) {
 }
 
 void prepare_wait() {
+    debug("prepare_wait");
     if (_r_success_wait_count.find(coroutine::ordinator.current) == _r_success_wait_count.end()) {
         _r_success_wait_count[coroutine::ordinator.current] = 0;
     }
@@ -169,6 +182,7 @@ map<var_id_t, map<coroutine::routine_t, size_t>>* edge_to_list(edge_t e) {
 }
 
 void add_wait(var_id_t v, edge_t e) {
+    debug("add_wait");
     auto list = edge_to_list(e);
     if (list->find(v) == list->end()) {
         (*list)[v] = map<coroutine::routine_t, size_t>();
@@ -178,10 +192,12 @@ void add_wait(var_id_t v, edge_t e) {
 }
 
 void do_wait() {
+    debug("do_wait");
     coroutine::yield();
 }
 
 void update(int32_t *dst, int32_t val, var_id_t v) {
+    debug("update");
     auto old = *dst;
     if (old != val) {
         *dst = val;
@@ -201,6 +217,7 @@ void process_wait_list_item(map<coroutine::routine_t, size_t> &list) {
 }
 
 void mark_updated(var_id_t v, edge_t e) {
+    debug("mark_updated");
     process_wait_list_item(_r_wait_list_all[v]);
     process_wait_list_item((e == pos ? _r_wait_list_pos : _r_wait_list_neg)[v]);
 }

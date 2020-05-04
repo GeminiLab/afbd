@@ -53,6 +53,18 @@ llvm::Function *Transpiler::transpile_process(shared_ptr<Process> proc) {
 
     llvm::IRBuilder<> builder(context);
 
+    auto bbEntry = llvm::BasicBlock::Create(context, "", process);
+    auto bbLoop = llvm::BasicBlock::Create(context, "", process);
+    llvm::BasicBlock* bbEnd;
+
+    if (proc->type() == ProcessType::Always) {
+        bbEnd = bbLoop;
+    } else {
+        bbEnd = llvm::BasicBlock::Create(context, "", process);
+    }
+
+    builder.SetInsertPoint(bbEntry);
+
     auto sim = process->arg_begin();
     map<shared_ptr<Var>, llvm::Value*> varAddr;
     for (auto &v: *var_id) {
@@ -112,23 +124,14 @@ llvm::Function *Transpiler::transpile_process(shared_ptr<Process> proc) {
         }
     };
 
-
-    auto bbEntry = llvm::BasicBlock::Create(context, "", process);
-    llvm::BasicBlock* bbEnd;
-
-    if (proc->type() == ProcessType::Always) {
-        bbEnd = bbEntry;
-    } else {
-        bbEnd = llvm::BasicBlock::Create(context, "", process);
-    }
-
     auto instrs = get_all_instrs(proc->begin());
     map<shared_ptr<Instruction>, llvm::BasicBlock*> instr_bb;
     for (auto &x: *instrs) {
         instr_bb[x] = llvm::BasicBlock::Create(context, "", process);
     }
 
-    builder.SetInsertPoint(bbEntry);
+    builder.CreateBr(bbLoop);
+    builder.SetInsertPoint(bbLoop);
     builder.CreateBr(instr_bb[proc->begin()]);
 
     for (auto &x: *instrs) {
@@ -175,6 +178,7 @@ llvm::Function *Transpiler::transpile_process(shared_ptr<Process> proc) {
                         llvm::ArrayRef<llvm::Value*> {
                                 varAddr[x->dst()->as_var()],
                                 eval(x->expr()),
+                                builder.getInt32(var_id->at(x->dst()->as_var())),
                                 builder.getInt32(instr_delay),
                         }
                 );
@@ -185,12 +189,14 @@ llvm::Function *Transpiler::transpile_process(shared_ptr<Process> proc) {
         builder.CreateBr(bbcd);
         builder.SetInsertPoint(bbcd);
 
+        bool end = false;
         for (auto &s: *x->succs()) {
             auto instr = s.first;
             auto cond = s.second;
 
             if (cond == nullptr || cond->type() == ExprType::DEFAULT) {
                 builder.CreateBr(instr_bb[instr]);
+                end = true;
                 break;
             } else {
                 bbcd = llvm::BasicBlock::Create(context, "", process);
@@ -198,9 +204,11 @@ llvm::Function *Transpiler::transpile_process(shared_ptr<Process> proc) {
                 builder.SetInsertPoint(bbcd);
             }
         }
+
+        if (!end) builder.CreateBr(bbEnd);
     }
 
-    if (bbEnd != bbEntry) {
+    if (bbEnd != bbLoop) {
         builder.SetInsertPoint(bbEnd);
         builder.CreateCall(process_end);
         builder.CreateRetVoid();
@@ -226,7 +234,7 @@ void Transpiler::load_static_functions() {
     push_process = llvm::Function::Create(
             llvm::FunctionType::get(
                     voidTy,
-                    llvm::ArrayRef<llvm::Type *>{process_type, sim_type->getPointerTo()},
+                    llvm::ArrayRef<llvm::Type *>{process_type->getPointerTo(), sim_type->getPointerTo()},
                     false
             ),
             llvm::GlobalValue::LinkageTypes::ExternalLinkage,
@@ -293,7 +301,7 @@ void Transpiler::load_static_functions() {
     delayed_nonblocking_assign_update = llvm::Function::Create(
             llvm::FunctionType::get(
                     voidTy,
-                    llvm::ArrayRef<llvm::Type*> { valPtrTy, valTy, tickTy },
+                    llvm::ArrayRef<llvm::Type*> { valPtrTy, valTy, varIdTy, tickTy },
                     false
             ),
             llvm::GlobalValue::LinkageTypes::ExternalLinkage,
@@ -355,13 +363,13 @@ llvm::Module *Transpiler::transpile(shared_ptr<Module> module, shared_ptr<fstrea
 
     var_id = make_shared<map<shared_ptr<Var>, int>>();
 
-    *fs << "struct sim {" << endl;
+    *fs << "struct " << simName << " {" << endl;
 
     vector<llvm::Type *> member;
     for (auto &var: *module->vars()) {
         (*var_id)[var] = member.size();
         member.push_back(builder.getInt32Ty());
-        *fs << "int " << var->name() << ";" << endl;
+        *fs << "int " << *var->name() << ";" << endl;
     }
 
     *fs << "};" << endl;
@@ -387,7 +395,7 @@ llvm::Module *Transpiler::transpile(shared_ptr<Module> module, shared_ptr<fstrea
         builder.CreateCall(push_process, llvm::ArrayRef<llvm::Value*> { transpile_process(proc), initializer->arg_begin() });
     }
 
-    builder.CreateRet(builder.getInt8(0));
+    builder.CreateRetVoid();
 
     fs->close();
 

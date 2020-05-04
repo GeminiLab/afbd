@@ -23,7 +23,7 @@ void reset();
 void delay(tick_t span);
 void delay_for_explicit_zero_delay();
 void delay_for_nonblocking_assign_update(tick_t span);
-void delayed_nonblocking_assign_update(int32_t *dst, int32_t val, tick_t span);
+void delayed_nonblocking_assign_update(int32_t *dst, int32_t val, var_id_t v, tick_t span);
 void prepare_wait();
 void add_wait(var_id_t v, edge_t e);
 void do_wait();
