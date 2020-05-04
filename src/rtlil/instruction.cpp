@@ -33,8 +33,8 @@ Instruction::Instruction(std::shared_ptr<Process> proc) {
 	_id = proc->inst_num;
 	proc->inst_num++;
 
-	_type = InstructionType::Delay;
-	_delay = 0;
+	_type = InstructionType::Assign;
+	_delay = -1;
 	_triggers = nullptr;
 }
 
@@ -46,8 +46,8 @@ Instruction::Instruction(Process* proc)
 	_id = proc->inst_num;
 	proc->inst_num++;
 
-	_type = InstructionType::Delay;
-	_delay = 0;
+	_type = InstructionType::Assign;
+	_delay = -1;
 	_triggers = nullptr;
 }
 
