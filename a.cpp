@@ -4,24 +4,18 @@
 using namespace std;
 
 #include "cmake-build-debug/rtl.h"
+#include "static/static.h"
 
-sim s;
+sim_counter s;
 
 int main() {
-    memset(&s, 0, sizeof(sim));
+    memset(&s, 0, sizeof(sim_counter));
 
-    int a[] = { 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, };
-    int b[] = { 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, };
+    initialize_sim(&s);
 
-    puts("   a   b   t   c   d");
-    puts("================================");
     for (int i = 0; i < 16; ++i) {
-        s.a = a[i];
-        s.b = b[i];
-        s.t = ((i & 3) >= 2);
-
-        do_sim(&s);
-        printf("   %d   %d   %d   %d   %d\n", s.a, s.b, s.t, s.c, s.d);
+        exec_until(i + 1);
+        printf("#%03d: %1d %1d %03d\n", i, s.clk, s.rst, s.o);
     }
 
     return 0;

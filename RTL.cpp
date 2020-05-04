@@ -31,51 +31,34 @@ typedef initializer_list<shared_ptr<Expr>> exl;
 #define nconst(...) make_shared<Constant>(__VA_ARGS__)
 
 int main(int argc, char** argv) {
+    auto m2 = make_shared<afbd::Module>("counter");
+    auto a = m2->add_var(1, "clk");
+    auto b = m2->add_var(1, "rst");
+    auto t = m2->add_var(32, "o");
+
+    auto pi = m2->add_proc();
+    pi->type(ProcessType::Always);
+
+    auto pie = make_shared<Instruction>(pi);
+    pie->dst(nexpr(a));
+    pie->expr(nexpr(nconst(1, 1)));
+
+    auto pi2 = make_shared<Instruction>(pi);
+    pi2->delay(3);
+
+    auto pi3 = make_shared<Instruction>(pi);
+    pi3->dst(nexpr(a));
+    pi3->expr(nexpr(nconst(1, 0)));
+
+    auto pi4 = make_shared<Instruction>(pi);
+    pi4->delay(3);
+
+    pi->begin(pie);
+    pie->add_succ(pi2, nullptr);
+    pi2->add_succ(pi3, nullptr);
+    pi3->add_succ(pi4, nullptr);
+
     /*
-    auto m = make_shared<Module>();
-    auto a = m->add_var(1, "a");
-    auto b = m->add_var(1, "b");
-    auto t = m->add_var(1, "t");
-
-    auto c = m->add_var(1, "c");
-    auto d = m->add_var(1, "d");
-
-
-    auto p = m->add_proc();
-    p->type(ProcessType::Continuous);
-
-    auto instrXor = make_shared<Instruction>();
-    instrXor->dst(c);
-    instrXor->expr(nexpr(ExprType::XOR, lexpr(nexpr(a), nexpr(ExprType::XOR, lexpr(nexpr(t), nexpr(b))))));
-
-    p->begin()->add_succ(instrXor, nullptr);
-    instrXor->add_succ(p->end(), nullptr);
-
-
-    auto p2 = m->add_proc();
-    p2->type(ProcessType::Nonblocking);
-
-    auto instrx = make_shared<Instruction>();
-    instrx->dst(d);
-    instrx->expr(nexpr(ExprType::XOR, lexpr(nexpr(a), nexpr(b))));
-
-    auto instry = make_shared<Instruction>();
-    instry->dst(d);
-    instry->expr(nexpr(nconst(1, 0)));
-
-    p2->begin()->add_succ(instrx, nexpr(t));
-    p2->begin()->add_succ(instry, nullptr);
-    instrx->add_succ(p2->end(), nullptr);
-    instry->add_succ(p2->end(), nullptr);
-
-    m->add_triggered_proc(t, p2);
-    // m->add_triggered_proc(b, p2);
-    //
-
-    auto v = make_shared<ofstream>("con");
-    ModuleSerializer::serialize(v, m);
-    v->close();
-*/
     // args hack
     const char *fin = "/home/gemini/source/repos/rtlil/example/example.v";
     const char *mon = "counter";
@@ -106,11 +89,7 @@ int main(int argc, char** argv) {
     p.execute(args, design);
     auto m2 = p.res;
 
-    /*
-    auto v2 = make_shared<ifstream>("../example/example.json");
-    auto m2 = make_shared<Module>();
-    ModuleSerializer::deserialize(v2, m2);
-*/
+    */
 
     auto header_output = "rtl.h";
     auto fs = make_shared<fstream>();
