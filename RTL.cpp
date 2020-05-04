@@ -34,21 +34,22 @@ int main(int argc, char** argv) {
     auto m2 = make_shared<afbd::Module>("counter");
     auto a = m2->add_var(1, "clk");
     auto b = m2->add_var(1, "rst");
-    auto t = m2->add_var(32, "o");
+    auto t = m2->add_var(32, "cnt");
+    auto t2 = m2->add_var(32, "cn2");
 
     auto pi = m2->add_proc();
     pi->type(ProcessType::Always);
 
     auto pie = make_shared<Instruction>(pi);
     pie->dst(nexpr(a));
-    pie->expr(nexpr(nconst(1, 1)));
+    pie->expr(nexpr(nconst(1, 0)));
 
     auto pi2 = make_shared<Instruction>(pi);
     pi2->delay(3);
 
     auto pi3 = make_shared<Instruction>(pi);
     pi3->dst(nexpr(a));
-    pi3->expr(nexpr(nconst(1, 0)));
+    pi3->expr(nexpr(nconst(1, 1)));
 
     auto pi4 = make_shared<Instruction>(pi);
     pi4->delay(3);
@@ -57,6 +58,38 @@ int main(int argc, char** argv) {
     pie->add_succ(pi2, nullptr);
     pi2->add_succ(pi3, nullptr);
     pi3->add_succ(pi4, nullptr);
+
+    auto po = m2->add_proc();
+    po->type(ProcessType::Always);
+
+    auto poe = make_shared<Instruction>(po);
+    auto trigger = make_shared<TriggerContainer>(initializer_list<Trigger>{ { a, Edge::POSEDGE } });
+    poe->triggers(trigger);
+
+    auto po2 = make_shared<Instruction>(po);
+    po2->dst(nexpr(t));
+    po2->expr(nexpr(ExprType::ADD, lexpr(nexpr(t), nexpr(nconst(32, 1)))));
+    po2->assign_type(AssignType::NonBlocking);
+    po2->assign_delay(1);
+
+    po->begin(poe);
+    poe->add_succ(po2, nullptr);
+
+    auto pop = m2->add_proc();
+    pop->type(ProcessType::Always);
+
+    auto pope = make_shared<Instruction>(pop);
+    auto triggerp = make_shared<TriggerContainer>(initializer_list<Trigger>{ { a, Edge::EDGE } });
+    pope->triggers(triggerp);
+
+    auto pop2 = make_shared<Instruction>(pop);
+    pop2->dst(nexpr(t2));
+    pop2->expr(nexpr(ExprType::ADD, lexpr(nexpr(t2), nexpr(nconst(32, 1)))));
+    pop2->assign_type(AssignType::NonBlocking);
+    pop2->assign_delay(2);
+
+    pop->begin(pope);
+    pope->add_succ(pop2, nullptr);
 
     /*
     // args hack

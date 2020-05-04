@@ -178,6 +178,7 @@ llvm::Function *Transpiler::transpile_process(shared_ptr<Process> proc) {
                         llvm::ArrayRef<llvm::Value*> {
                                 varAddr[x->dst()->as_var()],
                                 eval(x->expr()),
+                                builder.getInt32(var_id->at(x->dst()->as_var())),
                                 builder.getInt32(instr_delay),
                         }
                 );
@@ -300,7 +301,7 @@ void Transpiler::load_static_functions() {
     delayed_nonblocking_assign_update = llvm::Function::Create(
             llvm::FunctionType::get(
                     voidTy,
-                    llvm::ArrayRef<llvm::Type*> { valPtrTy, valTy, tickTy },
+                    llvm::ArrayRef<llvm::Type*> { valPtrTy, valTy, varIdTy, tickTy },
                     false
             ),
             llvm::GlobalValue::LinkageTypes::ExternalLinkage,
