@@ -515,6 +515,11 @@ namespace afbd
 			}
 		}
 
+		//for(auto& mpair : str2module)
+		//{
+		//	std::cout << mpair.second->to_json().dump() << "\n";
+		//}
+
 		if(args.size() < 3)
 		{
 			std::cout << "No top module\n";
