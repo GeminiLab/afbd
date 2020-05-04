@@ -15,6 +15,11 @@
 #include "rtlil/expr.h"
 #include "rtlil/var.h"
 #include "rtlil/instruction.h"
+#include "rtlil/patternmatching.h"
+
+#ifdef linux
+#include <dlfcn.h>
+#endif //linux
 
 USING_YOSYS_NAMESPACE
 
@@ -541,6 +546,45 @@ namespace afbd
 		res->modules_in_one(unfolded_modules);
 
 		std::cout << "generating json:\n" << res->to_json().dump() << "\n";
+
+#ifdef linux
+		std::cout << "It is linux! We can do PatternMatching!\n";
+
+		std::vector<PatternMatching*> patterns;
+
+		for(auto& arg : args)
+		{
+			if(arg.substr(arg.size() - 3) != ".so")
+				continue;
+
+			std::cout << arg << " is a so name!\n";
+			void *so_handle = dlopen(arg£¬ RTLD_LAZY);
+			if(so_handle == NULL)
+			{
+				std::cout << arg << " install failed...\n";
+				continue;
+			}
+
+			PatternMatching* (*create)();
+			create = dlsym(so_handle£¬ "create");
+			if(dlerror() != NULL)
+			{
+				std::cout << dlerror() << "\n";
+				dlclose(so_handle);
+				continue;
+			}
+
+			patterns.push_back((*create)());
+			dlclose(so_handle);
+		}
+
+		for(auto pattern : patterns)
+		{
+			pattern->match();
+			delete pattern;
+		}
+
+#endif //linux
 	}
 
 	void RTLILPass::execute_cell(std::shared_ptr<Module>& curr, std::shared_ptr<std::vector<std::shared_ptr<Expr>>>& cell_vector)

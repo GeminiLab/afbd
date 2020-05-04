@@ -7,6 +7,6 @@ namespace afbd
 	class PatternMatching
 	{
 	public:
-		void match(std::vector<std::shared_ptr<Module>>& modules);
+		void match(std::shared_ptr<Module> module);
 	};
 }
