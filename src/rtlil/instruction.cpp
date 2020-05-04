@@ -33,6 +33,7 @@ Instruction::Instruction(std::shared_ptr<Process> proc) {
 	_id = proc->inst_num;
 	proc->inst_num++;
 
+	_type = InstructionType::Delay;
 	_delay = 0;
 	_triggers = nullptr;
 }
@@ -45,7 +46,8 @@ Instruction::Instruction(Process* proc)
 	_id = proc->inst_num;
 	proc->inst_num++;
 
-	_delay = -1;
+	_type = InstructionType::Delay;
+	_delay = 0;
 	_triggers = nullptr;
 }
 
@@ -146,6 +148,17 @@ json11::Json Instruction::to_json() {
 
     if(_expr)
         ret_map["expr"] = _expr->to_json();
+
+	if(_delay != 0)
+		ret_map["delay"] = _delay;
+
+	if(_triggers)
+	{
+		std::vector<json11::Json> triggers_vec;
+		for(auto& trigger : *_triggers)
+			triggers_vec.push_back(json11::Json::object{{"var", *(trigger.first->name())}, {"edge", int(trigger.second)}});
+		ret_map["triggers"] = triggers_vec;
+	}
 
     return ret_map;
 }

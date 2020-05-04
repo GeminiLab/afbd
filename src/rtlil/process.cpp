@@ -78,7 +78,7 @@ std::shared_ptr<Process> Process::substitute_clone(std::map<std::shared_ptr<Var>
 
 		std::shared_ptr<Instruction> tovisit_new;
 
-		if(!tovisits_old.empty())
+		if(!tovisits_new.empty())
 		{
 			tovisit_new = tovisits_new.back();
 			tovisits_new.pop_back();
