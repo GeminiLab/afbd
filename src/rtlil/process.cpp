@@ -108,7 +108,7 @@ std::shared_ptr<Process> Process::substitute_clone(std::map<std::shared_ptr<Var>
         }
 
 		//For delay
-		if(tovisit_old->delay() != 0)
+		if(tovisit_old->type() == InstructionType::Delay)
 			tovisit_new->delay(tovisit_old->delay());
 
 		//For trigger
