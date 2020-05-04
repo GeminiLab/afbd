@@ -1,4 +1,4 @@
-#include "../../include/rtlil/patternmatching.h"
+#include "../../include/afbdil/patternmatching.h"
 
 class ClkCheck : public PatternMatching
 {

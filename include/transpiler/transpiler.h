@@ -6,7 +6,7 @@
 #include "llvm/IR/LegacyPassManager.h"
 //#include "llvm/IR/TypeBuilder.h"
 
-#include <rtlil/rtlil>
+#include <afbdil/afbdil>
 
 #include <fstream>
 

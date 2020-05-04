@@ -1,8 +1,8 @@
 #pragma once
 
-#include <rtlil/def.h>
-#include <rtlil/var.h>
-#include <rtlil/process.h>
+#include <afbdil/def.h>
+#include <afbdil/var.h>
+#include <afbdil/process.h>
 
 #include <memory>
 #include <vector>

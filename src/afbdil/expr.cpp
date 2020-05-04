@@ -1,5 +1,5 @@
-#include <rtlil/expr.h>
-#include <rtlil/var.h>
+#include <afbdil/expr.h>
+#include <afbdil/var.h>
 
 using namespace std;
 using namespace afbd;

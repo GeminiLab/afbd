@@ -5,17 +5,17 @@
 #include <bitset>
 
 #include "yosys/include/yosys.h"
-#include "transpiler/rtlilpass.h"
+#include "transpiler/afbdilpass.h"
 #include "libs/json11/json11.hpp"
 
 #include "yosys/include/yosys_rtlil.h"
 #include "yosys/include/ast.h"
 
-#include "rtlil/module.h"
-#include "rtlil/expr.h"
-#include "rtlil/var.h"
-#include "rtlil/instruction.h"
-#include "rtlil/patternmatching.h"
+#include "afbdil/module.h"
+#include "afbdil/expr.h"
+#include "afbdil/var.h"
+#include "afbdil/instruction.h"
+#include "afbdil/patternmatching.h"
 
 #ifdef linux
 #include <dlfcn.h>
@@ -29,7 +29,7 @@ namespace afbd
 	extern std::shared_ptr<Expr> expr_int_zero;
 	extern std::shared_ptr<Expr> expr_default;
 
-	std::shared_ptr<Expr> RTLILPass::parse_identifier(AST::AstNode * astnode, std::map<std::string, std::shared_ptr<Expr>>& str2expr)
+	std::shared_ptr<Expr> afbdilPass::parse_identifier(AST::AstNode * astnode, std::map<std::string, std::shared_ptr<Expr>>& str2expr)
 	{
 		std::string identifier = astnode->str;
 		auto identifierExpr = str2expr[identifier];
@@ -92,7 +92,7 @@ namespace afbd
 		}
 	}
 
-	std::shared_ptr<Expr> RTLILPass::parse_constant(AST::AstNode* astnode)
+	std::shared_ptr<Expr> afbdilPass::parse_constant(AST::AstNode* astnode)
 	{
 		int bits = astnode->range_left - astnode->range_right + 1;
 		unsigned long long value = astnode->asInt(false);
@@ -100,7 +100,7 @@ namespace afbd
 		return std::make_shared<Expr>(constant);
 	}
 
-	ExprPair RTLILPass::parse_range(AST::AstNode* astnode, std::map<std::string, std::shared_ptr<Expr>>& str2expr)
+	ExprPair afbdilPass::parse_range(AST::AstNode* astnode, std::map<std::string, std::shared_ptr<Expr>>& str2expr)
 	{
 		if(astnode->children.size() < 2)
 			return std::make_pair(parse_expr(astnode->children[0], str2expr), nullptr);
@@ -108,7 +108,7 @@ namespace afbd
 			return std::make_pair(parse_expr(astnode->children[0], str2expr), parse_expr(astnode->children[1], str2expr));
 	}
 
-	std::shared_ptr<Expr> RTLILPass::parse_expr(AST::AstNode* astnode, std::map<std::string, std::shared_ptr<Expr>>& str2expr)
+	std::shared_ptr<Expr> afbdilPass::parse_expr(AST::AstNode* astnode, std::map<std::string, std::shared_ptr<Expr>>& str2expr)
 	{
 		ExprType type;
 		switch(astnode->type)
@@ -187,7 +187,7 @@ namespace afbd
 		return expr;
 	}
 
-	std::shared_ptr<Instruction> RTLILPass::parse_block(std::shared_ptr<Instruction> begin, AST::AstNode* astnode, std::map<std::string, std::shared_ptr<Expr>>& str2expr, std::shared_ptr<Expr> cond)
+	std::shared_ptr<Instruction> afbdilPass::parse_block(std::shared_ptr<Instruction> begin, AST::AstNode* astnode, std::map<std::string, std::shared_ptr<Expr>>& str2expr, std::shared_ptr<Expr> cond)
 	{
 		auto curr = begin;
 		for(auto child : astnode->children)
@@ -198,7 +198,7 @@ namespace afbd
 		return curr;
 	}
 
-	std::shared_ptr<Instruction> RTLILPass::parse_assign(std::shared_ptr<Instruction> begin, AST::AstNode* astnode, std::map<std::string, std::shared_ptr<Expr>>& str2expr, std::shared_ptr<Expr> cond, bool is_blocking)
+	std::shared_ptr<Instruction> afbdilPass::parse_assign(std::shared_ptr<Instruction> begin, AST::AstNode* astnode, std::map<std::string, std::shared_ptr<Expr>>& str2expr, std::shared_ptr<Expr> cond, bool is_blocking)
 	{
 		auto inst = std::make_shared<Instruction>(begin->process());
 
@@ -214,7 +214,7 @@ namespace afbd
 		return inst;
 	}
 
-	std::shared_ptr<Instruction> RTLILPass::parse_case(std::shared_ptr<Instruction> begin, AST::AstNode* astnode, std::map<std::string, std::shared_ptr<Expr>>& str2expr, std::shared_ptr<Expr> cond)
+	std::shared_ptr<Instruction> afbdilPass::parse_case(std::shared_ptr<Instruction> begin, AST::AstNode* astnode, std::map<std::string, std::shared_ptr<Expr>>& str2expr, std::shared_ptr<Expr> cond)
 	{
 		auto leftExpr = parse_expr(astnode->children[0], str2expr);
 
@@ -264,7 +264,7 @@ namespace afbd
 		return this_end;
 	}
 
-	std::shared_ptr<Instruction> RTLILPass::parse_statement(std::shared_ptr<Instruction> begin, AST::AstNode* astnode, std::map<std::string, std::shared_ptr<Expr>>& str2expr, std::shared_ptr<Expr> cond)
+	std::shared_ptr<Instruction> afbdilPass::parse_statement(std::shared_ptr<Instruction> begin, AST::AstNode* astnode, std::map<std::string, std::shared_ptr<Expr>>& str2expr, std::shared_ptr<Expr> cond)
 	{
 		switch(astnode->type)
 		{
@@ -283,7 +283,7 @@ namespace afbd
 		}
 	}
 
-	void RTLILPass::execute(vector<string> args, RTLIL::Design* design)
+	void afbdilPass::execute(vector<string> args, RTLIL::Design* design)
 	{
 		std::cout << "Hello World!\n";
 
@@ -558,7 +558,7 @@ namespace afbd
 				continue;
 
 			std::cout << arg << " is a so name!\n";
-			void *so_handle = dlopen(arg£¬ RTLD_LAZY);
+			void *so_handle = dlopen(arg.c_str(), RTLD_LAZY);
 			if(so_handle == NULL)
 			{
 				std::cout << arg << " install failed...\n";
@@ -566,7 +566,7 @@ namespace afbd
 			}
 
 			PatternMatching* (*create)();
-			create = dlsym(so_handle£¬ "create");
+			create = (PatternMatching *(*)(void))(dlsym(so_handle, "create"));
 			if(dlerror() != NULL)
 			{
 				std::cout << dlerror() << "\n";
@@ -580,14 +580,14 @@ namespace afbd
 
 		for(auto pattern : patterns)
 		{
-			pattern->match();
+			// pattern->match();
 			delete pattern;
 		}
 
 #endif //linux
 	}
 
-	void RTLILPass::execute_cell(std::shared_ptr<Module>& curr, std::shared_ptr<std::vector<std::shared_ptr<Expr>>>& cell_vector)
+	void afbdilPass::execute_cell(std::shared_ptr<Module>& curr, std::shared_ptr<std::vector<std::shared_ptr<Expr>>>& cell_vector)
 	{
 		std::map<std::shared_ptr<Var>, std::shared_ptr<Expr>> substitute_map;
 		int occurence_id = module_occurence[curr];

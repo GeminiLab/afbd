@@ -1,15 +1,15 @@
 cmake_minimum_required(VERSION 3.2)
-project(rtlil)
+project(afbd)
 
 set(CMAKE_CXX_STANDARD 17)
 
 # target static
 aux_source_directory(static SOURCE_STATIC)
-add_library(rstatic STATIC ${SOURCE_STATIC})
+add_library(afbd_static STATIC ${SOURCE_STATIC})
 
 aux_source_directory(static/test SOURCE_STATIC_TEST)
-add_executable(rstatic_test ${SOURCE_STATIC_TEST})
-target_link_libraries(rstatic_test rstatic)
+add_executable(afbd_static_test ${SOURCE_STATIC_TEST})
+target_link_libraries(afbd_static_test afbd_static)
 
 # target yosysf
 aux_source_directory(3rd/yosys SOURCE_YOSYS)
@@ -27,28 +27,29 @@ add_library(yosysf STATIC
 target_include_directories(yosysf PUBLIC 3rd)
 
 
-# target rtlil
-aux_source_directory(src/rtlil SOURCE_RTLIL)
+# target afbdil
+aux_source_directory(src/afbdil SOURCE_AFBDIL)
 
-add_library(rtlil STATIC ${SOURCE_RTLIL})
-target_include_directories(rtlil PUBLIC include)
-target_include_directories(rtlil PRIVATE 3rd/include)
-target_include_directories(rtlil PRIVATE 3rd)
+add_library(afbdil STATIC ${SOURCE_AFBDIL})
+target_include_directories(afbdil PUBLIC include)
+target_include_directories(afbdil PRIVATE 3rd/include)
+target_include_directories(afbdil PRIVATE 3rd)
 
 
 # target transpiler
 set(CMAKE_PREFIX_PATH "${CMAKE_PREFIX_PATH};/usr/lib/llvm-8/cmake;E:/Programming/llvm-7.0.0.src/build/lib/cmake/llvm")
 find_package(LLVM REQUIRED CONFIG)
-message(STATUS "Found LLVM ${LLVM_PACKAGE_VERSION}")
-message(STATUS "Using LLVMConfig.cmake in: ${LLVM_DIR}")
+message(STATUS "Found LLVM ${LLVM_PACKAGE_VERSION} at ${LLVM_DIR}")
 
 add_definitions(${LLVM_DEFINITIONS})
 
-aux_source_directory(src/transpiler SOURCE_TRANS)
 
-add_executable(trans RTL.cpp ${SOURCE_TRANS})
-target_include_directories(trans PRIVATE ${LLVM_INCLUDE_DIRS})
-target_include_directories(trans PUBLIC include)
+# target afbd
+aux_source_directory(src/transpiler SOURCE_AFBD)
+
+add_executable(afbd main.cpp ${SOURCE_AFBD})
+target_include_directories(afbd PRIVATE ${LLVM_INCLUDE_DIRS})
+target_include_directories(afbd PUBLIC include)
 
 llvm_map_components_to_libnames(llvm_libs support core irreader
         #aarch64asmparser aarch64asmprinter aarch64codegen aarch64desc aarch64disassembler aarch64info aarch64utils
@@ -69,4 +70,4 @@ llvm_map_components_to_libnames(llvm_libs support core irreader
         #xcoreasmprinter xcorecodegen xcoredesc xcoredisassembler xcoreinfo
         )
 
-target_link_libraries(trans rtlil ${llvm_libs} yosysf)
+target_link_libraries(afbd afbdil ${llvm_libs} yosysf)
