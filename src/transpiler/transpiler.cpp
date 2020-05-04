@@ -3,6 +3,7 @@
 
 #include <queue>
 #include <set>
+#include <sstream>
 
 using namespace std;
 using namespace afbd;
@@ -41,10 +42,12 @@ shared_ptr<set<shared_ptr<Instruction>>> get_all_instrs(shared_ptr<Instruction> 
 }
 
 llvm::Function *Transpiler::transpile_process(shared_ptr<Process> proc) {
+    std::ostringstream ss;
+    ss << "process_" << rand() << "_" << time(nullptr);
     auto process = llvm::Function::Create(
             process_type,
             llvm::GlobalValue::LinkageTypes::ExternalLinkage,
-            "process",
+            ss.str(),
             m
     );
 
@@ -69,6 +72,8 @@ llvm::Function *Transpiler::transpile_process(shared_ptr<Process> proc) {
         } else {
             if (type == ExprType::NOT) {
                 return builder.CreateNot(eval(expr->get_operand(0)));
+            } else if (type == ExprType::REDUCE_BOOL) {
+                return eval(expr->get_operand(0));
             } else {
                 auto opl = eval(expr->get_operand(0));
                 auto opr = eval(expr->get_operand(1));
@@ -78,6 +83,24 @@ llvm::Function *Transpiler::transpile_process(shared_ptr<Process> proc) {
                         return builder.CreateAdd(opl, opr);
                     case ExprType::SUB:
                         return builder.CreateSub(opl, opr);
+                    case ExprType::MUL:
+                        return builder.CreateMul(opl, opr);
+                    case ExprType::DIV:
+                        return builder.CreateUDiv(opl, opr);
+                    case ExprType::MOD:
+                        return builder.CreateURem(opl, opr);
+                    case ExprType::EQ:
+                        return builder.CreateICmpEQ(opl, opr);
+                    case ExprType::NE:
+                        return builder.CreateICmpNE(opl, opr);
+                    case ExprType::GT:
+                        return builder.CreateICmpUGT(opl, opr);
+                    case ExprType::GE:
+                        return builder.CreateICmpUGE(opl, opr);
+                    case ExprType::LT:
+                        return builder.CreateICmpULT(opl, opr);
+                    case ExprType::LE:
+                        return builder.CreateICmpULE(opl, opr);
                     case ExprType::AND:
                         return builder.CreateAnd(opl, opr);
                     case ExprType::OR:
@@ -166,7 +189,7 @@ llvm::Function *Transpiler::transpile_process(shared_ptr<Process> proc) {
             auto instr = s.first;
             auto cond = s.second;
 
-            if (cond == nullptr) {
+            if (cond == nullptr || cond->type() == ExprType::DEFAULT) {
                 builder.CreateBr(instr_bb[instr]);
                 break;
             } else {
@@ -329,7 +352,6 @@ llvm::Module *Transpiler::transpile(shared_ptr<Module> module, shared_ptr<fstrea
     llvm::IRBuilder<> builder(context);
 
     print_common_header(*fs);
-    load_static_functions();
 
     var_id = make_shared<map<shared_ptr<Var>, int>>();
 
@@ -353,6 +375,8 @@ llvm::Module *Transpiler::transpile(shared_ptr<Module> module, shared_ptr<fstrea
     );
 
     *fs << "extern \"C\" void initialize_sim(" << simName << "*);" << endl;
+
+    load_static_functions();
 
     auto bb = llvm::BasicBlock::Create(context, "", initializer);
     builder.SetInsertPoint(bb);
