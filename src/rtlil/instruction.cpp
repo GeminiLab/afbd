@@ -149,7 +149,7 @@ json11::Json Instruction::to_json() {
     if(_expr)
         ret_map["expr"] = _expr->to_json();
 
-	if(_delay != 0)
+	if(_delay != 0 && _delay != -1)
 		ret_map["delay"] = _delay;
 
 	if(_triggers)

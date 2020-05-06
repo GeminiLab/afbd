@@ -1,8 +1,8 @@
-/* A Bison parser, made by GNU Bison 3.0.2.  */
+/* A Bison parser, made by GNU Bison 3.0.4.  */
 
 /* Bison interface for Yacc-like parsers in C
 
-   Copyright (C) 1984, 1989-1990, 2000-2013 Free Software Foundation, Inc.
+   Copyright (C) 1984, 1989-1990, 2000-2015 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -54,7 +54,7 @@ extern int frontend_verilog_yydebug;
 #include <string>
 #include "verilog_frontend.h"
 
-#line 58 "frontends/verilog/verilog_parser.tab.hh" /* yacc.c:1909  */
+#line 58 "verilog_parser.tab.hh" /* yacc.c:1909  */
 
 /* Token type.  */
 #ifndef FRONTEND_VERILOG_YYTOKENTYPE
@@ -181,7 +181,7 @@ extern int frontend_verilog_yydebug;
 
 /* Value type.  */
 #if ! defined FRONTEND_VERILOG_YYSTYPE && ! defined FRONTEND_VERILOG_YYSTYPE_IS_DECLARED
-typedef union FRONTEND_VERILOG_YYSTYPE FRONTEND_VERILOG_YYSTYPE;
+
 union FRONTEND_VERILOG_YYSTYPE
 {
 #line 156 "frontends/verilog/verilog_parser.y" /* yacc.c:1909  */
@@ -197,6 +197,8 @@ union FRONTEND_VERILOG_YYSTYPE
 
 #line 199 "frontends/verilog/verilog_parser.tab.hh" /* yacc.c:1909  */
 };
+
+typedef union FRONTEND_VERILOG_YYSTYPE FRONTEND_VERILOG_YYSTYPE;
 # define FRONTEND_VERILOG_YYSTYPE_IS_TRIVIAL 1
 # define FRONTEND_VERILOG_YYSTYPE_IS_DECLARED 1
 #endif

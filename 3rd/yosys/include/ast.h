@@ -173,6 +173,9 @@ namespace AST
 		unsigned int hashidx_;
 		unsigned int hash() const { return hashidx_; }
 
+		int during_delay;
+		int after_delay;
+
 		// this nodes type
 		AstNodeType type;
 

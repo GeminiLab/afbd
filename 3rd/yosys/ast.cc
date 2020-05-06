@@ -27,8 +27,6 @@
  *
  */
 
-#include <cstdio>
-
 #include "include/yosys.h"
 #include "libs/sha1/sha1.h"
 #include "include/ast.h"
@@ -193,6 +191,9 @@ bool AstNode::get_bool_attribute(RTLIL::IdString id)
 // (the optional child arguments make it easier to create AST trees)
 AstNode::AstNode(AstNodeType type, AstNode *child1, AstNode *child2, AstNode *child3)
 {
+	during_delay = 0;
+	after_delay = 0;
+
 	static unsigned int hashidx_count = 123456789;
 	hashidx_count = mkhash_xorshift(hashidx_count);
 	hashidx_ = hashidx_count;

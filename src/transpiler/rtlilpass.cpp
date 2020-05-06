@@ -211,6 +211,19 @@ namespace afbd
 		inst->expr(parse_expr(astnode->children[1], str2expr));
 		inst->assign_type(is_blocking ? AssignType::Blocking : AssignType::NonBlocking);
 
+		//std::cout << astnode->during_delay << " " << astnode->after_delay << "\n";
+
+		if(astnode->during_delay != 0)
+			inst->assign_delay(astnode->during_delay);
+
+		if(astnode->after_delay != 0)
+		{
+			auto delay = std::make_shared<Instruction>(begin->process());
+			delay->delay(astnode->after_delay);
+			inst->add_succ(delay, expr_true);
+			return delay;
+		}
+
 		return inst;
 	}
 
@@ -558,7 +571,7 @@ namespace afbd
 				continue;
 
 			std::cout << arg << " is a so name!\n";
-			void *so_handle = dlopen(arg£¬ RTLD_LAZY);
+			void *so_handle = dlopen(arg, RTLD_LAZY);
 			if(so_handle == NULL)
 			{
 				std::cout << arg << " install failed...\n";

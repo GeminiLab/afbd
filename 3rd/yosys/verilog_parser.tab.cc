@@ -1,8 +1,8 @@
-/* A Bison parser, made by GNU Bison 3.0.2.  */
+/* A Bison parser, made by GNU Bison 3.0.4.  */
 
 /* Bison implementation for Yacc-like parsers in C
 
-   Copyright (C) 1984, 1989-1990, 2000-2013 Free Software Foundation, Inc.
+   Copyright (C) 1984, 1989-1990, 2000-2015 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -44,7 +44,7 @@
 #define YYBISON 1
 
 /* Bison version.  */
-#define YYBISON_VERSION "3.0.2"
+#define YYBISON_VERSION "3.0.4"
 
 /* Skeleton name.  */
 #define YYSKELETON_NAME "yacc.c"
@@ -220,7 +220,7 @@ extern int frontend_verilog_yydebug;
 
 #include <map>
 #include <string>
-#include "frontends/verilog/verilog_frontend.h"
+#include "include/verilog_frontend.h"
 
 #line 226 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:355  */
 
@@ -349,7 +349,7 @@ extern int frontend_verilog_yydebug;
 
 /* Value type.  */
 #if ! defined FRONTEND_VERILOG_YYSTYPE && ! defined FRONTEND_VERILOG_YYSTYPE_IS_DECLARED
-typedef union FRONTEND_VERILOG_YYSTYPE FRONTEND_VERILOG_YYSTYPE;
+
 union FRONTEND_VERILOG_YYSTYPE
 {
 #line 156 "frontends/verilog/verilog_parser.y" /* yacc.c:355  */
@@ -365,6 +365,8 @@ union FRONTEND_VERILOG_YYSTYPE
 
 #line 367 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:355  */
 };
+
+typedef union FRONTEND_VERILOG_YYSTYPE FRONTEND_VERILOG_YYSTYPE;
 # define FRONTEND_VERILOG_YYSTYPE_IS_TRIVIAL 1
 # define FRONTEND_VERILOG_YYSTYPE_IS_DECLARED 1
 #endif
@@ -391,7 +393,7 @@ int frontend_verilog_yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 395 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:358  */
+#line 397 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -679,62 +681,62 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,   227,   227,   227,   239,   240,   241,   242,   243,   244,
-     245,   246,   246,   250,   250,   266,   268,   272,   279,   272,
-     290,   290,   293,   294,   297,   303,   311,   314,   322,   332,
-     335,   335,   357,   357,   357,   357,   360,   360,   362,   364,
-     364,   370,   370,   376,   379,   379,   379,   382,   382,   385,
-     385,   388,   404,   408,   408,   422,   427,   422,   437,   437,
-     452,   457,   457,   470,   471,   475,   476,   479,   479,   499,
-     499,   502,   502,   502,   502,   502,   502,   502,   503,   506,
-     507,   508,   509,   510,   513,   513,   516,   516,   526,   527,
-     528,   529,   536,   539,   542,   548,   550,   553,   556,   559,
-     562,   565,   571,   578,   581,   584,   589,   594,   600,   606,
-     612,   615,   621,   624,   629,   630,   633,   636,   644,   646,
-     646,   650,   650,   650,   650,   650,   650,   650,   650,   650,
-     650,   651,   652,   652,   652,   652,   652,   652,   655,   655,
-     666,   666,   676,   676,   687,   687,   699,   699,   711,   711,
-     735,   740,   746,   746,   750,   751,   752,   752,   756,   756,
-     760,   763,   768,   768,   768,   772,   768,   780,   780,   783,
-     783,   804,   807,   807,   813,   816,   816,   820,   903,   974,
-     977,   982,   985,   990,   993,   998,  1004,  1010,  1016,  1024,
-    1025,  1026,  1029,  1037,  1044,  1053,  1065,  1085,  1091,  1101,
-    1102,  1105,  1106,  1109,  1112,  1113,  1117,  1118,  1124,  1127,
-    1127,  1130,  1133,  1133,  1136,  1142,  1143,  1147,  1148,  1149,
-    1153,  1154,  1158,  1158,  1161,  1162,  1163,  1166,  1167,  1168,
-    1172,  1173,  1176,  1177,  1180,  1181,  1184,  1185,  1186,  1190,
-    1194,  1197,  1200,  1201,  1202,  1205,  1206,  1207,  1214,  1217,
-    1218,  1225,  1225,  1231,  1233,  1236,  1243,  1246,  1250,  1253,
-    1262,  1263,  1270,  1270,  1279,  1279,  1288,  1288,  1291,  1309,
-    1312,  1312,  1315,  1324,  1324,  1345,  1346,  1347,  1350,  1353,
-    1354,  1358,  1359,  1363,  1377,  1378,  1382,  1383,  1386,  1397,
-    1404,  1419,  1404,  1425,  1425,  1433,  1433,  1442,  1444,  1455,
-    1455,  1458,  1500,  1528,  1581,  1584,  1584,  1587,  1594,  1631,
-    1638,  1638,  1647,  1647,  1657,  1660,  1665,  1666,  1669,  1669,
-    1678,  1678,  1690,  1691,  1694,  1695,  1695,  1701,  1701,  1704,
-    1704,  1706,  1708,  1713,  1722,  1749,  1749,  1752,  1757,  1763,
-    1771,  1778,  1787,  1794,  1797,  1802,  1805,  1810,  1817,  1810,
-    1830,  1830,  1846,  1846,  1860,  1861,  1862,  1863,  1864,  1864,
-    1868,  1869,  1870,  1873,  1878,  1883,  1890,  1893,  1898,  1901,
-    1906,  1909,  1912,  1917,  1923,  1917,  1929,  1929,  1932,  1932,
-    1935,  1936,  1939,  1949,  1949,  1952,  1964,  1976,  1988,  2000,
-    2008,  2016,  2024,  2038,  2054,  2061,  2068,  2075,  2082,  2089,
-    2100,  2113,  2117,  2121,  2125,  2132,  2132,  2132,  2132,  2132,
-    2132,  2133,  2134,  2134,  2135,  2135,  2145,  2145,  2155,  2155,
-    2171,  2176,  2178,  2171,  2187,  2187,  2201,  2201,  2215,  2226,
-    2215,  2233,  2233,  2246,  2249,  2252,  2257,  2263,  2266,  2269,
-    2274,  2278,  2281,  2285,  2285,  2289,  2289,  2300,  2303,  2303,
-    2307,  2313,  2307,  2326,  2326,  2330,  2336,  2330,  2344,  2345,
-    2348,  2351,  2356,  2359,  2364,  2369,  2378,  2385,  2388,  2393,
-    2397,  2403,  2403,  2407,  2407,  2411,  2412,  2415,  2420,  2420,
-    2424,  2424,  2428,  2432,  2428,  2437,  2437,  2445,  2445,  2453,
-    2453,  2465,  2465,  2476,  2476,  2485,  2485,  2488,  2488,  2491,
-    2494,  2503,  2506,  2516,  2528,  2535,  2541,  2552,  2556,  2556,
-    2566,  2570,  2574,  2577,  2582,  2585,  2588,  2592,  2596,  2600,
-    2604,  2608,  2612,  2616,  2620,  2625,  2629,  2634,  2638,  2642,
-    2646,  2650,  2654,  2658,  2662,  2666,  2670,  2674,  2678,  2682,
-    2686,  2690,  2694,  2698,  2702,  2706,  2710,  2714,  2718,  2722,
-    2726,  2730,  2736,  2739
+       0,   228,   228,   228,   240,   241,   242,   243,   244,   245,
+     246,   247,   247,   251,   251,   267,   269,   273,   280,   273,
+     291,   291,   294,   295,   298,   304,   312,   315,   323,   333,
+     336,   336,   358,   358,   358,   358,   361,   361,   363,   365,
+     365,   371,   371,   377,   380,   380,   380,   383,   383,   386,
+     386,   389,   405,   409,   409,   423,   428,   423,   438,   438,
+     453,   458,   458,   471,   472,   476,   477,   480,   480,   500,
+     500,   503,   503,   503,   503,   503,   503,   503,   504,   507,
+     508,   509,   510,   511,   514,   514,   517,   517,   527,   528,
+     529,   530,   537,   540,   543,   549,   551,   554,   557,   560,
+     563,   566,   572,   579,   582,   585,   590,   595,   601,   607,
+     613,   616,   622,   625,   630,   631,   634,   637,   645,   647,
+     647,   651,   651,   651,   651,   651,   651,   651,   651,   651,
+     651,   652,   653,   653,   653,   653,   653,   653,   656,   656,
+     667,   667,   677,   677,   688,   688,   700,   700,   712,   712,
+     736,   741,   747,   747,   751,   752,   753,   753,   757,   757,
+     761,   764,   769,   769,   769,   773,   769,   781,   781,   784,
+     784,   805,   808,   808,   814,   817,   817,   821,   904,   975,
+     978,   983,   986,   991,   994,   999,  1005,  1011,  1017,  1025,
+    1026,  1027,  1030,  1038,  1045,  1054,  1066,  1086,  1092,  1102,
+    1103,  1106,  1107,  1110,  1113,  1114,  1118,  1119,  1125,  1128,
+    1128,  1131,  1134,  1134,  1137,  1143,  1144,  1148,  1149,  1150,
+    1154,  1155,  1159,  1159,  1162,  1163,  1164,  1167,  1168,  1169,
+    1173,  1174,  1177,  1178,  1181,  1182,  1185,  1186,  1187,  1191,
+    1195,  1198,  1201,  1202,  1203,  1206,  1207,  1208,  1215,  1218,
+    1219,  1226,  1226,  1232,  1234,  1237,  1244,  1247,  1251,  1254,
+    1263,  1264,  1271,  1271,  1280,  1280,  1289,  1289,  1292,  1310,
+    1313,  1313,  1316,  1325,  1325,  1346,  1347,  1348,  1351,  1354,
+    1355,  1359,  1360,  1364,  1378,  1379,  1383,  1384,  1387,  1398,
+    1405,  1420,  1405,  1426,  1426,  1434,  1434,  1443,  1445,  1456,
+    1456,  1459,  1501,  1529,  1582,  1585,  1585,  1588,  1595,  1632,
+    1639,  1639,  1648,  1648,  1658,  1661,  1666,  1667,  1670,  1670,
+    1679,  1679,  1691,  1692,  1695,  1696,  1696,  1702,  1702,  1705,
+    1705,  1707,  1709,  1714,  1723,  1750,  1750,  1753,  1758,  1764,
+    1772,  1779,  1788,  1795,  1798,  1803,  1806,  1811,  1818,  1811,
+    1831,  1831,  1847,  1847,  1861,  1862,  1863,  1864,  1865,  1865,
+    1869,  1870,  1871,  1874,  1879,  1884,  1891,  1894,  1899,  1902,
+    1907,  1910,  1913,  1918,  1924,  1918,  1930,  1930,  1933,  1933,
+    1936,  1937,  1940,  1950,  1950,  1953,  1965,  1977,  1989,  2001,
+    2009,  2017,  2025,  2039,  2055,  2062,  2069,  2076,  2083,  2090,
+    2101,  2114,  2121,  2126,  2131,  2141,  2141,  2141,  2141,  2141,
+    2141,  2142,  2143,  2143,  2144,  2144,  2155,  2155,  2166,  2166,
+    2183,  2188,  2190,  2183,  2200,  2200,  2215,  2215,  2230,  2241,
+    2230,  2249,  2249,  2263,  2266,  2269,  2274,  2280,  2283,  2286,
+    2291,  2295,  2298,  2302,  2302,  2306,  2306,  2317,  2320,  2320,
+    2324,  2330,  2324,  2343,  2343,  2347,  2353,  2347,  2361,  2362,
+    2365,  2368,  2373,  2376,  2381,  2386,  2395,  2402,  2405,  2410,
+    2414,  2420,  2420,  2424,  2424,  2428,  2429,  2432,  2437,  2437,
+    2441,  2441,  2445,  2449,  2445,  2454,  2454,  2462,  2462,  2470,
+    2470,  2482,  2482,  2493,  2493,  2502,  2502,  2505,  2505,  2508,
+    2511,  2520,  2523,  2533,  2545,  2552,  2558,  2569,  2573,  2573,
+    2583,  2587,  2591,  2594,  2599,  2602,  2605,  2609,  2613,  2617,
+    2621,  2625,  2629,  2633,  2637,  2642,  2646,  2651,  2655,  2659,
+    2663,  2667,  2671,  2675,  2679,  2683,  2687,  2691,  2695,  2699,
+    2703,  2707,  2711,  2715,  2719,  2723,  2727,  2731,  2735,  2739,
+    2743,  2747,  2753,  2756
 };
 #endif
 
@@ -2911,16 +2913,16 @@ yyreduce:
     switch (yyn)
       {
           case 2:
-#line 227 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 228 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 	ast_stack.clear();
 	ast_stack.push_back(current_ast);
 }
-#line 2920 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 2922 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 3:
-#line 230 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 231 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 	ast_stack.pop_back();
 	log_assert(GetSize(ast_stack) == 0);
@@ -2928,11 +2930,11 @@ yyreduce:
 		delete it.second;
 	default_attr_list.clear();
 }
-#line 2932 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 2934 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 13:
-#line 250 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 251 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		if (attr_list != nullptr)
 			attr_list_stack.push(attr_list);
@@ -2940,11 +2942,11 @@ yyreduce:
 		for (auto &it : default_attr_list)
 			(*attr_list)[it.first] = it.second->clone();
 	}
-#line 2944 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 2946 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 14:
-#line 256 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 257 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.al) = attr_list;
 		if (!attr_list_stack.empty()) {
@@ -2953,19 +2955,19 @@ yyreduce:
 		} else
 			attr_list = nullptr;
 	}
-#line 2957 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 2959 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 15:
-#line 266 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 267 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		SET_RULE_LOC((yyloc), (yylsp[-2]), (yyloc));
 	}
-#line 2965 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 2967 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 17:
-#line 272 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 273 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		if (attr_list != nullptr)
 			attr_list_stack.push(attr_list);
@@ -2974,11 +2976,11 @@ yyreduce:
 			delete it.second;
 		default_attr_list.clear();
 	}
-#line 2978 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 2980 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 18:
-#line 279 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 280 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		attr_list->swap(default_attr_list);
 		delete attr_list;
@@ -2988,41 +2990,41 @@ yyreduce:
 		} else
 			attr_list = nullptr;
 	}
-#line 2992 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 2994 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 24:
-#line 297 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 298 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		if (attr_list->count(*(yyvsp[0].string)) != 0)
 			delete (*attr_list)[*(yyvsp[0].string)];
 		(*attr_list)[*(yyvsp[0].string)] = AstNode::mkconst_int(1, false);
 		delete (yyvsp[0].string);
 	}
-#line 3003 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 3005 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 25:
-#line 303 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 304 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		if (attr_list->count(*(yyvsp[-2].string)) != 0)
 			delete (*attr_list)[*(yyvsp[-2].string)];
 		(*attr_list)[*(yyvsp[-2].string)] = (yyvsp[0].ast);
 		delete (yyvsp[-2].string);
 	}
-#line 3014 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 3016 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 26:
-#line 311 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 312 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.string) = (yyvsp[0].string);
 	}
-#line 3022 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 3024 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 27:
-#line 314 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 315 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		if ((yyvsp[0].string)->compare(0, 1, "\\") == 0)
 			*(yyvsp[-2].string) += "::" + (yyvsp[0].string)->substr(1);
@@ -3031,11 +3033,11 @@ yyreduce:
 		delete (yyvsp[0].string);
 		(yyval.string) = (yyvsp[-2].string);
 	}
-#line 3035 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 3037 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 28:
-#line 322 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 323 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		if ((yyvsp[0].string)->compare(0, 1, "\\") == 0)
 			*(yyvsp[-2].string) += "." + (yyvsp[0].string)->substr(1);
@@ -3044,17 +3046,17 @@ yyreduce:
 		delete (yyvsp[0].string);
 		(yyval.string) = (yyvsp[-2].string);
 	}
-#line 3048 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 3050 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 29:
-#line 332 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 333 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     { (yyval.string) = (yyvsp[-1].string); }
-#line 3054 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 3056 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 30:
-#line 335 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 336 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		do_not_require_port_stubs = false;
 		AstNode *mod = new AstNode(AST_MODULE);
@@ -3067,11 +3069,11 @@ yyreduce:
 		append_attr(mod, (yyvsp[-2].al));
 		delete (yyvsp[0].string);
 	}
-#line 3071 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 3073 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 31:
-#line 346 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 347 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		if (port_stubs.size() != 0)
 			frontend_verilog_yyerror("Missing details for module port `%s'.",
@@ -3081,45 +3083,45 @@ yyreduce:
 		log_assert(ast_stack.size() == 1);
 		current_ast_mod = NULL;
 	}
-#line 3085 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 3087 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 32:
-#line 357 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 358 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     { astbuf1 = nullptr; }
-#line 3091 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 3093 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 33:
-#line 357 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 358 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     { if (astbuf1) delete astbuf1; }
-#line 3097 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 3099 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 39:
-#line 364 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 365 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		if (astbuf1) delete astbuf1;
 		astbuf1 = new AstNode(AST_PARAMETER);
 		astbuf1->children.push_back(AstNode::mkconst_int(0, true));
 		append_attr(astbuf1, (yyvsp[-1].al));
 	}
-#line 3108 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 3110 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 41:
-#line 370 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 371 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		if (astbuf1) delete astbuf1;
 		astbuf1 = new AstNode(AST_LOCALPARAM);
 		astbuf1->children.push_back(AstNode::mkconst_int(0, true));
 		append_attr(astbuf1, (yyvsp[-1].al));
 	}
-#line 3119 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 3121 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 51:
-#line 388 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 389 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		if (ast_stack.back()->children.size() > 0 && ast_stack.back()->children.back()->type == AST_WIRE) {
 			AstNode *wire = new AstNode(AST_IDENTIFIER);
@@ -3137,11 +3139,11 @@ yyreduce:
 		} else
 			frontend_verilog_yyerror("SystemVerilog interface in module port list cannot have a default value.");
 	}
-#line 3141 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 3143 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 53:
-#line 408 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 409 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		if (ast_stack.back()->children.size() > 0 && ast_stack.back()->children.back()->type == AST_WIRE) {
 			AstNode *node = ast_stack.back()->children.back()->clone();
@@ -3156,22 +3158,22 @@ yyreduce:
 		}
 		delete (yyvsp[0].string);
 	}
-#line 3160 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 3162 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 55:
-#line 422 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 423 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		astbuf1 = new AstNode(AST_INTERFACEPORT);
 		astbuf1->children.push_back(new AstNode(AST_INTERFACEPORTTYPE));
 		astbuf1->children[0]->str = *(yyvsp[0].string);
 		delete (yyvsp[0].string);
 	}
-#line 3171 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 3173 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 56:
-#line 427 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 428 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {  /* SV interfaces */
 		if (!sv_mode)
 			frontend_verilog_yyerror("Interface found in port list (%s). This is not supported unless read_verilog is called with -sv!", (yyvsp[0].string)->c_str());
@@ -3182,11 +3184,11 @@ yyreduce:
 		ast_stack.back()->children.push_back(astbuf2);
 		delete astbuf1; // really only needed if multiple instances of same type.
 	}
-#line 3186 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 3188 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 58:
-#line 437 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 438 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		AstNode *node = (yyvsp[-2].ast);
 		node->str = *(yyvsp[0].string);
@@ -3202,19 +3204,19 @@ yyreduce:
 		append_attr(node, (yyvsp[-3].al));
 		delete (yyvsp[0].string);
 	}
-#line 3206 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 3208 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 60:
-#line 452 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 453 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		do_not_require_port_stubs = true;
 	}
-#line 3214 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 3216 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 61:
-#line 457 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 458 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		AstNode *mod = new AstNode(AST_PACKAGE);
 		ast_stack.back()->children.push_back(mod);
@@ -3223,20 +3225,20 @@ yyreduce:
 		mod->str = *(yyvsp[0].string);
 		append_attr(mod, (yyvsp[-2].al));
 	}
-#line 3227 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 3229 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 62:
-#line 464 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 465 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		ast_stack.pop_back();
 		current_ast_mod = NULL;
 	}
-#line 3236 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 3238 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 67:
-#line 479 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 480 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		do_not_require_port_stubs = false;
 		AstNode *intf = new AstNode(AST_INTERFACE);
@@ -3248,11 +3250,11 @@ yyreduce:
 		intf->str = *(yyvsp[0].string);
 		delete (yyvsp[0].string);
 	}
-#line 3252 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 3254 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 68:
-#line 489 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 490 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		if (port_stubs.size() != 0)
 			frontend_verilog_yyerror("Missing details for module port `%s'.",
@@ -3261,153 +3263,165 @@ yyreduce:
 		log_assert(ast_stack.size() == 1);
 		current_ast_mod = NULL;
 	}
-#line 3265 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 3267 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 79:
-#line 506 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
-    { delete (yyvsp[0].string); }
-#line 3271 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 507 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+    { (yyval.ast) = nullptr; delete (yyvsp[0].string); }
+#line 3273 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 80:
-#line 507 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
-    { delete (yyvsp[0].string); }
-#line 3277 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 508 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+    { (yyval.ast) = const2ast(*(yyvsp[0].string)); delete (yyvsp[0].string); }
+#line 3279 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 81:
-#line 508 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
-    { delete (yyvsp[0].string); }
-#line 3283 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 509 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+    { (yyval.ast) = nullptr; delete (yyvsp[0].string); }
+#line 3285 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 82:
-#line 509 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
-    { delete (yyvsp[-1].ast); }
-#line 3289 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 510 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+    { (yyval.ast) = nullptr; delete (yyvsp[-1].ast); }
+#line 3291 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 83:
-#line 510 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
-    { delete (yyvsp[-5].ast); delete (yyvsp[-3].ast); delete (yyvsp[-1].ast); }
-#line 3295 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 511 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+    { (yyval.ast) = nullptr; delete (yyvsp[-5].ast); delete (yyvsp[-3].ast); delete (yyvsp[-1].ast); }
+#line 3297 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+    break;
+
+  case 84:
+#line 514 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+    { (yyval.ast) = (yyvsp[0].ast); }
+#line 3303 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+    break;
+
+  case 85:
+#line 514 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+    { (yyval.ast) = nullptr; }
+#line 3309 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 86:
-#line 516 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 517 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		astbuf3 = new AstNode(AST_WIRE);
 		current_wire_rand = false;
 		current_wire_const = false;
 	}
-#line 3305 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 3319 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 87:
-#line 520 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 521 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.ast) = astbuf3;
 		SET_RULE_LOC((yyloc), (yylsp[0]), (yyloc));
 	}
-#line 3314 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 3328 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 91:
-#line 529 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 530 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		astbuf3->is_custom_type = true;
 		astbuf3->children.push_back(new AstNode(AST_WIRETYPE));
 		astbuf3->children.back()->str = *(yyvsp[0].string);
 	}
-#line 3324 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 3338 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 92:
-#line 536 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 537 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		astbuf3->is_input = true;
 	}
-#line 3332 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 3346 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 93:
-#line 539 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 540 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		astbuf3->is_output = true;
 	}
-#line 3340 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 3354 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 94:
-#line 542 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 543 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		astbuf3->is_input = true;
 		astbuf3->is_output = true;
 	}
-#line 3349 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 3363 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 95:
-#line 548 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 549 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 	}
-#line 3356 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 3370 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 96:
-#line 550 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 551 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		astbuf3->is_wor = true;
 	}
-#line 3364 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 3378 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 97:
-#line 553 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 554 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		astbuf3->is_wand = true;
 	}
-#line 3372 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 3386 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 98:
-#line 556 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 557 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		astbuf3->is_reg = true;
 	}
-#line 3380 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 3394 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 99:
-#line 559 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 560 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		astbuf3->is_logic = true;
 	}
-#line 3388 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 3402 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 100:
-#line 562 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 563 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		astbuf3->is_logic = true;
 	}
-#line 3396 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 3410 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 101:
-#line 565 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 566 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		astbuf3->is_reg = true;
 		astbuf3->range_left = 31;
 		astbuf3->range_right = 0;
 		astbuf3->is_signed = true;
 	}
-#line 3407 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 3421 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 102:
-#line 571 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 572 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		astbuf3->type = AST_GENVAR;
 		astbuf3->is_reg = true;
@@ -3415,160 +3429,160 @@ yyreduce:
 		astbuf3->range_left = 31;
 		astbuf3->range_right = 0;
 	}
-#line 3419 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 3433 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 103:
-#line 578 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 579 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		astbuf3->is_signed = true;
 	}
-#line 3427 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 3441 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 104:
-#line 581 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 582 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		current_wire_rand = true;
 	}
-#line 3435 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 3449 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 105:
-#line 584 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 585 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		current_wire_const = true;
 	}
-#line 3443 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 3457 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 106:
-#line 589 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 590 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.ast) = new AstNode(AST_RANGE);
 		(yyval.ast)->children.push_back((yyvsp[-3].ast));
 		(yyval.ast)->children.push_back((yyvsp[-1].ast));
 	}
-#line 3453 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 3467 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 107:
-#line 594 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 595 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.ast) = new AstNode(AST_RANGE);
 		AstNode *expr = new AstNode(AST_CONCAT, (yyvsp[-3].ast));
 		(yyval.ast)->children.push_back(new AstNode(AST_SUB, new AstNode(AST_ADD, expr->clone(), (yyvsp[-1].ast)), AstNode::mkconst_int(1, true)));
 		(yyval.ast)->children.push_back(new AstNode(AST_ADD, expr, AstNode::mkconst_int(0, true)));
 	}
-#line 3464 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 3478 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 108:
-#line 600 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 601 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.ast) = new AstNode(AST_RANGE);
 		AstNode *expr = new AstNode(AST_CONCAT, (yyvsp[-3].ast));
 		(yyval.ast)->children.push_back(new AstNode(AST_ADD, expr, AstNode::mkconst_int(0, true)));
 		(yyval.ast)->children.push_back(new AstNode(AST_SUB, new AstNode(AST_ADD, expr->clone(), AstNode::mkconst_int(1, true)), (yyvsp[-1].ast)));
 	}
-#line 3475 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 3489 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 109:
-#line 606 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 607 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.ast) = new AstNode(AST_RANGE);
 		(yyval.ast)->children.push_back((yyvsp[-1].ast));
 	}
-#line 3484 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 3498 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 110:
-#line 612 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 613 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.ast) = new AstNode(AST_MULTIRANGE, (yyvsp[-1].ast), (yyvsp[0].ast));
 	}
-#line 3492 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 3506 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 111:
-#line 615 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 616 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.ast) = (yyvsp[-1].ast);
 		(yyval.ast)->children.push_back((yyvsp[0].ast));
 	}
-#line 3501 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 3515 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 112:
-#line 621 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 622 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.ast) = (yyvsp[0].ast);
 	}
-#line 3509 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
-    break;
-
-  case 113:
-#line 624 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
-    {
-		(yyval.ast) = NULL;
-	}
-#line 3517 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
-    break;
-
-  case 114:
-#line 629 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
-    { (yyval.ast) = (yyvsp[0].ast); }
 #line 3523 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
-  case 115:
-#line 630 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
-    { (yyval.ast) = (yyvsp[0].ast); }
-#line 3529 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+  case 113:
+#line 625 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+    {
+		(yyval.ast) = NULL;
+	}
+#line 3531 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
-  case 116:
-#line 633 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
-    {
-		(yyval.ast) = (yyvsp[0].ast);
-	}
+  case 114:
+#line 630 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+    { (yyval.ast) = (yyvsp[0].ast); }
 #line 3537 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
+  case 115:
+#line 631 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+    { (yyval.ast) = (yyvsp[0].ast); }
+#line 3543 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+    break;
+
+  case 116:
+#line 634 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+    {
+		(yyval.ast) = (yyvsp[0].ast);
+	}
+#line 3551 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+    break;
+
   case 117:
-#line 636 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 637 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.ast) = new AstNode(AST_RANGE);
 		(yyval.ast)->children.push_back(AstNode::mkconst_int(31, true));
 		(yyval.ast)->children.push_back(AstNode::mkconst_int(0, true));
 		(yyval.ast)->is_signed = true;
 	}
-#line 3548 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 3562 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 138:
-#line 655 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 656 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		AstNode *node = new AstNode(AST_GENBLOCK);
 		node->str = *(yyvsp[-1].string);
 		ast_stack.back()->children.push_back(node);
 		ast_stack.push_back(node);
 	}
-#line 3559 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 3573 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 139:
-#line 660 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 661 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		delete (yyvsp[-4].string);
 		ast_stack.pop_back();
 	}
-#line 3568 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 3582 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 140:
-#line 666 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 667 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		current_function_or_task = new AstNode(AST_DPI_FUNCTION, AstNode::mkconst_str(*(yyvsp[-1].string)), AstNode::mkconst_str(*(yyvsp[0].string)));
 		current_function_or_task->str = *(yyvsp[0].string);
@@ -3577,19 +3591,19 @@ yyreduce:
 		delete (yyvsp[-1].string);
 		delete (yyvsp[0].string);
 	}
-#line 3581 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 3595 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 141:
-#line 673 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 674 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		current_function_or_task = NULL;
 	}
-#line 3589 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 3603 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 142:
-#line 676 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 677 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		current_function_or_task = new AstNode(AST_DPI_FUNCTION, AstNode::mkconst_str(*(yyvsp[-1].string)), AstNode::mkconst_str(*(yyvsp[-3].string)));
 		current_function_or_task->str = *(yyvsp[0].string);
@@ -3599,19 +3613,19 @@ yyreduce:
 		delete (yyvsp[-1].string);
 		delete (yyvsp[0].string);
 	}
-#line 3603 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 3617 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 143:
-#line 684 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 685 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		current_function_or_task = NULL;
 	}
-#line 3611 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 3625 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 144:
-#line 687 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 688 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		current_function_or_task = new AstNode(AST_DPI_FUNCTION, AstNode::mkconst_str(*(yyvsp[-1].string)), AstNode::mkconst_str(*(yyvsp[-5].string) + ":" + RTLIL::unescape_id(*(yyvsp[-3].string))));
 		current_function_or_task->str = *(yyvsp[0].string);
@@ -3622,19 +3636,19 @@ yyreduce:
 		delete (yyvsp[-1].string);
 		delete (yyvsp[0].string);
 	}
-#line 3626 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 3640 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 145:
-#line 696 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 697 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		current_function_or_task = NULL;
 	}
-#line 3634 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 3648 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 146:
-#line 699 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 700 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		current_function_or_task = new AstNode(AST_TASK);
 		current_function_or_task->str = *(yyvsp[0].string);
@@ -3644,20 +3658,20 @@ yyreduce:
 		current_function_or_task_port_id = 1;
 		delete (yyvsp[0].string);
 	}
-#line 3648 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 3662 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 147:
-#line 707 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 708 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		current_function_or_task = NULL;
 		ast_stack.pop_back();
 	}
-#line 3657 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 3671 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 148:
-#line 711 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 712 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		current_function_or_task = new AstNode(AST_FUNCTION);
 		current_function_or_task->str = *(yyvsp[0].string);
@@ -3677,76 +3691,76 @@ yyreduce:
 		current_function_or_task_port_id = 1;
 		delete (yyvsp[0].string);
 	}
-#line 3681 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 3695 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 149:
-#line 729 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 730 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		current_function_or_task = NULL;
 		ast_stack.pop_back();
 	}
-#line 3690 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 3704 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 150:
-#line 735 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 736 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		current_function_or_task->children.push_back(AstNode::mkconst_str(*(yyvsp[-1].string)));
 		delete (yyvsp[-1].string);
 		delete (yyvsp[0].string);
 	}
-#line 3700 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 3714 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 151:
-#line 740 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 741 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		current_function_or_task->children.push_back(AstNode::mkconst_str(*(yyvsp[0].string)));
 		delete (yyvsp[0].string);
 	}
-#line 3709 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 3723 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 160:
-#line 760 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 761 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.boolean) = true;
 	}
-#line 3717 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 3731 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 161:
-#line 763 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 764 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.boolean) = false;
 	}
-#line 3725 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 3739 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 164:
-#line 768 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 769 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		albuf = nullptr;
 		astbuf1 = nullptr;
 		astbuf2 = nullptr;
 	}
-#line 3735 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 3749 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 165:
-#line 772 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 773 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		delete astbuf1;
 		if (astbuf2 != NULL)
 			delete astbuf2;
 		free_attr(albuf);
 	}
-#line 3746 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 3760 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 169:
-#line 783 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 784 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		if (albuf) {
 			delete astbuf1;
@@ -3769,11 +3783,11 @@ yyreduce:
 		if (astbuf2 && astbuf2->children.size() != 2)
 			frontend_verilog_yyerror("task/function argument range must be of the form: [<expr>:<expr>], [<expr>+:<expr>], or [<expr>-:<expr>]");
 	}
-#line 3773 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 3787 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 177:
-#line 820 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 821 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		AstNode *en_expr = (yyvsp[-9].ast);
 		char specify_edge = (yyvsp[-7].ch);
@@ -3857,11 +3871,11 @@ yyreduce:
 		delete target;
 		delete timing;
 	}
-#line 3861 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 3875 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 178:
-#line 903 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 904 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		if (*(yyvsp[-13].string) != "$setup" && *(yyvsp[-13].string) != "$hold" && *(yyvsp[-13].string) != "$setuphold" && *(yyvsp[-13].string) != "$removal" && *(yyvsp[-13].string) != "$recovery" &&
 				*(yyvsp[-13].string) != "$recrem" && *(yyvsp[-13].string) != "$skew" && *(yyvsp[-13].string) != "$timeskew" && *(yyvsp[-13].string) != "$fullskew" && *(yyvsp[-13].string) != "$nochange")
@@ -3931,121 +3945,121 @@ yyreduce:
 
 		delete (yyvsp[-13].string);
 	}
-#line 3935 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 3949 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 179:
-#line 974 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 975 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.specify_triple_ptr) = (yyvsp[0].specify_triple_ptr);
 	}
-#line 3943 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 3957 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 180:
-#line 977 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 978 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.specify_triple_ptr) = nullptr;
 	}
-#line 3951 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 3965 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 181:
-#line 982 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 983 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.ast) = (yyvsp[-1].ast);
 	}
-#line 3959 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 3973 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 182:
-#line 985 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 986 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.ast) = nullptr;
 	}
-#line 3967 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 3981 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 183:
-#line 990 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 991 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.ast) = (yyvsp[0].ast);
 	}
-#line 3975 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 3989 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 184:
-#line 993 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 994 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.ast) = nullptr;
 	}
-#line 3983 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 3997 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 185:
-#line 998 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 999 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.specify_target_ptr) = new specify_target;
 		(yyval.specify_target_ptr)->polarity_op = 0;
 		(yyval.specify_target_ptr)->dst = (yyvsp[0].ast);
 		(yyval.specify_target_ptr)->dat = nullptr;
 	}
-#line 3994 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4008 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 186:
-#line 1004 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1005 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.specify_target_ptr) = new specify_target;
 		(yyval.specify_target_ptr)->polarity_op = 0;
 		(yyval.specify_target_ptr)->dst = (yyvsp[-3].ast);
 		(yyval.specify_target_ptr)->dat = (yyvsp[-1].ast);
 	}
-#line 4005 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4019 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 187:
-#line 1010 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1011 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.specify_target_ptr) = new specify_target;
 		(yyval.specify_target_ptr)->polarity_op = '-';
 		(yyval.specify_target_ptr)->dst = (yyvsp[-3].ast);
 		(yyval.specify_target_ptr)->dat = (yyvsp[-1].ast);
 	}
-#line 4016 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4030 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 188:
-#line 1016 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1017 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.specify_target_ptr) = new specify_target;
 		(yyval.specify_target_ptr)->polarity_op = '+';
 		(yyval.specify_target_ptr)->dst = (yyvsp[-3].ast);
 		(yyval.specify_target_ptr)->dat = (yyvsp[-1].ast);
 	}
-#line 4027 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4041 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 189:
-#line 1024 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1025 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     { (yyval.ch) = 'p'; }
-#line 4033 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4047 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 190:
-#line 1025 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1026 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     { (yyval.ch) = 'n'; }
-#line 4039 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4053 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 191:
-#line 1026 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1027 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     { (yyval.ch) = 0; }
-#line 4045 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4059 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 192:
-#line 1029 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1030 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.specify_rise_fall_ptr) = new specify_rise_fall;
 		(yyval.specify_rise_fall_ptr)->rise = *(yyvsp[0].specify_triple_ptr);
@@ -4054,11 +4068,11 @@ yyreduce:
 		(yyval.specify_rise_fall_ptr)->fall.t_max = (yyvsp[0].specify_triple_ptr)->t_max->clone();
 		delete (yyvsp[0].specify_triple_ptr);
 	}
-#line 4058 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4072 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 193:
-#line 1037 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1038 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.specify_rise_fall_ptr) = new specify_rise_fall;
 		(yyval.specify_rise_fall_ptr)->rise = *(yyvsp[-3].specify_triple_ptr);
@@ -4066,11 +4080,11 @@ yyreduce:
 		delete (yyvsp[-3].specify_triple_ptr);
 		delete (yyvsp[-1].specify_triple_ptr);
 	}
-#line 4070 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4084 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 194:
-#line 1044 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1045 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.specify_rise_fall_ptr) = new specify_rise_fall;
 		(yyval.specify_rise_fall_ptr)->rise = *(yyvsp[-5].specify_triple_ptr);
@@ -4080,11 +4094,11 @@ yyreduce:
         delete (yyvsp[-1].specify_triple_ptr);
         log_file_warning(current_filename, get_line_num(), "Path delay expressions beyond rise/fall not currently supported. Ignoring.\n");
 	}
-#line 4084 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4098 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 195:
-#line 1053 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1054 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.specify_rise_fall_ptr) = new specify_rise_fall;
 		(yyval.specify_rise_fall_ptr)->rise = *(yyvsp[-11].specify_triple_ptr);
@@ -4097,11 +4111,11 @@ yyreduce:
         delete (yyvsp[-1].specify_triple_ptr);
         log_file_warning(current_filename, get_line_num(), "Path delay expressions beyond rise/fall not currently supported. Ignoring.\n");
 	}
-#line 4101 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4115 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 196:
-#line 1065 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1066 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.specify_rise_fall_ptr) = new specify_rise_fall;
 		(yyval.specify_rise_fall_ptr)->rise = *(yyvsp[-23].specify_triple_ptr);
@@ -4120,75 +4134,75 @@ yyreduce:
         delete (yyvsp[-1].specify_triple_ptr);
         log_file_warning(current_filename, get_line_num(), "Path delay expressions beyond rise/fall not currently supported. Ignoring.\n");
 	}
-#line 4124 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4138 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 197:
-#line 1085 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1086 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.specify_triple_ptr) = new specify_triple;
 		(yyval.specify_triple_ptr)->t_min = (yyvsp[0].ast);
 		(yyval.specify_triple_ptr)->t_avg = (yyvsp[0].ast)->clone();
 		(yyval.specify_triple_ptr)->t_max = (yyvsp[0].ast)->clone();
 	}
-#line 4135 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4149 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 198:
-#line 1091 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1092 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.specify_triple_ptr) = new specify_triple;
 		(yyval.specify_triple_ptr)->t_min = (yyvsp[-4].ast);
 		(yyval.specify_triple_ptr)->t_avg = (yyvsp[-2].ast);
 		(yyval.specify_triple_ptr)->t_max = (yyvsp[0].ast);
 	}
-#line 4146 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4160 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 248:
-#line 1214 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1215 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     { delete (yyvsp[0].ast); }
-#line 4152 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4166 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 249:
-#line 1217 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1218 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     { delete (yyvsp[0].ast); }
-#line 4158 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4172 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 250:
-#line 1218 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1219 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		delete (yyvsp[-4].ast);
 		delete (yyvsp[-2].ast);
 		delete (yyvsp[0].ast);
 	}
-#line 4168 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4182 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 251:
-#line 1225 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
-    { delete (yyvsp[0].string); }
-#line 4174 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
-    break;
-
-  case 252:
 #line 1226 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
-    { delete (yyvsp[0].ast); }
-#line 4180 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
-    break;
-
-  case 253:
-#line 1231 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
-    {
-		astbuf1->is_signed = true;
-	}
+    { delete (yyvsp[0].string); }
 #line 4188 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
+  case 252:
+#line 1227 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+    { delete (yyvsp[0].ast); }
+#line 4194 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+    break;
+
+  case 253:
+#line 1232 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+    {
+		astbuf1->is_signed = true;
+	}
+#line 4202 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+    break;
+
   case 255:
-#line 1236 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1237 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		if (astbuf1->children.size() != 1)
 			frontend_verilog_yyerror("Internal error in param_integer - should not happen?");
@@ -4197,21 +4211,21 @@ yyreduce:
 		astbuf1->children.back()->children.push_back(AstNode::mkconst_int(0, true));
 		astbuf1->is_signed = true;
 	}
-#line 4201 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4215 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 257:
-#line 1246 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1247 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		if (astbuf1->children.size() != 1)
 			frontend_verilog_yyerror("Parameter already declared as integer, cannot set to real.");
 		astbuf1->children.push_back(new AstNode(AST_REALVALUE));
 	}
-#line 4211 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4225 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 259:
-#line 1253 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1254 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		if ((yyvsp[0].ast) != NULL) {
 			if (astbuf1->children.size() != 1)
@@ -4219,57 +4233,57 @@ yyreduce:
 			astbuf1->children.push_back((yyvsp[0].ast));
 		}
 	}
-#line 4223 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4237 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 261:
-#line 1263 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1264 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		astbuf1->is_custom_type = true;
 		astbuf1->children.push_back(new AstNode(AST_WIRETYPE));
 		astbuf1->children.back()->str = *(yyvsp[0].string);
 	}
-#line 4233 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4247 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 262:
-#line 1270 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1271 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		astbuf1 = new AstNode(AST_PARAMETER);
 		astbuf1->children.push_back(AstNode::mkconst_int(0, true));
 		append_attr(astbuf1, (yyvsp[-1].al));
 	}
-#line 4243 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4257 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 263:
-#line 1274 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1275 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		delete astbuf1;
 	}
-#line 4251 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4265 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 264:
-#line 1279 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1280 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		astbuf1 = new AstNode(AST_LOCALPARAM);
 		astbuf1->children.push_back(AstNode::mkconst_int(0, true));
 		append_attr(astbuf1, (yyvsp[-1].al));
 	}
-#line 4261 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4275 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 265:
-#line 1283 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1284 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		delete astbuf1;
 	}
-#line 4269 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4283 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 268:
-#line 1291 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1292 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		AstNode *node;
 		if (astbuf1 == nullptr) {
@@ -4286,11 +4300,11 @@ yyreduce:
 		ast_stack.back()->children.push_back(node);
 		delete (yyvsp[-2].string);
 	}
-#line 4290 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4304 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 272:
-#line 1315 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1316 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		AstNode *node = new AstNode(AST_DEFPARAM);
 		node->children.push_back((yyvsp[-2].ast));
@@ -4299,11 +4313,11 @@ yyreduce:
 			node->children.push_back((yyvsp[-3].ast));
 		ast_stack.back()->children.push_back(node);
 	}
-#line 4303 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4317 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 273:
-#line 1324 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1325 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		static int enum_count;
 		// create parent node for the enum
@@ -4315,11 +4329,11 @@ yyreduce:
 		astbuf1 = new AstNode(AST_ENUM_ITEM);
 		astbuf1->children.push_back(AstNode::mkconst_int(0, true));
 	 }
-#line 4319 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4333 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 274:
-#line 1334 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1335 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {  // create template for the enum vars
 								auto tnode = astbuf1->clone();
 								delete astbuf1;
@@ -4329,35 +4343,35 @@ yyreduce:
 								// drop constant but keep any range
 								delete tnode->children[0];
 								tnode->children.erase(tnode->children.begin()); }
-#line 4333 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4347 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 277:
-#line 1347 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1348 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {astbuf1->is_reg = true; addRange(astbuf1); }
-#line 4339 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4353 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 278:
-#line 1350 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1351 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {astbuf1->is_reg=true; addRange(astbuf1); }
-#line 4345 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4359 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 279:
-#line 1353 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1354 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {astbuf1->is_reg = true;}
-#line 4351 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4365 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 280:
-#line 1354 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1355 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {astbuf1->is_logic = true;}
-#line 4357 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4371 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 283:
-#line 1363 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1364 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		// put in fn
 		log_assert(astbuf1);
@@ -4369,23 +4383,23 @@ yyreduce:
 		node->children[0] = (yyvsp[0].ast) ? (yyvsp[0].ast) : new AstNode(AST_NONE);
 		astbuf2->children.push_back(node);
 	}
-#line 4373 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4387 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 284:
-#line 1377 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1378 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     { (yyval.ast) = (yyvsp[0].ast); }
-#line 4379 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4393 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 285:
-#line 1378 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1379 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     { (yyval.ast) = NULL; }
-#line 4385 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4399 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 288:
-#line 1386 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1387 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		log_assert(astbuf1);
 		log_assert(astbuf2);
@@ -4395,20 +4409,20 @@ yyreduce:
 		delete (yyvsp[0].string);
 		node->is_enum = true;
 	}
-#line 4399 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4413 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 289:
-#line 1397 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1398 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		//enum_type creates astbuf1 for use by typedef only
 		delete astbuf1;
 	}
-#line 4408 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4422 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 290:
-#line 1404 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1405 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		albuf = (yyvsp[-2].al);
 		astbuf1 = (yyvsp[-1].ast);
@@ -4425,22 +4439,22 @@ yyreduce:
 		if (astbuf2 && astbuf2->children.size() != 2)
 			frontend_verilog_yyerror("wire/reg/logic packed dimension must be of the form: [<expr>:<expr>], [<expr>+:<expr>], or [<expr>-:<expr>]");
 	}
-#line 4429 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4443 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 291:
-#line 1419 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1420 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		delete astbuf1;
 		if (astbuf2 != NULL)
 			delete astbuf2;
 		free_attr(albuf);
 	}
-#line 4440 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4454 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 293:
-#line 1425 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1426 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		ast_stack.back()->children.push_back(new AstNode(AST_WIRE));
 		ast_stack.back()->children.back()->str = *(yyvsp[0].string);
@@ -4449,11 +4463,11 @@ yyreduce:
 		ast_stack.back()->children.back()->children[0]->str = *(yyvsp[0].string);
 		delete (yyvsp[0].string);
 	}
-#line 4453 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4467 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 295:
-#line 1433 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1434 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		ast_stack.back()->children.push_back(new AstNode(AST_WIRE));
 		ast_stack.back()->children.back()->str = *(yyvsp[0].string);
@@ -4462,11 +4476,11 @@ yyreduce:
 		ast_stack.back()->children.back()->children[0]->str = *(yyvsp[0].string);
 		delete (yyvsp[0].string);
 	}
-#line 4466 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4480 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 298:
-#line 1444 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1445 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		AstNode *wire_node = ast_stack.back()->children.at(GetSize(ast_stack.back()->children)-2)->clone();
 		AstNode *assign_node = ast_stack.back()->children.at(GetSize(ast_stack.back()->children)-1)->clone();
@@ -4476,11 +4490,11 @@ yyreduce:
 		ast_stack.back()->children.push_back(assign_node);
 		delete (yyvsp[0].string);
 	}
-#line 4480 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4494 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 301:
-#line 1458 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1459 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		bool attr_anyconst = false;
 		bool attr_anyseq = false;
@@ -4523,11 +4537,11 @@ yyreduce:
 			ast_stack.back()->children.push_back(new AstNode(AST_ASSIGN, wire, fcall));
 		}
 	}
-#line 4527 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4541 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 302:
-#line 1500 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1501 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		AstNode *wire = new AstNode(AST_IDENTIFIER);
 		wire->str = ast_stack.back()->children.back()->str;
@@ -4554,11 +4568,11 @@ yyreduce:
 		}
 
 	}
-#line 4558 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4572 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 303:
-#line 1528 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1529 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		if (astbuf1 == nullptr)
 			frontend_verilog_yyerror("Internal error - should not happen - no AST_WIRE node.");
@@ -4610,21 +4624,21 @@ yyreduce:
 
 		delete (yyvsp[-1].string);
 	}
-#line 4614 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4628 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 307:
-#line 1587 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1588 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		AstNode *node = new AstNode(AST_ASSIGN, (yyvsp[-2].ast), (yyvsp[0].ast));
 		SET_AST_NODE_LOC(node, (yyloc), (yyloc));
 		ast_stack.back()->children.push_back(node);
 	}
-#line 4624 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4638 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 308:
-#line 1594 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1595 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		astbuf1 = (yyvsp[-4].ast);
 		astbuf2 = (yyvsp[-3].ast);
@@ -4662,20 +4676,20 @@ yyreduce:
 		ast_stack.back()->children.push_back(new AstNode(AST_TYPEDEF, astbuf1));
 		ast_stack.back()->children.back()->str = *(yyvsp[-2].string);
 	}
-#line 4666 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4680 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 309:
-#line 1631 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1632 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		ast_stack.back()->children.push_back(new AstNode(AST_TYPEDEF, astbuf1));
 		ast_stack.back()->children.back()->str = *(yyvsp[-1].string);
 	}
-#line 4675 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4689 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 310:
-#line 1638 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1639 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		astbuf1 = new AstNode(AST_CELL);
 		append_attr(astbuf1, (yyvsp[-1].al));
@@ -4683,54 +4697,54 @@ yyreduce:
 		astbuf1->children[0]->str = *(yyvsp[0].string);
 		delete (yyvsp[0].string);
 	}
-#line 4687 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4701 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 311:
-#line 1644 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1645 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		delete astbuf1;
 	}
-#line 4695 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4709 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 312:
-#line 1647 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1648 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		astbuf1 = new AstNode(AST_PRIMITIVE);
 		astbuf1->str = *(yyvsp[-1].string);
 		append_attr(astbuf1, (yyvsp[-2].al));
 		delete (yyvsp[-1].string);
 	}
-#line 4706 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4720 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 313:
-#line 1652 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1653 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		delete astbuf1;
 	}
-#line 4714 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4728 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 314:
-#line 1657 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1658 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.string) = (yyvsp[0].string);
 	}
-#line 4722 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4736 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 315:
-#line 1660 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1661 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.string) = new std::string("or");
 	}
-#line 4730 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4744 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 318:
-#line 1669 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1670 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		astbuf2 = astbuf1->clone();
 		if (astbuf2->type != AST_PRIMITIVE)
@@ -4738,19 +4752,19 @@ yyreduce:
 		delete (yyvsp[0].string);
 		ast_stack.back()->children.push_back(astbuf2);
 	}
-#line 4742 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4756 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 319:
-#line 1675 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1676 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		SET_AST_NODE_LOC(astbuf2, (yylsp[-4]), (yyloc));
 	}
-#line 4750 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4764 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 320:
-#line 1678 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1679 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		astbuf2 = astbuf1->clone();
 		if (astbuf2->type != AST_PRIMITIVE)
@@ -4758,39 +4772,39 @@ yyreduce:
 		delete (yyvsp[-1].string);
 		ast_stack.back()->children.push_back(new AstNode(AST_CELLARRAY, (yyvsp[0].ast), astbuf2));
 	}
-#line 4762 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4776 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 321:
-#line 1684 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1685 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		SET_AST_NODE_LOC(astbuf2, (yylsp[-5]), (yyloc));
 		SET_AST_NODE_LOC(astbuf3, (yylsp[-5]), (yyloc));
 	}
-#line 4771 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4785 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 325:
-#line 1695 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1696 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		astbuf2 = astbuf1->clone();
 		ast_stack.back()->children.push_back(astbuf2);
 	}
-#line 4780 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4794 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 332:
-#line 1708 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1709 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		AstNode *node = new AstNode(AST_PARASET);
 		astbuf1->children.push_back(node);
 		node->children.push_back((yyvsp[0].ast));
 	}
-#line 4790 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4804 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 333:
-#line 1713 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1714 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		AstNode *node = new AstNode(AST_PARASET);
 		node->str = *(yyvsp[-3].string);
@@ -4798,11 +4812,11 @@ yyreduce:
 		node->children.push_back((yyvsp[-1].ast));
 		delete (yyvsp[-3].string);
 	}
-#line 4802 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4816 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 334:
-#line 1722 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1723 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		// remove empty args from end of list
 		while (!astbuf2->children.empty()) {
@@ -4828,32 +4842,32 @@ yyreduce:
 		if (has_positional_args && has_named_args)
 			frontend_verilog_yyerror("Mix of positional and named cell ports.");
 	}
-#line 4832 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4846 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 337:
-#line 1752 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1753 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		AstNode *node = new AstNode(AST_ARGUMENT);
 		astbuf2->children.push_back(node);
 		free_attr((yyvsp[0].al));
 	}
-#line 4842 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4856 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 338:
-#line 1757 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1758 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		AstNode *node = new AstNode(AST_ARGUMENT);
 		astbuf2->children.push_back(node);
 		node->children.push_back((yyvsp[0].ast));
 		free_attr((yyvsp[-1].al));
 	}
-#line 4853 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4867 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 339:
-#line 1763 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1764 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		AstNode *node = new AstNode(AST_ARGUMENT);
 		node->str = *(yyvsp[-3].string);
@@ -4862,11 +4876,11 @@ yyreduce:
 		delete (yyvsp[-3].string);
 		free_attr((yyvsp[-5].al));
 	}
-#line 4866 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4880 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 340:
-#line 1771 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1772 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		AstNode *node = new AstNode(AST_ARGUMENT);
 		node->str = *(yyvsp[-2].string);
@@ -4874,11 +4888,11 @@ yyreduce:
 		delete (yyvsp[-2].string);
 		free_attr((yyvsp[-4].al));
 	}
-#line 4878 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4892 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 341:
-#line 1778 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1779 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		AstNode *node = new AstNode(AST_ARGUMENT);
 		node->str = *(yyvsp[0].string);
@@ -4888,53 +4902,53 @@ yyreduce:
 		delete (yyvsp[0].string);
 		free_attr((yyvsp[-2].al));
 	}
-#line 4892 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4906 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 342:
-#line 1787 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1788 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		if (!sv_mode)
 			frontend_verilog_yyerror("Wildcard port connections are only supported in SystemVerilog mode.");
 		astbuf2->attributes[ID(wildcard_port_conns)] = AstNode::mkconst_int(1, false);
 	}
-#line 4902 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4916 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 343:
-#line 1794 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1795 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.boolean) = false;
 	}
-#line 4910 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4924 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 344:
-#line 1797 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1798 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.boolean) = true;
 	}
-#line 4918 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4932 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 345:
-#line 1802 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1803 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.boolean) = false;
 	}
-#line 4926 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4940 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 346:
-#line 1805 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1806 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.boolean) = true;
 	}
-#line 4934 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4948 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 347:
-#line 1810 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1811 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		AstNode *node = new AstNode(AST_ALWAYS);
 		append_attr(node, (yyvsp[-1].al));
@@ -4943,21 +4957,21 @@ yyreduce:
 		ast_stack.back()->children.push_back(node);
 		ast_stack.push_back(node);
 	}
-#line 4947 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4961 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 348:
-#line 1817 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1818 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		AstNode *block = new AstNode(AST_BLOCK);
 		ast_stack.back()->children.push_back(block);
 		ast_stack.push_back(block);
 	}
-#line 4957 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4971 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 349:
-#line 1821 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1822 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		SET_AST_NODE_LOC(ast_stack.back(), (yylsp[0]), (yylsp[0]));
 		ast_stack.pop_back();
@@ -4967,11 +4981,11 @@ yyreduce:
 
 		SET_RULE_LOC((yyloc), (yylsp[-4]), (yyloc));
 	}
-#line 4971 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 4985 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 350:
-#line 1830 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1831 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		AstNode *node = new AstNode(AST_ALWAYS);
 		append_attr(node, (yyvsp[-1].al));
@@ -4985,20 +4999,20 @@ yyreduce:
 		ast_stack.back()->children.push_back(block);
 		ast_stack.push_back(block);
 	}
-#line 4989 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5003 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 351:
-#line 1842 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1843 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		ast_stack.pop_back();
 		ast_stack.pop_back();
 	}
-#line 4998 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5012 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 352:
-#line 1846 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1847 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		AstNode *node = new AstNode(AST_INITIAL);
 		append_attr(node, (yyvsp[-1].al));
@@ -5008,106 +5022,106 @@ yyreduce:
 		ast_stack.back()->children.push_back(block);
 		ast_stack.push_back(block);
 	}
-#line 5012 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5026 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 353:
-#line 1854 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1855 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		ast_stack.pop_back();
 		ast_stack.pop_back();
 	}
-#line 5021 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5035 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 363:
-#line 1873 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1874 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		AstNode *node = new AstNode(AST_POSEDGE);
 		ast_stack.back()->children.push_back(node);
 		node->children.push_back((yyvsp[0].ast));
 	}
-#line 5031 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5045 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 364:
-#line 1878 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1879 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		AstNode *node = new AstNode(AST_NEGEDGE);
 		ast_stack.back()->children.push_back(node);
 		node->children.push_back((yyvsp[0].ast));
 	}
-#line 5041 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5055 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 365:
-#line 1883 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1884 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		AstNode *node = new AstNode(AST_EDGE);
 		ast_stack.back()->children.push_back(node);
 		node->children.push_back((yyvsp[0].ast));
 	}
-#line 5051 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5065 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 366:
-#line 1890 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1891 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.string) = (yyvsp[0].string);
 	}
-#line 5059 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5073 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 367:
-#line 1893 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1894 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.string) = NULL;
 	}
-#line 5067 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5081 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 368:
-#line 1898 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1899 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.string) = (yyvsp[-1].string);
 	}
-#line 5075 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5089 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 369:
-#line 1901 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1902 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.string) = NULL;
 	}
-#line 5083 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5097 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 370:
-#line 1906 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1907 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.boolean) = true;
 	}
-#line 5091 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5105 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 371:
-#line 1909 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1910 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.boolean) = false;
 	}
-#line 5099 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5113 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 372:
-#line 1912 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1913 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.boolean) = false;
 	}
-#line 5107 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5121 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 373:
-#line 1917 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1918 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
         AstNode *modport = new AstNode(AST_MODPORT);
         ast_stack.back()->children.push_back(modport);
@@ -5115,20 +5129,20 @@ yyreduce:
         modport->str = *(yyvsp[0].string);
         delete (yyvsp[0].string);
     }
-#line 5119 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5133 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 374:
-#line 1923 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1924 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
         ast_stack.pop_back();
         log_assert(ast_stack.size() == 2);
     }
-#line 5128 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5142 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 382:
-#line 1939 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1940 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
         AstNode *modport_member = new AstNode(AST_MODPORTMEMBER);
         ast_stack.back()->children.push_back(modport_member);
@@ -5137,23 +5151,23 @@ yyreduce:
         modport_member->is_output = current_modport_output;
         delete (yyvsp[0].string);
     }
-#line 5141 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5155 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 383:
-#line 1949 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1950 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {current_modport_input = 1; current_modport_output = 0;}
-#line 5147 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5161 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 384:
-#line 1949 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1950 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {current_modport_input = 0; current_modport_output = 1;}
-#line 5153 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5167 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 385:
-#line 1952 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1953 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		if (noassert_mode) {
 			delete (yyvsp[-2].ast);
@@ -5166,11 +5180,11 @@ yyreduce:
 		if ((yyvsp[-6].string) != nullptr)
 			delete (yyvsp[-6].string);
 	}
-#line 5170 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5184 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 386:
-#line 1964 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1965 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		if (noassume_mode) {
 			delete (yyvsp[-2].ast);
@@ -5183,11 +5197,11 @@ yyreduce:
 		if ((yyvsp[-6].string) != nullptr)
 			delete (yyvsp[-6].string);
 	}
-#line 5187 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5201 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 387:
-#line 1976 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1977 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		if (noassert_mode) {
 			delete (yyvsp[-2].ast);
@@ -5200,11 +5214,11 @@ yyreduce:
 		if ((yyvsp[-7].string) != nullptr)
 			delete (yyvsp[-7].string);
 	}
-#line 5204 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5218 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 388:
-#line 1988 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 1989 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		if (noassume_mode) {
 			delete (yyvsp[-2].ast);
@@ -5217,11 +5231,11 @@ yyreduce:
 		if ((yyvsp[-7].string) != nullptr)
 			delete (yyvsp[-7].string);
 	}
-#line 5221 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5235 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 389:
-#line 2000 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2001 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		AstNode *node = new AstNode(AST_COVER, (yyvsp[-2].ast));
 		if ((yyvsp[-6].string) != nullptr) {
@@ -5230,11 +5244,11 @@ yyreduce:
 		}
 		ast_stack.back()->children.push_back(node);
 	}
-#line 5234 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5248 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 390:
-#line 2008 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2009 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		AstNode *node = new AstNode(AST_COVER, AstNode::mkconst_int(1, false));
 		if ((yyvsp[-5].string) != nullptr) {
@@ -5243,11 +5257,11 @@ yyreduce:
 		}
 		ast_stack.back()->children.push_back(node);
 	}
-#line 5247 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5261 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 391:
-#line 2016 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2017 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		AstNode *node = new AstNode(AST_COVER, AstNode::mkconst_int(1, false));
 		if ((yyvsp[-2].string) != nullptr) {
@@ -5256,11 +5270,11 @@ yyreduce:
 		}
 		ast_stack.back()->children.push_back(node);
 	}
-#line 5260 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5274 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 392:
-#line 2024 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2025 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		if (norestrict_mode) {
 			delete (yyvsp[-2].ast);
@@ -5275,11 +5289,11 @@ yyreduce:
 		if ((yyvsp[-6].string) != nullptr)
 			delete (yyvsp[-6].string);
 	}
-#line 5279 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5293 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 393:
-#line 2038 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2039 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		if (norestrict_mode) {
 			delete (yyvsp[-2].ast);
@@ -5294,11 +5308,11 @@ yyreduce:
 		if ((yyvsp[-7].string) != nullptr)
 			delete (yyvsp[-7].string);
 	}
-#line 5298 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5312 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 394:
-#line 2054 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2055 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		ast_stack.back()->children.push_back(new AstNode(assume_asserts_mode ? AST_ASSUME : AST_ASSERT, (yyvsp[-2].ast)));
 		if ((yyvsp[-6].string) != nullptr) {
@@ -5306,11 +5320,11 @@ yyreduce:
 			delete (yyvsp[-6].string);
 		}
 	}
-#line 5310 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5324 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 395:
-#line 2061 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2062 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		ast_stack.back()->children.push_back(new AstNode(AST_ASSUME, (yyvsp[-2].ast)));
 		if ((yyvsp[-6].string) != nullptr) {
@@ -5318,11 +5332,11 @@ yyreduce:
 			delete (yyvsp[-6].string);
 		}
 	}
-#line 5322 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5336 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 396:
-#line 2068 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2069 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		ast_stack.back()->children.push_back(new AstNode(assume_asserts_mode ? AST_FAIR : AST_LIVE, (yyvsp[-2].ast)));
 		if ((yyvsp[-7].string) != nullptr) {
@@ -5330,11 +5344,11 @@ yyreduce:
 			delete (yyvsp[-7].string);
 		}
 	}
-#line 5334 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5348 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 397:
-#line 2075 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2076 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		ast_stack.back()->children.push_back(new AstNode(AST_FAIR, (yyvsp[-2].ast)));
 		if ((yyvsp[-7].string) != nullptr) {
@@ -5342,11 +5356,11 @@ yyreduce:
 			delete (yyvsp[-7].string);
 		}
 	}
-#line 5346 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5360 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 398:
-#line 2082 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2083 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		ast_stack.back()->children.push_back(new AstNode(AST_COVER, (yyvsp[-2].ast)));
 		if ((yyvsp[-6].string) != nullptr) {
@@ -5354,11 +5368,11 @@ yyreduce:
 			delete (yyvsp[-6].string);
 		}
 	}
-#line 5358 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5372 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 399:
-#line 2089 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2090 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		if (norestrict_mode) {
 			delete (yyvsp[-2].ast);
@@ -5370,11 +5384,11 @@ yyreduce:
 			}
 		}
 	}
-#line 5374 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5388 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 400:
-#line 2100 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2101 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		if (norestrict_mode) {
 			delete (yyvsp[-2].ast);
@@ -5386,89 +5400,153 @@ yyreduce:
 			}
 		}
 	}
-#line 5390 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5404 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 401:
-#line 2113 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2114 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		AstNode *node = new AstNode(AST_ASSIGN_EQ, (yyvsp[-3].ast), (yyvsp[0].ast));
+		if((yyvsp[-1].ast))
+			node->during_delay = (yyvsp[-1].ast)->integer;
 		ast_stack.back()->children.push_back(node);
+		(yyval.ast) = node;
 	}
-#line 5399 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5416 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 402:
-#line 2117 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2121 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		AstNode *node = new AstNode(AST_ASSIGN_EQ, (yyvsp[-1].ast), new AstNode(AST_ADD, (yyvsp[-1].ast)->clone(), AstNode::mkconst_int(1, true)));
 		ast_stack.back()->children.push_back(node);
-	}
-#line 5408 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
-    break;
-
-  case 403:
-#line 2121 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
-    {
-		AstNode *node = new AstNode(AST_ASSIGN_EQ, (yyvsp[-1].ast), new AstNode(AST_SUB, (yyvsp[-1].ast)->clone(), AstNode::mkconst_int(1, true)));
-		ast_stack.back()->children.push_back(node);
-	}
-#line 5417 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
-    break;
-
-  case 404:
-#line 2125 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
-    {
-		AstNode *node = new AstNode(AST_ASSIGN_LE, (yyvsp[-3].ast), (yyvsp[0].ast));
-		ast_stack.back()->children.push_back(node);
+		(yyval.ast) = node;
 	}
 #line 5426 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
-  case 414:
-#line 2135 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+  case 403:
+#line 2126 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
-		AstNode *node = new AstNode(AST_TCALL);
-		node->str = *(yyvsp[-1].string);
-		delete (yyvsp[-1].string);
+		AstNode *node = new AstNode(AST_ASSIGN_EQ, (yyvsp[-1].ast), new AstNode(AST_SUB, (yyvsp[-1].ast)->clone(), AstNode::mkconst_int(1, true)));
 		ast_stack.back()->children.push_back(node);
-		ast_stack.push_back(node);
-		append_attr(node, (yyvsp[0].al));
+		(yyval.ast) = node;
 	}
-#line 5439 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5436 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
-  case 415:
-#line 2142 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+  case 404:
+#line 2131 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
-		ast_stack.pop_back();
+		AstNode *node = new AstNode(AST_ASSIGN_LE, (yyvsp[-3].ast), (yyvsp[0].ast));
+		if((yyvsp[-1].ast))
+			node->during_delay = (yyvsp[-1].ast)->integer;
+		ast_stack.back()->children.push_back(node);
+		(yyval.ast) = node;
 	}
-#line 5447 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5448 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
-  case 416:
-#line 2145 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
-    {
-		AstNode *node = new AstNode(AST_TCALL);
-		node->str = *(yyvsp[-1].string);
-		delete (yyvsp[-1].string);
-		ast_stack.back()->children.push_back(node);
-		ast_stack.push_back(node);
-		append_attr(node, (yyvsp[0].al));
-	}
+  case 405:
+#line 2141 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+    { (yyval.ast) = nullptr; }
+#line 5454 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+    break;
+
+  case 406:
+#line 2141 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+    { (yyval.ast) = nullptr; }
 #line 5460 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
-  case 417:
-#line 2152 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+  case 407:
+#line 2141 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+    { (yyval.ast) = nullptr; }
+#line 5466 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+    break;
+
+  case 408:
+#line 2141 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+    { (yyval.ast) = nullptr; }
+#line 5472 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+    break;
+
+  case 409:
+#line 2141 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+    { (yyval.ast) = nullptr; }
+#line 5478 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+    break;
+
+  case 410:
+#line 2141 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+    { (yyval.ast) = nullptr; }
+#line 5484 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+    break;
+
+  case 411:
+#line 2142 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+    { (yyval.ast) = (yyvsp[0].ast); if((yyval.ast) && (yyvsp[-1].ast)) (yyval.ast)->after_delay = (yyvsp[-1].ast)->integer; }
+#line 5490 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+    break;
+
+  case 412:
+#line 2143 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+    { (yyval.ast) = (yyvsp[-1].ast); }
+#line 5496 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+    break;
+
+  case 413:
+#line 2143 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+    { (yyval.ast) = nullptr; }
+#line 5502 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+    break;
+
+  case 414:
+#line 2144 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
+		AstNode *node = new AstNode(AST_TCALL);
+		node->str = *(yyvsp[-1].string);
+		delete (yyvsp[-1].string);
+		ast_stack.back()->children.push_back(node);
+		ast_stack.push_back(node);
+		append_attr(node, (yyvsp[0].al));
+	}
+#line 5515 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+    break;
+
+  case 415:
+#line 2151 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+    {
+		(yyval.ast) = nullptr;
 		ast_stack.pop_back();
 	}
-#line 5468 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5524 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+    break;
+
+  case 416:
+#line 2155 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+    {
+		AstNode *node = new AstNode(AST_TCALL);
+		node->str = *(yyvsp[-1].string);
+		delete (yyvsp[-1].string);
+		ast_stack.back()->children.push_back(node);
+		ast_stack.push_back(node);
+		append_attr(node, (yyvsp[0].al));
+	}
+#line 5537 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+    break;
+
+  case 417:
+#line 2162 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+    {
+		(yyval.ast) = nullptr;
+		ast_stack.pop_back();
+	}
+#line 5546 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 418:
-#line 2155 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2166 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		AstNode *node = new AstNode(AST_BLOCK);
 		ast_stack.back()->children.push_back(node);
@@ -5477,12 +5555,13 @@ yyreduce:
 		if ((yyvsp[0].string) != NULL)
 			node->str = *(yyvsp[0].string);
 	}
-#line 5481 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5559 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 419:
-#line 2162 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2173 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
+		(yyval.ast) = nullptr;
 		if ((yyvsp[-4].string) != NULL && (yyvsp[0].string) != NULL && *(yyvsp[-4].string) != *(yyvsp[0].string))
 			frontend_verilog_yyerror("Begin label (%s) and end label (%s) don't match.", (yyvsp[-4].string)->c_str()+1, (yyvsp[0].string)->c_str()+1);
 		if ((yyvsp[-4].string) != NULL)
@@ -5491,50 +5570,51 @@ yyreduce:
 			delete (yyvsp[0].string);
 		ast_stack.pop_back();
 	}
-#line 5495 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5574 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 420:
-#line 2171 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2183 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		AstNode *node = new AstNode(AST_FOR);
 		ast_stack.back()->children.push_back(node);
 		ast_stack.push_back(node);
 		append_attr(node, (yyvsp[-2].al));
 	}
-#line 5506 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5585 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 421:
-#line 2176 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2188 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		ast_stack.back()->children.push_back((yyvsp[0].ast));
 	}
-#line 5514 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5593 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 422:
-#line 2178 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2190 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		AstNode *block = new AstNode(AST_BLOCK);
 		ast_stack.back()->children.push_back(block);
 		ast_stack.push_back(block);
 	}
-#line 5524 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5603 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 423:
-#line 2182 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2194 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
+		(yyval.ast) = nullptr;
 		SET_AST_NODE_LOC(ast_stack.back(), (yylsp[0]), (yylsp[0]));
 		ast_stack.pop_back();
 		ast_stack.pop_back();
 	}
-#line 5534 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5614 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 424:
-#line 2187 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2200 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		AstNode *node = new AstNode(AST_WHILE);
 		ast_stack.back()->children.push_back(node);
@@ -5545,21 +5625,22 @@ yyreduce:
 		ast_stack.back()->children.push_back(block);
 		ast_stack.push_back(block);
 	}
-#line 5549 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5629 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 425:
-#line 2196 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2209 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
+		(yyval.ast) = nullptr;
 		SET_AST_NODE_LOC(ast_stack.back(), (yylsp[0]), (yylsp[0]));
 		ast_stack.pop_back();
 		ast_stack.pop_back();
 	}
-#line 5559 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5640 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 426:
-#line 2201 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2215 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		AstNode *node = new AstNode(AST_REPEAT);
 		ast_stack.back()->children.push_back(node);
@@ -5570,21 +5651,22 @@ yyreduce:
 		ast_stack.back()->children.push_back(block);
 		ast_stack.push_back(block);
 	}
-#line 5574 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5655 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 427:
-#line 2210 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2224 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
+		(yyval.ast) = nullptr;
 		SET_AST_NODE_LOC(ast_stack.back(), (yylsp[0]), (yylsp[0]));
 		ast_stack.pop_back();
 		ast_stack.pop_back();
 	}
-#line 5584 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5666 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 428:
-#line 2215 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2230 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		AstNode *node = new AstNode(AST_CASE);
 		AstNode *block = new AstNode(AST_BLOCK);
@@ -5597,29 +5679,30 @@ yyreduce:
 		ast_stack.push_back(block);
 		append_attr(node, (yyvsp[-4].al));
 	}
-#line 5601 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5683 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 429:
-#line 2226 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2241 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		SET_AST_NODE_LOC(ast_stack.back(), (yylsp[0]), (yylsp[0]));
 	}
-#line 5609 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5691 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 430:
-#line 2228 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2243 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
+		(yyval.ast) = nullptr;
 		ast_stack.pop_back();
 		SET_AST_NODE_LOC(ast_stack.back(), (yylsp[-7]), (yylsp[0]));
 		ast_stack.pop_back();
 	}
-#line 5619 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5702 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 431:
-#line 2233 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2249 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		AstNode *node = new AstNode(AST_CASE, (yyvsp[-1].ast));
 		ast_stack.back()->children.push_back(node);
@@ -5627,96 +5710,97 @@ yyreduce:
 		append_attr(node, (yyvsp[-4].al));
 		SET_AST_NODE_LOC(ast_stack.back(), (yylsp[-1]), (yylsp[-1]));
 	}
-#line 5631 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5714 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 432:
-#line 2239 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2255 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
+		(yyval.ast) = nullptr;
 		SET_AST_NODE_LOC(ast_stack.back(), (yylsp[-7]), (yylsp[0]));
 		case_type_stack.pop_back();
 		ast_stack.pop_back();
 	}
-#line 5641 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5725 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 433:
-#line 2246 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2263 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.boolean) = false;
 	}
-#line 5649 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5733 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 434:
-#line 2249 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2266 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.boolean) = (yyvsp[0].al);
 	}
-#line 5657 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5741 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 435:
-#line 2252 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2269 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.boolean) = true;
 	}
-#line 5665 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5749 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 436:
-#line 2257 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2274 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		if ((yyvsp[0].boolean)) (*(yyvsp[-1].al))["\\parallel_case"] = AstNode::mkconst_int(1, false);
 		(yyval.al) = (yyvsp[-1].al);
 	}
-#line 5674 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5758 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 437:
-#line 2263 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2280 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		case_type_stack.push_back(0);
 	}
-#line 5682 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5766 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 438:
-#line 2266 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2283 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		case_type_stack.push_back('x');
 	}
-#line 5690 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5774 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 439:
-#line 2269 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2286 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		case_type_stack.push_back('z');
 	}
-#line 5698 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5782 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 440:
-#line 2274 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2291 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		if (ast_stack.back()->attributes.count("\\full_case") == 0)
 			ast_stack.back()->attributes["\\full_case"] = AstNode::mkconst_int(1, false);
 	}
-#line 5707 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5791 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 441:
-#line 2278 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2295 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		if (ast_stack.back()->attributes.count("\\parallel_case") == 0)
 			ast_stack.back()->attributes["\\parallel_case"] = AstNode::mkconst_int(1, false);
 	}
-#line 5716 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5800 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 445:
-#line 2289 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2306 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		AstNode *block = new AstNode(AST_BLOCK);
 		AstNode *cond = new AstNode(AST_COND, new AstNode(AST_DEFAULT), block);
@@ -5726,19 +5810,19 @@ yyreduce:
 		ast_stack.back()->children.push_back(cond);
 		ast_stack.push_back(block);
 	}
-#line 5730 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5814 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 446:
-#line 2297 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2314 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		SET_AST_NODE_LOC(ast_stack.back(), (yylsp[0]), (yylsp[0]));
 	}
-#line 5738 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5822 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 450:
-#line 2307 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2324 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		AstNode *node = new AstNode(
 				case_type_stack.size() && case_type_stack.back() == 'x' ? AST_CONDX :
@@ -5746,33 +5830,33 @@ yyreduce:
 		ast_stack.back()->children.push_back(node);
 		ast_stack.push_back(node);
 	}
-#line 5750 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5834 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 451:
-#line 2313 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2330 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		AstNode *block = new AstNode(AST_BLOCK);
 		ast_stack.back()->children.push_back(block);
 		ast_stack.push_back(block);
 		case_type_stack.push_back(0);
 	}
-#line 5761 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5845 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 452:
-#line 2318 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2335 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		case_type_stack.pop_back();
 		SET_AST_NODE_LOC(ast_stack.back(), (yylsp[0]), (yylsp[0]));
 		ast_stack.pop_back();
 		ast_stack.pop_back();
 	}
-#line 5772 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5856 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 455:
-#line 2330 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2347 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		AstNode *node = new AstNode(
 				case_type_stack.size() && case_type_stack.back() == 'x' ? AST_CONDX :
@@ -5780,72 +5864,72 @@ yyreduce:
 		ast_stack.back()->children.push_back(node);
 		ast_stack.push_back(node);
 	}
-#line 5784 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5868 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 456:
-#line 2336 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2353 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		case_type_stack.push_back(0);
 	}
-#line 5792 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5876 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 457:
-#line 2338 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2355 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		case_type_stack.pop_back();
 		ast_stack.pop_back();
 	}
-#line 5801 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5885 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 460:
-#line 2348 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2365 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		ast_stack.back()->children.push_back(new AstNode(AST_DEFAULT));
 	}
-#line 5809 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5893 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 461:
-#line 2351 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2368 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		ast_stack.back()->children.push_back(new AstNode(AST_IDENTIFIER));
 		ast_stack.back()->children.back()->str = *(yyvsp[0].string);
 		delete (yyvsp[0].string);
 	}
-#line 5819 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5903 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 462:
-#line 2356 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2373 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		ast_stack.back()->children.push_back((yyvsp[0].ast));
 	}
-#line 5827 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5911 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 463:
-#line 2359 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2376 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		ast_stack.back()->children.push_back((yyvsp[0].ast));
 	}
-#line 5835 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5919 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 464:
-#line 2364 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2381 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.ast) = new AstNode(AST_PREFIX, (yyvsp[-3].ast), (yyvsp[0].ast));
 		(yyval.ast)->str = *(yyvsp[-5].string);
 		delete (yyvsp[-5].string);
 	}
-#line 5845 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5929 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 465:
-#line 2369 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2386 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.ast) = new AstNode(AST_IDENTIFIER, (yyvsp[0].ast));
 		(yyval.ast)->str = *(yyvsp[-1].string);
@@ -5855,138 +5939,138 @@ yyreduce:
 				(yyval.ast)->str == "\\$allconst" || (yyval.ast)->str == "\\$allseq"))
 			(yyval.ast)->type = AST_FCALL;
 	}
-#line 5859 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5943 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 466:
-#line 2378 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2395 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.ast) = new AstNode(AST_IDENTIFIER, (yyvsp[0].ast));
 		(yyval.ast)->str = *(yyvsp[-1].string);
 		delete (yyvsp[-1].string);
 	}
-#line 5869 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5953 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 467:
-#line 2385 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2402 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.ast) = (yyvsp[0].ast);
 	}
-#line 5877 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5961 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 468:
-#line 2388 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2405 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.ast) = (yyvsp[-1].ast);
 	}
-#line 5885 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5969 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 469:
-#line 2393 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2410 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.ast) = new AstNode(AST_CONCAT);
 		(yyval.ast)->children.push_back((yyvsp[0].ast));
 	}
-#line 5894 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5978 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 470:
-#line 2397 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2414 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.ast) = (yyvsp[0].ast);
 		(yyval.ast)->children.push_back((yyvsp[-2].ast));
 	}
-#line 5903 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5987 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 477:
-#line 2415 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2432 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		ast_stack.back()->children.push_back((yyvsp[0].ast));
 	}
-#line 5911 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 5995 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 482:
-#line 2428 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2445 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		AstNode *node = new AstNode(AST_GENFOR);
 		ast_stack.back()->children.push_back(node);
 		ast_stack.push_back(node);
 	}
-#line 5921 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 6005 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 483:
-#line 2432 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2449 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		ast_stack.back()->children.push_back((yyvsp[0].ast));
 	}
-#line 5929 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 6013 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 484:
-#line 2434 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2451 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		ast_stack.pop_back();
 	}
-#line 5937 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 6021 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 485:
-#line 2437 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2454 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		AstNode *node = new AstNode(AST_GENIF);
 		ast_stack.back()->children.push_back(node);
 		ast_stack.push_back(node);
 		ast_stack.back()->children.push_back((yyvsp[-1].ast));
 	}
-#line 5948 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 6032 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 486:
-#line 2442 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2459 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		ast_stack.pop_back();
 	}
-#line 5956 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 6040 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 487:
-#line 2445 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2462 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		AstNode *node = new AstNode(AST_GENCASE, (yyvsp[-1].ast));
 		ast_stack.back()->children.push_back(node);
 		ast_stack.push_back(node);
 	}
-#line 5966 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 6050 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 488:
-#line 2449 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2466 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		case_type_stack.pop_back();
 		ast_stack.pop_back();
 	}
-#line 5975 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 6059 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 489:
-#line 2453 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2470 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		AstNode *node = new AstNode(AST_GENBLOCK);
 		node->str = (yyvsp[0].string) ? *(yyvsp[0].string) : std::string();
 		ast_stack.back()->children.push_back(node);
 		ast_stack.push_back(node);
 	}
-#line 5986 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 6070 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 490:
-#line 2458 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2475 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		if ((yyvsp[-4].string) != NULL)
 			delete (yyvsp[-4].string);
@@ -5994,11 +6078,11 @@ yyreduce:
 			delete (yyvsp[0].string);
 		ast_stack.pop_back();
 	}
-#line 5998 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 6082 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 491:
-#line 2465 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2482 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		AstNode *node = new AstNode(AST_TECALL);
 		node->str = *(yyvsp[0].string);
@@ -6006,45 +6090,45 @@ yyreduce:
 		ast_stack.back()->children.push_back(node);
 		ast_stack.push_back(node);
 	}
-#line 6010 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 6094 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 492:
-#line 2471 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2488 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		ast_stack.pop_back();
 	}
-#line 6018 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 6102 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 493:
-#line 2476 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2493 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		AstNode *node = new AstNode(AST_GENBLOCK);
 		ast_stack.back()->children.push_back(node);
 		ast_stack.push_back(node);
 	}
-#line 6028 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 6112 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 494:
-#line 2480 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2497 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		ast_stack.pop_back();
 	}
-#line 6036 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 6120 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 499:
-#line 2491 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2508 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.ast) = (yyvsp[0].ast);
 	}
-#line 6044 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 6128 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 500:
-#line 2494 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2511 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.ast) = new AstNode(AST_TERNARY);
 		(yyval.ast)->children.push_back((yyvsp[-5].ast));
@@ -6052,19 +6136,19 @@ yyreduce:
 		(yyval.ast)->children.push_back((yyvsp[0].ast));
 		append_attr((yyval.ast), (yyvsp[-3].al));
 	}
-#line 6056 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 6140 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 501:
-#line 2503 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2520 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.ast) = (yyvsp[0].ast);
 	}
-#line 6064 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 6148 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 502:
-#line 2506 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2523 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		if ((yyvsp[0].string)->compare(0, 1, "'") != 0)
 			frontend_verilog_yyerror("Cast operation must be applied on sized constants e.g. (<expr>)<constval> , while %s is not a sized constant.", (yyvsp[0].string)->c_str());
@@ -6075,11 +6159,11 @@ yyreduce:
 		(yyval.ast) = new AstNode(AST_TO_BITS, bits, val);
 		delete (yyvsp[0].string);
 	}
-#line 6079 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 6163 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 503:
-#line 2516 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2533 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		if ((yyvsp[0].string)->compare(0, 1, "'") != 0)
 			frontend_verilog_yyerror("Cast operation must be applied on sized constants, e.g. <ID>\'d0, while %s is not a sized constant.", (yyvsp[0].string)->c_str());
@@ -6092,11 +6176,11 @@ yyreduce:
 		delete (yyvsp[-1].string);
 		delete (yyvsp[0].string);
 	}
-#line 6096 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 6180 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 504:
-#line 2528 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2545 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.ast) = const2ast(*(yyvsp[-1].string) + *(yyvsp[0].string), case_type_stack.size() == 0 ? 0 : case_type_stack.back(), !lib_mode);
 		if ((yyval.ast) == NULL || (*(yyvsp[0].string))[0] != '\'')
@@ -6104,22 +6188,22 @@ yyreduce:
 		delete (yyvsp[-1].string);
 		delete (yyvsp[0].string);
 	}
-#line 6108 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 6192 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 505:
-#line 2535 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2552 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.ast) = const2ast(*(yyvsp[0].string), case_type_stack.size() == 0 ? 0 : case_type_stack.back(), !lib_mode);
 		if ((yyval.ast) == NULL)
 			log_error("Value conversion failed: `%s'\n", (yyvsp[0].string)->c_str());
 		delete (yyvsp[0].string);
 	}
-#line 6119 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 6203 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 506:
-#line 2541 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2558 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.ast) = new AstNode(AST_REALVALUE);
 		char *p = (char*)malloc(GetSize(*(yyvsp[0].string)) + 1), *q;
@@ -6131,20 +6215,20 @@ yyreduce:
 		delete (yyvsp[0].string);
 		free(p);
 	}
-#line 6135 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 6219 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 507:
-#line 2552 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2569 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.ast) = AstNode::mkconst_str(*(yyvsp[0].string));
 		delete (yyvsp[0].string);
 	}
-#line 6144 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 6228 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 508:
-#line 2556 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2573 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		AstNode *node = new AstNode(AST_FCALL);
 		node->str = *(yyvsp[-1].string);
@@ -6152,415 +6236,415 @@ yyreduce:
 		ast_stack.push_back(node);
 		append_attr(node, (yyvsp[0].al));
 	}
-#line 6156 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 6240 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 509:
-#line 2562 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2579 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.ast) = ast_stack.back();
 		ast_stack.pop_back();
 	}
-#line 6165 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 6249 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 510:
-#line 2566 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2583 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.ast) = new AstNode(AST_TO_SIGNED, (yyvsp[-1].ast));
 		append_attr((yyval.ast), (yyvsp[-3].al));
 	}
-#line 6174 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 6258 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 511:
-#line 2570 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2587 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.ast) = new AstNode(AST_TO_UNSIGNED, (yyvsp[-1].ast));
 		append_attr((yyval.ast), (yyvsp[-3].al));
 	}
-#line 6183 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 6267 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 512:
-#line 2574 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2591 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.ast) = (yyvsp[-1].ast);
 	}
-#line 6191 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 6275 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 513:
-#line 2577 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2594 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		delete (yyvsp[-5].ast);
 		(yyval.ast) = (yyvsp[-3].ast);
 		delete (yyvsp[-1].ast);
 	}
-#line 6201 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 6285 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 514:
-#line 2582 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2599 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.ast) = (yyvsp[-1].ast);
 	}
-#line 6209 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 6293 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 515:
-#line 2585 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2602 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.ast) = new AstNode(AST_REPLICATE, (yyvsp[-4].ast), (yyvsp[-2].ast));
 	}
-#line 6217 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 6301 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 516:
-#line 2588 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2605 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.ast) = new AstNode(AST_BIT_NOT, (yyvsp[0].ast));
 		append_attr((yyval.ast), (yyvsp[-1].al));
 	}
-#line 6226 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 6310 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 517:
-#line 2592 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2609 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.ast) = new AstNode(AST_BIT_AND, (yyvsp[-3].ast), (yyvsp[0].ast));
 		append_attr((yyval.ast), (yyvsp[-1].al));
 	}
-#line 6235 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 6319 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 518:
-#line 2596 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2613 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.ast) = new AstNode(AST_BIT_NOT, new AstNode(AST_BIT_AND, (yyvsp[-3].ast), (yyvsp[0].ast)));
 		append_attr((yyval.ast), (yyvsp[-1].al));
 	}
-#line 6244 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 6328 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 519:
-#line 2600 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2617 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.ast) = new AstNode(AST_BIT_OR, (yyvsp[-3].ast), (yyvsp[0].ast));
 		append_attr((yyval.ast), (yyvsp[-1].al));
 	}
-#line 6253 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 6337 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 520:
-#line 2604 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2621 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.ast) = new AstNode(AST_BIT_NOT, new AstNode(AST_BIT_OR, (yyvsp[-3].ast), (yyvsp[0].ast)));
 		append_attr((yyval.ast), (yyvsp[-1].al));
 	}
-#line 6262 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 6346 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 521:
-#line 2608 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2625 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.ast) = new AstNode(AST_BIT_XOR, (yyvsp[-3].ast), (yyvsp[0].ast));
 		append_attr((yyval.ast), (yyvsp[-1].al));
 	}
-#line 6271 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 6355 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 522:
-#line 2612 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2629 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.ast) = new AstNode(AST_BIT_XNOR, (yyvsp[-3].ast), (yyvsp[0].ast));
 		append_attr((yyval.ast), (yyvsp[-1].al));
 	}
-#line 6280 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 6364 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 523:
-#line 2616 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2633 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.ast) = new AstNode(AST_REDUCE_AND, (yyvsp[0].ast));
 		append_attr((yyval.ast), (yyvsp[-1].al));
 	}
-#line 6289 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 6373 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 524:
-#line 2620 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2637 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.ast) = new AstNode(AST_REDUCE_AND, (yyvsp[0].ast));
 		append_attr((yyval.ast), (yyvsp[-1].al));
 		(yyval.ast) = new AstNode(AST_LOGIC_NOT, (yyval.ast));
 	}
-#line 6299 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 6383 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 525:
-#line 2625 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2642 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.ast) = new AstNode(AST_REDUCE_OR, (yyvsp[0].ast));
 		append_attr((yyval.ast), (yyvsp[-1].al));
 	}
-#line 6308 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 6392 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 526:
-#line 2629 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2646 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.ast) = new AstNode(AST_REDUCE_OR, (yyvsp[0].ast));
 		append_attr((yyval.ast), (yyvsp[-1].al));
 		(yyval.ast) = new AstNode(AST_LOGIC_NOT, (yyval.ast));
 	}
-#line 6318 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 6402 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 527:
-#line 2634 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2651 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.ast) = new AstNode(AST_REDUCE_XOR, (yyvsp[0].ast));
 		append_attr((yyval.ast), (yyvsp[-1].al));
 	}
-#line 6327 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 6411 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 528:
-#line 2638 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2655 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.ast) = new AstNode(AST_REDUCE_XNOR, (yyvsp[0].ast));
 		append_attr((yyval.ast), (yyvsp[-1].al));
 	}
-#line 6336 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 6420 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 529:
-#line 2642 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2659 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.ast) = new AstNode(AST_SHIFT_LEFT, (yyvsp[-3].ast), new AstNode(AST_TO_UNSIGNED, (yyvsp[0].ast)));
 		append_attr((yyval.ast), (yyvsp[-1].al));
 	}
-#line 6345 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 6429 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 530:
-#line 2646 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2663 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.ast) = new AstNode(AST_SHIFT_RIGHT, (yyvsp[-3].ast), new AstNode(AST_TO_UNSIGNED, (yyvsp[0].ast)));
 		append_attr((yyval.ast), (yyvsp[-1].al));
 	}
-#line 6354 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 6438 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 531:
-#line 2650 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2667 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.ast) = new AstNode(AST_SHIFT_SLEFT, (yyvsp[-3].ast), new AstNode(AST_TO_UNSIGNED, (yyvsp[0].ast)));
 		append_attr((yyval.ast), (yyvsp[-1].al));
 	}
-#line 6363 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 6447 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 532:
-#line 2654 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2671 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.ast) = new AstNode(AST_SHIFT_SRIGHT, (yyvsp[-3].ast), new AstNode(AST_TO_UNSIGNED, (yyvsp[0].ast)));
 		append_attr((yyval.ast), (yyvsp[-1].al));
 	}
-#line 6372 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 6456 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 533:
-#line 2658 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2675 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.ast) = new AstNode(AST_LT, (yyvsp[-3].ast), (yyvsp[0].ast));
 		append_attr((yyval.ast), (yyvsp[-1].al));
 	}
-#line 6381 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 6465 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 534:
-#line 2662 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2679 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.ast) = new AstNode(AST_LE, (yyvsp[-3].ast), (yyvsp[0].ast));
 		append_attr((yyval.ast), (yyvsp[-1].al));
 	}
-#line 6390 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 6474 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 535:
-#line 2666 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2683 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.ast) = new AstNode(AST_EQ, (yyvsp[-3].ast), (yyvsp[0].ast));
 		append_attr((yyval.ast), (yyvsp[-1].al));
 	}
-#line 6399 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 6483 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 536:
-#line 2670 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2687 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.ast) = new AstNode(AST_NE, (yyvsp[-3].ast), (yyvsp[0].ast));
 		append_attr((yyval.ast), (yyvsp[-1].al));
 	}
-#line 6408 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 6492 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 537:
-#line 2674 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2691 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.ast) = new AstNode(AST_EQX, (yyvsp[-3].ast), (yyvsp[0].ast));
 		append_attr((yyval.ast), (yyvsp[-1].al));
 	}
-#line 6417 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 6501 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 538:
-#line 2678 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2695 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.ast) = new AstNode(AST_NEX, (yyvsp[-3].ast), (yyvsp[0].ast));
 		append_attr((yyval.ast), (yyvsp[-1].al));
 	}
-#line 6426 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 6510 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 539:
-#line 2682 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2699 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.ast) = new AstNode(AST_GE, (yyvsp[-3].ast), (yyvsp[0].ast));
 		append_attr((yyval.ast), (yyvsp[-1].al));
 	}
-#line 6435 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 6519 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 540:
-#line 2686 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2703 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.ast) = new AstNode(AST_GT, (yyvsp[-3].ast), (yyvsp[0].ast));
 		append_attr((yyval.ast), (yyvsp[-1].al));
 	}
-#line 6444 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 6528 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 541:
-#line 2690 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2707 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.ast) = new AstNode(AST_ADD, (yyvsp[-3].ast), (yyvsp[0].ast));
 		append_attr((yyval.ast), (yyvsp[-1].al));
 	}
-#line 6453 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 6537 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 542:
-#line 2694 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2711 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.ast) = new AstNode(AST_SUB, (yyvsp[-3].ast), (yyvsp[0].ast));
 		append_attr((yyval.ast), (yyvsp[-1].al));
 	}
-#line 6462 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 6546 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 543:
-#line 2698 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2715 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.ast) = new AstNode(AST_MUL, (yyvsp[-3].ast), (yyvsp[0].ast));
 		append_attr((yyval.ast), (yyvsp[-1].al));
 	}
-#line 6471 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 6555 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 544:
-#line 2702 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2719 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.ast) = new AstNode(AST_DIV, (yyvsp[-3].ast), (yyvsp[0].ast));
 		append_attr((yyval.ast), (yyvsp[-1].al));
 	}
-#line 6480 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 6564 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 545:
-#line 2706 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2723 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.ast) = new AstNode(AST_MOD, (yyvsp[-3].ast), (yyvsp[0].ast));
 		append_attr((yyval.ast), (yyvsp[-1].al));
 	}
-#line 6489 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 6573 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 546:
-#line 2710 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2727 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.ast) = new AstNode(AST_POW, (yyvsp[-3].ast), (yyvsp[0].ast));
 		append_attr((yyval.ast), (yyvsp[-1].al));
 	}
-#line 6498 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 6582 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 547:
-#line 2714 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2731 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.ast) = new AstNode(AST_POS, (yyvsp[0].ast));
 		append_attr((yyval.ast), (yyvsp[-1].al));
 	}
-#line 6507 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 6591 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 548:
-#line 2718 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2735 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.ast) = new AstNode(AST_NEG, (yyvsp[0].ast));
 		append_attr((yyval.ast), (yyvsp[-1].al));
 	}
-#line 6516 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 6600 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 549:
-#line 2722 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2739 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.ast) = new AstNode(AST_LOGIC_AND, (yyvsp[-3].ast), (yyvsp[0].ast));
 		append_attr((yyval.ast), (yyvsp[-1].al));
 	}
-#line 6525 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 6609 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 550:
-#line 2726 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2743 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.ast) = new AstNode(AST_LOGIC_OR, (yyvsp[-3].ast), (yyvsp[0].ast));
 		append_attr((yyval.ast), (yyvsp[-1].al));
 	}
-#line 6534 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 6618 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 551:
-#line 2730 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2747 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.ast) = new AstNode(AST_LOGIC_NOT, (yyvsp[0].ast));
 		append_attr((yyval.ast), (yyvsp[-1].al));
 	}
-#line 6543 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 6627 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 552:
-#line 2736 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2753 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.ast) = new AstNode(AST_CONCAT, (yyvsp[0].ast));
 	}
-#line 6551 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 6635 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
   case 553:
-#line 2739 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
+#line 2756 "frontends/verilog/verilog_parser.y" /* yacc.c:1646  */
     {
 		(yyval.ast) = (yyvsp[0].ast);
 		(yyval.ast)->children.push_back((yyvsp[-2].ast));
 	}
-#line 6560 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 6644 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
     break;
 
 
-#line 6564 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
+#line 6648 "frontends/verilog/verilog_parser.tab.cc" /* yacc.c:1646  */
         default: break;
       }
     if (yychar_backup != yychar)
