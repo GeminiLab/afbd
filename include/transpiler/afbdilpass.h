@@ -10,10 +10,10 @@
 #include "yosys/include/yosys_rtlil.h"
 #include "yosys/include/ast.h"
 
-#include "rtlil/module.h"
-#include "rtlil/expr.h"
-#include "rtlil/var.h"
-#include "rtlil/instruction.h"
+#include "afbdil/module.h"
+#include "afbdil/expr.h"
+#include "afbdil/var.h"
+#include "afbdil/instruction.h"
 
 #include "libs/json11/json11.hpp"
 
@@ -23,9 +23,9 @@ namespace afbd
 {
 	typedef std::pair<std::shared_ptr<Expr>, std::shared_ptr<Expr>> ExprPair;
 
-	struct RTLILPass : public Pass
+	struct afbdilPass : public Pass
 	{
-		RTLILPass() : Pass("RTLILPass") { }
+		afbdilPass() : Pass("afbdilPass") { }
 
 		std::map<std::string, std::shared_ptr<Module>> str2module;
 		std::vector<std::shared_ptr<Module>> unfolded_modules;

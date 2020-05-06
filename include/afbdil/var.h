@@ -1,7 +1,7 @@
 #pragma once
 
-#include <rtlil/def.h>
-#include <rtlil/module.h>
+#include <afbdil/def.h>
+#include <afbdil/module.h>
 
 #include <memory>
 

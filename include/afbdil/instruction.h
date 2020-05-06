@@ -1,9 +1,9 @@
 #pragma once
 
-#include <rtlil/def.h>
-#include <rtlil/var.h>
-#include <rtlil/module.h>
-#include <rtlil/expr.h>
+#include <afbdil/def.h>
+#include <afbdil/var.h>
+#include <afbdil/module.h>
+#include <afbdil/expr.h>
 
 #include <vector>
 #include <memory>

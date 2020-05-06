@@ -1,4 +1,4 @@
-#include <rtlil/module.h>
+#include <afbdil/module.h>
 
 using namespace std;
 using namespace afbd;

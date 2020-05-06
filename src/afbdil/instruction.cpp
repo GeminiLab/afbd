@@ -1,4 +1,4 @@
-#include <rtlil/instruction.h>
+#include <afbdil/instruction.h>
 
 using namespace std;
 using namespace afbd;

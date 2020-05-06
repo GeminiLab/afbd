@@ -1,4 +1,4 @@
-﻿#include <rtlil/rtlil>
+﻿#include <afbdil/afbdil>
 
 #include "llvm/IR/LLVMContext.h"
 #include "llvm/IR/Module.h"
@@ -13,9 +13,9 @@
 #include "llvm/Target/TargetOptions.h"
 
 #include <transpiler/transpiler.h>
-#include <rtlil/module_serializer.h>
+#include <afbdil/module_serializer.h>
 #include <yosys/include/verilog_frontend.h>
-#include <transpiler/rtlilpass.h>
+#include <transpiler/afbdilpass.h>
 
 #include <iostream>
 #include <fstream>
@@ -93,7 +93,7 @@ int main(int argc, char** argv) {
 
     /*
     // args hack
-    const char *fin = "/home/gemini/source/repos/rtlil/example/example.v";
+    const char *fin = "/home/gemini/source/repos/afbdil/example/example.v";
     const char *mon = "counter";
 
     argc = 3;
@@ -113,12 +113,12 @@ int main(int argc, char** argv) {
 
     std::istream* f = nullptr;
 
-    RTLIL::Design* design = new RTLIL::Design;
+    afbdil::Design* design = new afbdil::Design;
 
     VerilogFrontend frontend;
     frontend.execute(f, args[1], args, design);
 
-    afbd::RTLILPass p;
+    afbd::afbdilPass p;
     p.execute(args, design);
     auto m2 = p.res;
 
