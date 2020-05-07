@@ -143,19 +143,23 @@ llvm::Function *Transpiler::transpile_process(shared_ptr<Process> proc) {
         instr_delay = has_delay ? instr_delay : 0;
 
         if (type == InstructionType::Delay) {
-            builder.CreateCall(delay, llvm::ArrayRef<llvm::Value*> { builder.getInt32(instr_delay) });
-        } else if (type == InstructionType::Trigger) {
-            builder.CreateCall(prepare_wait);
-            for (auto &w: *x->triggers()) {
-                builder.CreateCall(
-                        add_wait,
-                        llvm::ArrayRef<llvm::Value*> {
-                                builder.getInt32(var_id->at(w.first)),
-                                builder.getInt32((int32_t)w.second),
-                        }
-                );
+            if (instr_delay > 0) {
+                builder.CreateCall(delay, llvm::ArrayRef<llvm::Value*> { builder.getInt32(instr_delay) });
             }
-            builder.CreateCall(do_wait);
+        } else if (type == InstructionType::Trigger) {
+            if (x->triggers()->size() > 0) {
+                builder.CreateCall(prepare_wait);
+                for (auto &w: *x->triggers()) {
+                    builder.CreateCall(
+                            add_wait,
+                            llvm::ArrayRef<llvm::Value*> {
+                                    builder.getInt32(var_id->at(w.first)),
+                                    builder.getInt32((int32_t)w.second),
+                            }
+                    );
+                }
+                builder.CreateCall(do_wait);
+            }
         } else {
             auto assign_type = x->assign_type();
 

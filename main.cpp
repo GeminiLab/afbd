@@ -96,13 +96,14 @@ int main(int argc, char** argv) {
     /*
     // args hack
     */
-    const char *fin = "/home/gemini/source/repos/afbdil/example/example.v";
+#ifdef ARGS_HACK
+    const char *fin = "/home/gemini/source/bachelor/afbd/example/example.v";
     const char *mon = "counter";
 
     argc = 3;
     char* new_argv[3] = { argv[0], const_cast<char*>(fin), const_cast<char*>(mon) };
     argv = new_argv;
-
+#endif
 
     // begin
     if(argc < 2) {
