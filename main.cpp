@@ -31,6 +31,7 @@ typedef initializer_list<shared_ptr<Expr>> exl;
 #define nconst(...) make_shared<Constant>(__VA_ARGS__)
 
 int main(int argc, char** argv) {
+    /*
     auto m2 = make_shared<afbd::Module>("counter");
     auto a = m2->add_var(1, "clk");
     auto b = m2->add_var(1, "rst");
@@ -90,9 +91,11 @@ int main(int argc, char** argv) {
 
     pop->begin(pope);
     pope->add_succ(pop2, nullptr);
+*/
 
     /*
     // args hack
+    */
     const char *fin = "/home/gemini/source/repos/afbdil/example/example.v";
     const char *mon = "counter";
 
@@ -100,9 +103,9 @@ int main(int argc, char** argv) {
     char* new_argv[3] = { argv[0], const_cast<char*>(fin), const_cast<char*>(mon) };
     argv = new_argv;
 
+
     // begin
-    if(argc < 2)
-    {
+    if(argc < 2) {
         std::cout << "no filename\n";
         return 0;
     }
@@ -113,7 +116,7 @@ int main(int argc, char** argv) {
 
     std::istream* f = nullptr;
 
-    afbdil::Design* design = new afbdil::Design;
+    RTLIL::Design* design = new RTLIL::Design;
 
     VerilogFrontend frontend;
     frontend.execute(f, args[1], args, design);
@@ -122,9 +125,9 @@ int main(int argc, char** argv) {
     p.execute(args, design);
     auto m2 = p.res;
 
-    */
 
-    auto header_output = "rtl.h";
+    auto header_output = m2->name() + ".h";
+    auto object_output = m2->name() + ".o";
     auto fs = make_shared<fstream>();
     fs->open(header_output, ios::out | ios::trunc);
 
@@ -167,9 +170,8 @@ int main(int argc, char** argv) {
 
     module->setDataLayout(targetMachine->createDataLayout());
 
-    auto Filename = "rtl.o";
     std::error_code EC;
-    llvm::raw_fd_ostream dest(Filename, EC, llvm::sys::fs::OpenFlags::OF_None);
+    llvm::raw_fd_ostream dest(object_output, EC, llvm::sys::fs::OpenFlags::OF_None);
 
     if (EC) {
         llvm::errs() << "Could not open file: " << EC.message();
@@ -189,6 +191,6 @@ int main(int argc, char** argv) {
     puts("generated.");
     dest.flush();
 
-    llvm::outs() << "Wrote " << Filename << "\n";
+    llvm::outs() << "Wrote " << object_output << "\n";
     return 0;
 }
