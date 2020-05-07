@@ -15,7 +15,7 @@ enum ProcessType {
     Always,
 };
 
-std::string proc_type_to_str(ProcessType type);
+//std::string proc_type_to_str(ProcessType type);
 
 ProcessType str_to_proc_type(std::string str);
 

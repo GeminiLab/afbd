@@ -157,7 +157,7 @@ std::shared_ptr<Process> Process::substitute_clone(std::map<std::shared_ptr<Var>
 json11::Json Process::to_json()
 {
     std::map<std::string, json11::Json> ret_map;
-    ret_map["type"] = "continues"; //todo
+    ret_map["type"] = proc_type_to_str(_type);
     //ret_map["sen"] = json11::Json::array(); //todo
         
     std::map<std::string, json11::Json> instr_map;
