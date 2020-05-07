@@ -1,13 +1,16 @@
 #include <afbdil/module.h>
+#include <iostream>
 
 using namespace std;
 using namespace afbd;
+
+extern std::string no_slash(std::string& str);
 
 Module::Module(std::string name) {
     _vars = make_shared<VarContainer>();
     _procs = make_shared<ProcContainer>();
 
-    _name = name;
+    _name = no_slash(name);
 }
 
 shared_ptr<VarContainer> Module::vars() const {
@@ -42,7 +45,7 @@ std::string Module::name() const {
 
 std::shared_ptr<Module> Module::substitute_clone(std::map<std::shared_ptr<Var>, std::shared_ptr<Expr>>& substitute_map, int occurence)
 {
-    std::string new_module_name = name() + "$" + std::to_string(occurence);
+    std::string new_module_name = name() + "_" + std::to_string(occurence);
     auto new_module = std::make_shared<Module>(new_module_name);
 
     for(auto var : *_vars)
