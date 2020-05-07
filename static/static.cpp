@@ -10,7 +10,15 @@
 #include <cstdio>
 using namespace std;
 
-#define debug(...)
+#ifdef STATIC_DEBUG
+# pragma message("debug activated")
+# define debug(str) printf("[%d]" str "\n", coroutine::current())
+# define debugf(fmt, ...) printf("[%d]" fmt, coroutine::current(), __VA_ARGS__)
+#else
+# pragma message("debug disabled")
+# define debug(...)
+# define debugf(...)
+#endif
 
 struct RoutineInDelay {
     tick_t tick;
@@ -52,7 +60,6 @@ void push_process(process proc, void *sim) {
 void process_end() {
     debug("process_end");
     auto now = coroutine::ordinator.current;
-    _r_routines.erase(now);
     _r_routines_to_delete.insert(now);
     coroutine::yield();
 }
@@ -62,11 +69,20 @@ void exec_until(tick_t t) {
     if (_r_very_beginning) {
         _r_very_beginning = false;
 
-        for (auto &x: _r_routines)
+        for (auto &x: _r_routines) {
+            debugf("- begin schedule #%d\n", x);
             coroutine::resume(x);
+        }
+
+        for (auto& r: _r_routines_to_delete) {
+            _r_routines.erase(r);
+            coroutine::destroy(r);
+        }
+        _r_routines_to_delete.clear();
     }
 
     while (_r_tick < t) {
+        debugf("- now %d\n", _r_tick);
         while (!_r_routines_in_delay.empty() && _r_routines_in_delay.top().tick <= _r_tick) {
             auto top = _r_routines_in_delay.top(); _r_routines_in_delay.pop();
             if (!top.nau) {
@@ -81,18 +97,25 @@ void exec_until(tick_t t) {
             auto p = _r_curr_events.begin();
             auto routine = *p;
             _r_curr_events.erase(p);
+            debugf("- scheduled #%d\n", *p);
             coroutine::resume(routine);
         }
+
+        debug("- active processed");
 
         if (!_r_curr_events_inactive.empty()) {
             _r_curr_events.insert(_r_curr_events_inactive.begin(), _r_curr_events_inactive.end());
             _r_curr_events_inactive.clear();
+
+            debug("- inactive found and activated");
             goto executor;
         }
 
         if (!_r_curr_events_nau.empty()) {
             _r_curr_events.insert(_r_curr_events_nau.begin(), _r_curr_events_nau.end());
             _r_curr_events_nau.clear();
+
+            debug("- nau found and activated");
             goto executor;
         }
 
@@ -104,9 +127,11 @@ void exec_until(tick_t t) {
 
         if (_r_routines_in_delay.empty() || _r_routines_in_delay.top().tick >= t) {
             _r_tick = t;
+            debug("- end reached, exit");
             break;
         } else {
             _r_tick = _r_routines_in_delay.top().tick;
+            debugf("- move to %d\n", _r_tick);
         }
     }
 }
@@ -130,7 +155,7 @@ void reset() {
 
 
 void delay(tick_t span) {
-    debug("delay");
+    debugf("delay %d\n", span);
     if (span == 0) {
         _r_curr_events.insert(coroutine::ordinator.current);
     } else {

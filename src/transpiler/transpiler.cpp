@@ -172,9 +172,23 @@ llvm::Function *Transpiler::transpile_process(shared_ptr<Process> proc) {
                     } else {
                         builder.CreateCall(delay, llvm::ArrayRef<llvm::Value*> { builder.getInt32(instr_delay) });
                     }
-                    builder.CreateStore(builder.CreateLoad(temp), varAddr[x->dst()->as_var()]);
+                    builder.CreateCall(
+                            update,
+                            llvm::ArrayRef<llvm::Value*> {
+                                    varAddr[x->dst()->as_var()],
+                                    builder.CreateLoad(temp),
+                                    builder.getInt32(var_id->at(x->dst()->as_var())),
+                            }
+                    );
                 } else {
-                    builder.CreateStore(eval(x->expr()), varAddr[x->dst()->as_var()]);
+                    builder.CreateCall(
+                            update,
+                            llvm::ArrayRef<llvm::Value*> {
+                                    varAddr[x->dst()->as_var()],
+                                    eval(x->expr()),
+                                    builder.getInt32(var_id->at(x->dst()->as_var())),
+                            }
+                    );
                 }
             } else {
                 builder.CreateCall(

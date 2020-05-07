@@ -7,6 +7,9 @@ set(CMAKE_CXX_STANDARD 17)
 aux_source_directory(static SOURCE_STATIC)
 add_library(afbd_static STATIC ${SOURCE_STATIC})
 
+add_library(afbd_staticd STATIC ${SOURCE_STATIC})
+target_compile_definitions(afbd_staticd PRIVATE STATIC_DEBUG)
+
 aux_source_directory(static/test SOURCE_STATIC_TEST)
 add_executable(afbd_static_test ${SOURCE_STATIC_TEST})
 target_link_libraries(afbd_static_test afbd_static)
