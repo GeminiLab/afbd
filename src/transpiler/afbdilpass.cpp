@@ -200,11 +200,18 @@ namespace afbd
 
 	std::shared_ptr<Instruction> afbdilPass::parse_assign(std::shared_ptr<Instruction> begin, AST::AstNode* astnode, std::map<std::string, std::shared_ptr<Expr>>& str2expr, std::shared_ptr<Expr> cond, bool is_blocking)
 	{
-		auto inst = std::make_shared<Instruction>(begin->process());
-
 		if(!begin)
 			std::cout << "shit!begin is nullptr\n";
 
+		if(astnode->after_delay != 0)
+		{
+			auto delay = std::make_shared<Instruction>(begin->process());
+			delay->delay(astnode->after_delay);
+			begin->add_succ(delay, expr_true);
+			begin = delay;
+		}
+
+		auto inst = std::make_shared<Instruction>(begin->process());
 		begin->add_succ(inst, cond);
 
 		inst->dst(parse_identifier(astnode->children[0], str2expr));
@@ -215,14 +222,6 @@ namespace afbd
 
 		if(astnode->during_delay != 0)
 			inst->assign_delay(astnode->during_delay);
-
-		if(astnode->after_delay != 0)
-		{
-			auto delay = std::make_shared<Instruction>(begin->process());
-			delay->delay(astnode->after_delay);
-			inst->add_succ(delay, expr_true);
-			return delay;
-		}
 
 		return inst;
 	}
@@ -428,8 +427,10 @@ namespace afbd
 					break;
 				}
 				case AST::AST_ALWAYS:
+				case AST::AST_INITIAL:
 				{
 					auto myProc = myModule->add_proc();
+					myProc->type(child->type == AST::AST_ALWAYS ? ProcessType::Always : ProcessType::Initial);
 					auto triggers = std::make_shared<TriggerContainer>();
 					auto begin = std::make_shared<Instruction>(myProc);
 					begin->triggers(triggers);
