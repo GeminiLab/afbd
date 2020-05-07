@@ -311,7 +311,7 @@ namespace afbd
 			std::cout << name << "\n";
 
 			std::shared_ptr<Module> myModule = std::make_shared<Module>(name);
-			str2module[name] = myModule;
+			str2module[myModule->name()] = myModule;
 
 			std::map<std::string, std::shared_ptr<Expr>> str2expr;
 
@@ -490,7 +490,7 @@ namespace afbd
 							{
 								//generate new temp var
 
-								std::string wire_name = "$temp_var_" + std::to_string(temp_var_num);
+								std::string wire_name = "temp_var_" + std::to_string(temp_var_num);
 								temp_var_num++;
 
 								auto temp_var = myModule->add_var(expr->bit(), wire_name);
@@ -544,10 +544,15 @@ namespace afbd
 			return;
 		}
 
-		std::string top_module_name = "\\" + args[2];
+		std::string top_module_name = args[2];
 
 		std::shared_ptr<Module> top_module = str2module[top_module_name];
 
+		for(auto pair : str2module)
+		{
+			std::cout << "we have a module named " << pair.first << "\n";
+		}
+		std::cout << "top module is " << top_module_name << "\n";
 		std::cout << "top module is " << top_module->name() << "\n";
 
 		auto empty_vector = std::make_shared<std::vector<std::shared_ptr<Expr>>>();
@@ -614,7 +619,7 @@ namespace afbd
 			}
 			else
 			{
-				std::string new_var_name = *(curr_var->name()) + "$" + std::to_string(occurence_id);
+				std::string new_var_name = *(curr_var->name()) + "_" + std::to_string(occurence_id);
 				auto new_var = std::make_shared<Var>(curr_var->bit(), new_var_name);
 				substitute_map[curr_var] = std::make_shared<Expr>(new_var);
 			}

@@ -5,7 +5,9 @@
 using namespace std;
 using namespace afbd;
 
-Var::Var(int bit, string name, int elem_bit): _name(make_shared<string>(move(name))), _sens_procs(make_shared<ProcContainer>()) {
+extern std::string no_slash(std::string& str);
+
+Var::Var(int bit, string name, int elem_bit): _name(make_shared<string>(move(no_slash(name)))), _sens_procs(make_shared<ProcContainer>()) {
     _bit = bit;
 	if(elem_bit == -1)
 		_elem_bit = bit;
