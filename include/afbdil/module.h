@@ -27,8 +27,6 @@ public:
 
     std::shared_ptr<Process> add_proc();
 
-    void add_triggered_proc(std::shared_ptr <Var> var, std::shared_ptr <Process> proc);
-
     std::string name() const;
 
     std::vector<std::pair<std::string, std::shared_ptr<std::vector<std::shared_ptr<Expr>>>>> cells;

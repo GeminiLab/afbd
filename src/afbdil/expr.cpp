@@ -1,5 +1,6 @@
 #include <afbdil/expr.h>
 #include <afbdil/var.h>
+#include <iostream>
 
 using namespace std;
 using namespace afbd;
@@ -176,12 +177,17 @@ json11::Json Expr::to_json() {
 
 void Expr::all_as_sens(std::shared_ptr<Module>& module, std::shared_ptr<Process>& proc)
 {
+    auto begin = proc->begin();
+    if(begin->type() != InstructionType::Trigger)
+    {
+        std::cout << "shit! begin of a process is not a trigger, during all_as_sens\n";
+        return;
+    }
+
     switch(_type)
     {
         case ExprType::VAR:
-            module->add_triggered_proc(_var, proc);
-            // proc->add_sensitive_var(std::make_pair(_var, EDGE));
-            module->add_triggered_proc(_var, proc);
+            begin->triggers()->push_back(std::make_pair(as_var(), Edge::EDGE));
             return;
         case ExprType::CONSTANT:
             return;

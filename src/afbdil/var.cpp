@@ -7,7 +7,7 @@ using namespace afbd;
 
 extern std::string no_slash(std::string& str);
 
-Var::Var(int bit, string name, int elem_bit): _name(make_shared<string>(move(no_slash(name)))), _sens_procs(make_shared<ProcContainer>()) {
+Var::Var(int bit, string name, int elem_bit): _name(make_shared<string>(move(no_slash(name)))) {
     _bit = bit;
 	if(elem_bit == -1)
 		_elem_bit = bit;
@@ -25,10 +25,6 @@ int Var::elem_bit() const {
 
 shared_ptr<string> Var::name() const {
     return _name;
-}
-
-std::shared_ptr<ProcContainer> Var::sens_procs() const {
-    return _sens_procs;
 }
 
 void Var::add_sens_proc(const std::shared_ptr<Process>& proc) {

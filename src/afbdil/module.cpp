@@ -35,10 +35,6 @@ std::shared_ptr<Process> Module::add_proc() {
     return rv;
 }
 
-void Module::add_triggered_proc(shared_ptr<Var> var, shared_ptr<Process> proc) {
-    var->add_sens_proc(proc);
-}
-
 std::string Module::name() const {
     return _name;
 }

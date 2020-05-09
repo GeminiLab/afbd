@@ -23,6 +23,8 @@
 
 USING_YOSYS_NAMESPACE
 
+extern std::string no_slash(std::string& str);
+
 namespace afbd
 {
 	extern std::shared_ptr<Expr> expr_true;
@@ -450,8 +452,6 @@ namespace afbd
 							}
 
 							auto identifierVar = identifierExpr->as_var();
-							myModule->add_triggered_proc(identifierVar, myProc);
-							
 							Trigger sensitive_var;
 							sensitive_var.first = identifierVar;
 							switch(grandchild->type)
@@ -466,7 +466,6 @@ namespace afbd
 								sensitive_var.second = Edge::NEGEDGE;
 								break;
 							}
-							// TODO:
 							triggers->push_back(sensitive_var);
 						}
 						if(grandchild->type == AST::AST_BLOCK)
@@ -476,6 +475,7 @@ namespace afbd
 					}
 					break;
 				}
+
 				case AST::AST_CELL:
 				{
 					std::string cellname;
@@ -487,6 +487,7 @@ namespace afbd
 						if(grandchild->type == AST::AST_ARGUMENT)
 						{
 							auto expr = parse_expr(grandchild->children[0], str2expr);
+                            std::shared_ptr<Var> var_temp_var = nullptr;
 							if(expr->type() != ExprType::VAR && expr->type() != ExprType::CONSTANT)
 							{
 								//generate new temp var
@@ -494,14 +495,25 @@ namespace afbd
 								std::string wire_name = "temp_var_" + std::to_string(temp_var_num);
 								temp_var_num++;
 
+
+
 								auto temp_var = myModule->add_var(expr->bit(), wire_name);
+                                var_temp_var = temp_var;
 								str2expr[wire_name] = std::make_shared<Expr>(temp_var);
 								cell_vector->push_back(std::make_shared<Expr>(temp_var));
 
-								auto dst_expr = std::make_shared<Expr>(ExprType::VAR, exl{});
-								dst_expr->add_operand(std::make_shared<Expr>(temp_var));
+                                std::cout << "a temp var is generated! json is " << temp_var->to_json().dump() << "\n";
+
+								auto dst_expr = std::make_shared<Expr>(temp_var);
 
 								auto myProc = myModule->add_proc();
+
+								auto myBegin = std::make_shared<Instruction>(myProc);
+								myProc->begin(myBegin);
+
+								auto myTriggers = std::make_shared<TriggerContainer>();
+								myBegin->triggers(myTriggers);
+
 								auto inst = std::make_shared<Instruction>(myProc);
 								myProc->begin()->add_succ(inst, expr_true);
 								inst->dst(dst_expr);
@@ -512,8 +524,13 @@ namespace afbd
 							}
 							else
 								cell_vector->push_back(expr);
+
+                            if(var_temp_var)
+                                std::cout << var_temp_var->to_json().dump() << "\n";
 						}
 					}
+                    cellname = no_slash(cellname);
+                    std::cout << "one cell is inserted " << cellname << "\n";
 					myModule->cells.push_back(std::make_pair(cellname, cell_vector));
 					//std::cout << myModule->name() << "has a new cell " << cellname << "\n";
 					//std::cout << myModule->name() << "has a new cell " << str2module[cellname]->name() << "\n";
@@ -523,21 +540,45 @@ namespace afbd
 				{
 					auto myProc = myModule->add_proc();
 
+					auto myBegin = std::make_shared<Instruction>(myProc);
+					myProc->begin(myBegin);
+
+					auto myTriggers = std::make_shared<TriggerContainer>();
+					myBegin->triggers(myTriggers);
+
 					auto inst = parse_assign(myProc->begin(), child, str2expr, expr_true, true);
 
 					inst->expr()->all_as_sens(myModule, myProc);
+					break;
+				}
+				case AST::AST_PRIMITIVE:
+				{
+					auto myProc = myModule->add_proc();
+
+					auto myBegin = std::make_shared<Instruction>(myProc);
+					myProc->begin(myBegin);
+
+					auto myTriggers = std::make_shared<TriggerContainer>();
+					myBegin->triggers(myTriggers);
+
+					for(auto grandchild: child->children)
+					{
+
+					}
+
 					break;
 				}
 				default:
 					std::cout << AST::type2str(child->type) << "is not supported in a module, currently.\n";
 				}
 			}
+            std::cout << "module " << myModule->name() << " ok, json is " << myModule->to_json().dump() << "\n";
 		}
 
-		//for(auto& mpair : str2module)
-		//{
-		//	std::cout << mpair.second->to_json().dump() << "\n";
-		//}
+		for(auto& mpair : str2module)
+		{
+			std::cout << mpair.second->to_json().dump() << "\n";
+		}
 
 		if(args.size() < 3)
 		{
@@ -571,38 +612,41 @@ namespace afbd
 
 		std::vector<PatternMatching*> patterns;
 
-		for(auto& arg : args)
-		{
-			if(arg.substr(arg.size() - 3) != ".so")
+		for(auto& arg : args) {
+			if (arg.substr(arg.size() - 3) != ".so")
 				continue;
 
 			std::cout << arg << " is a so name!\n";
-			void *so_handle = dlopen(arg.c_str(), RTLD_LAZY);
-			if(so_handle == NULL)
-			{
+			void *so_handle = dlopen(arg.c_str(), RTLD_NOW);
+			std::cout << arg << " opened\n";
+			if (so_handle == NULL) {
 				std::cout << arg << " install failed...\n";
 				continue;
 			}
 
-			PatternMatching* (*create)();
-			create = (PatternMatching *(*)(void))(dlsym(so_handle, "create"));
-			if(dlerror() != NULL)
-			{
+			/*PatternMatching *(*create)();
+			create = (PatternMatching *(*)(void)) (dlsym(so_handle, "create"));
+			if (dlerror() != NULL) {
 				std::cout << dlerror() << "\n";
 				dlclose(so_handle);
 				continue;
 			}
 
-			patterns.push_back((*create)());
+			auto pattern = (*create)();
+			pattern->match(res);
+			delete pattern;*/
+
+			void (*match)(std::shared_ptr<Module>);
+			match = (void(*)(std::shared_ptr<Module>))(dlsym(so_handle, "match"));
+			if (dlerror() != NULL) {
+				std::cout << dlerror() << "\n";
+				dlclose(so_handle);
+				continue;
+			}
+			(*match)(res);
+
 			dlclose(so_handle);
 		}
-
-		for(auto pattern : patterns)
-		{
-			// pattern->match();
-			delete pattern;
-		}
-
 #endif //linux
 	}
 

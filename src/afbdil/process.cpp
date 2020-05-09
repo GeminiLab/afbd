@@ -191,3 +191,30 @@ json11::Json Process::to_json()
     ret_map["instrs"] = instr_map;
     return ret_map;
 }
+
+std::vector<std::shared_ptr<Instruction>> Process::all_instructions()
+{
+    std::vector<std::shared_ptr<Instruction>> ret;
+
+    bool added[MAX_INST_NUM];
+    memset(added, 0, MAX_INST_NUM * sizeof(bool));
+
+    std::vector<std::shared_ptr<Instruction>> tovisit{begin()};
+    while(!tovisit.empty())
+    {
+        auto curr = tovisit.back();
+        tovisit.pop_back();
+
+        for(auto succ : *(curr->succs()))
+        {
+            auto succ_inst = succ.first;
+            if(!added[succ_inst->id()])
+            {
+                added[succ_inst->id()] = true;
+                ret.push_back(succ_inst);
+                tovisit.push_back(succ_inst);
+            }
+        }
+    }
+    return ret;
+}
