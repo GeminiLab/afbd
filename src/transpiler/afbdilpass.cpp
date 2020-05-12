@@ -29,7 +29,6 @@ namespace afbd
 {
 	extern std::shared_ptr<Expr> expr_true;
 	extern std::shared_ptr<Expr> expr_int_zero;
-	extern std::shared_ptr<Expr> expr_default;
 
 	std::shared_ptr<Expr> afbdilPass::parse_identifier(AST::AstNode * astnode, std::map<std::string, std::shared_ptr<Expr>>& str2expr)
 	{
@@ -240,6 +239,8 @@ namespace afbd
 		bool has_default = false;
 		int cond_num = 0;
 
+        std::shared_ptr<Expr> expr_default = std::make_shared<Expr>(ExprType::AND, exl{});
+
 		for(int i = 1; i < astnode->children.size(); i++)
 		{
 			auto child = astnode->children[i];
@@ -253,13 +254,17 @@ namespace afbd
 
 			if(cond_node->type == AST::AST_DEFAULT)
 			{
-				new_cond = expr_default;
+                if(expr_default->operand_num() > 1)
+				    new_cond = expr_default;
+                else
+                    new_cond = expr_default->get_operand(0);
 				has_default = true;
 			}
 			else if(cond_node->type == AST::AST_CONSTANT)
 			{
 				auto cond_const = parse_constant(cond_node);
 				new_cond = std::make_shared<Expr>(ExprType::EQ, exl{leftExpr, cond_const});
+                expr_default->add_operand(std::make_shared<Expr>(ExprType::NOT, exl{new_cond}));
 				cond_num++;
 			}
 			else
@@ -273,7 +278,12 @@ namespace afbd
 		}
 
 		if(!has_default && cond_num < (1 << leftExpr->bit()))
-			this_begin->add_succ(this_end, expr_default);
+        {
+            if(expr_default->operand_num() > 1)
+                this_begin->add_succ(this_end, expr_default);
+            else
+                this_begin->add_succ(this_end, expr_default->get_operand(0));
+        }
 
 		return this_end;
 	}
@@ -561,10 +571,55 @@ namespace afbd
 					auto myTriggers = std::make_shared<TriggerContainer>();
 					myBegin->triggers(myTriggers);
 
+                    auto myAssign = std::make_shared<Instruction>(myProc);
+                    myBegin->add_succ(myAssign, expr_true);
+
+                    std::shared_ptr<Expr> src_expr;
+                    if(child->str == "not")
+                        src_expr = std::make_shared<Expr>(ExprType::NOT, exl{});
+                    else if(child->str == "and")
+                        src_expr = std::make_shared<Expr>(ExprType::AND, exl{});
+                    else if(child->str == "or")
+                        src_expr = std::make_shared<Expr>(ExprType::OR, exl{});
+                    else if(child->str != "buf")
+                    {
+                        std::cout << "PRIVITIVE " << child->str << "is not supported\n";
+                        break;
+                    }
+
+                    bool dst_set = false;
+
 					for(auto grandchild: child->children)
 					{
+                        if(grandchild->type != AST::AST_ARGUMENT)
+                        {
+                            std::cout << "error! under PRIMITIVE is not a ARGUMENT\n";
+                            continue;
+                        }
+                        if(grandchild->children.size() != 1)
+                        {
+                            std::cout << "error! ARGUMENT children size not 1\n";
+                            continue;
+                        }
 
+                        auto exprAst = grandchild->children[0];
+                        auto expr = parse_expr(exprAst, str2expr);
+
+                        if(!dst_set)
+                        {
+                            dst_set = true;
+                            myAssign->dst(expr);
+                        }
+                        else
+                        {
+                            if(child->str == "buf")
+                                src_expr = expr;
+                            else
+                                src_expr->add_operand(expr);
+                        }
 					}
+                    myAssign->expr(src_expr);
+                    src_expr->all_as_sens(myModule, myProc);
 
 					break;
 				}
@@ -648,6 +703,8 @@ namespace afbd
 			dlclose(so_handle);
 		}
 #endif //linux
+
+        std::cout << res->to_smv() << "\n";
 	}
 
 	void afbdilPass::execute_cell(std::shared_ptr<Module>& curr, std::shared_ptr<std::vector<std::shared_ptr<Expr>>>& cell_vector)

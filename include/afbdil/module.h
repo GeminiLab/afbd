@@ -37,6 +37,8 @@ public:
 
     json11::Json to_json();
 
+    std::string to_smv();
+
 };
 
 }
