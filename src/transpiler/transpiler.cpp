@@ -4,6 +4,7 @@
 #include <queue>
 #include <set>
 #include <sstream>
+#include <iostream>
 
 using namespace std;
 using namespace afbd;
@@ -89,6 +90,9 @@ llvm::Function *Transpiler::transpile_process(shared_ptr<Process> proc) {
             } else {
                 auto opl = eval(expr->get_operand(0));
                 auto opr = eval(expr->get_operand(1));
+
+                /*std::cout << "dump when eval: " << expr->get_operand(0)->to_json().dump() << " " << expr->get_operand(1)->to_json().dump() << "\n";
+                std::cout << "their types are " << opl->getType()->getTypeID() << " " << opr->getType()->getTypeID() << "\n";*/
 
                 switch (type) {
                     case ExprType::ADD:

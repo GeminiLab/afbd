@@ -156,9 +156,11 @@ namespace afbd
 			type = ExprType::CONCAT;
 			break;
 		case AST::AST_EQ:
+		case AST::AST_EQX:
 			type = ExprType::EQ;
 			break;
 		case AST::AST_NE:
+		case AST::AST_NEX:
 			type = ExprType::NE;
 			break;
 		case AST::AST_GT:
@@ -176,6 +178,30 @@ namespace afbd
 		case AST::AST_REDUCE_BOOL:
 			type = ExprType::REDUCE_BOOL;
 			break;
+		case AST::AST_TERNARY:
+			type = ExprType::COND;
+			break;
+		case AST::AST_SHIFT_LEFT:
+		case AST::AST_SHIFT_SLEFT:
+			type = ExprType::SHL;
+			break;
+		case AST::AST_SHIFT_RIGHT:
+			type = ExprType::LSHR;
+			break;
+		case AST::AST_SHIFT_SRIGHT:
+			type = ExprType::ASHR;
+			break;
+		case AST::AST_TO_BITS:
+		case AST::AST_TO_SIGNED:
+		case AST::AST_TO_UNSIGNED: //don't mind them now
+			return parse_expr(astnode->children[0], str2expr);
+        case AST::AST_REPLICATE:
+        {
+            int times = astnode->children[0]->integer;
+            std::shared_ptr<Expr> content = parse_expr(astnode->children[1]->children[0], str2expr);
+            std::vector<std::shared_ptr<Expr>> operands(times, content);
+            return double_fold(ExprType::CONCAT, operands);
+        }
 		default:
 			type = ExprType::UNKNOWN;
 			std::cout << AST::type2str(astnode->type) << " is not supported, currently.\n";
@@ -239,7 +265,8 @@ namespace afbd
 		bool has_default = false;
 		int cond_num = 0;
 
-        std::shared_ptr<Expr> expr_default = std::make_shared<Expr>(ExprType::AND, exl{});
+        //std::shared_ptr<Expr> expr_default = std::make_shared<Expr>(ExprType::AND, exl{});
+        std::vector<std::shared_ptr<Expr>> conds;
 
 		for(int i = 1; i < astnode->children.size(); i++)
 		{
@@ -247,6 +274,7 @@ namespace afbd
 			if(child->type != AST::AST_COND)
 			{
 				std::cout << "assertion failed! not an AST_COND\n";
+				child->dumpAst(stdout, "    ");
 			}
 
 			std::shared_ptr<Expr> new_cond;
@@ -254,22 +282,25 @@ namespace afbd
 
 			if(cond_node->type == AST::AST_DEFAULT)
 			{
-                if(expr_default->operand_num() > 1)
+                /*if(expr_default->operand_num() > 1)
 				    new_cond = expr_default;
                 else
-                    new_cond = expr_default->get_operand(0);
+                    new_cond = expr_default->get_operand(0);*/
+                new_cond = double_fold(ExprType::AND, conds);
 				has_default = true;
 			}
-			else if(cond_node->type == AST::AST_CONSTANT)
+			else if(cond_node->type == AST::AST_CONSTANT || cond_node->type == AST::AST_IDENTIFIER)
 			{
-				auto cond_const = parse_constant(cond_node);
+				auto cond_const = parse_expr(cond_node, str2expr);
 				new_cond = std::make_shared<Expr>(ExprType::EQ, exl{leftExpr, cond_const});
-                expr_default->add_operand(std::make_shared<Expr>(ExprType::NOT, exl{new_cond}));
+                //expr_default->add_operand(std::make_shared<Expr>(ExprType::NOT, exl{new_cond}));
+                conds.push_back(std::make_shared<Expr>(ExprType::NOT, exl{new_cond}));
 				cond_num++;
 			}
 			else
 			{
-				std::cout << "assertion failed! cond not an AST_CONSTANT\n";
+				std::cout << "assertion failed! bad AST_CASE\n";
+				cond_node->dumpAst(stdout, "    ");
 			}
 
 			auto block_node = child->children[1];
@@ -279,10 +310,11 @@ namespace afbd
 
 		if(!has_default && cond_num < (1 << leftExpr->bit()))
         {
-            if(expr_default->operand_num() > 1)
+            /*if(expr_default->operand_num() > 1)
                 this_begin->add_succ(this_end, expr_default);
             else
-                this_begin->add_succ(this_end, expr_default->get_operand(0));
+                this_begin->add_succ(this_end, expr_default->get_operand(0));*/
+            this_begin->add_succ(this_end, double_fold(ExprType::AND, conds));
         }
 
 		return this_end;
@@ -316,7 +348,7 @@ namespace afbd
 		{
 			AST::AstNode* current_ast = ((AST::AstModule*)(current_module))->ast;
 
-			// current_ast->dumpAst(stdout, "    ");
+			//current_ast->dumpAst(stdout, "    ");
 
 			std::string name = current_module->name.c_str();
 			// std::cout << name << "\n";
@@ -540,7 +572,7 @@ namespace afbd
 						}
 					}
                     cellname = no_slash(cellname);
-                    std::cout << "one cell is inserted " << cellname << "\n";
+                    //std::cout << "one cell is inserted " << cellname << "\n";
 					myModule->cells.push_back(std::make_pair(cellname, cell_vector));
 					//std::cout << myModule->name() << "has a new cell " << cellname << "\n";
 					//std::cout << myModule->name() << "has a new cell " << str2module[cellname]->name() << "\n";
@@ -627,7 +659,6 @@ namespace afbd
 					std::cout << AST::type2str(child->type) << "is not supported in a module, currently.\n";
 				}
 			}
-            std::cout << "module " << myModule->name() << " ok, json is " << myModule->to_json().dump() << "\n";
 		}
 
 		for(auto& mpair : str2module)
@@ -704,7 +735,7 @@ namespace afbd
 		}
 #endif //linux
 
-        std::cout << res->to_smv() << "\n";
+        //std::cout << res->to_smv() << "\n";
 	}
 
 	void afbdilPass::execute_cell(std::shared_ptr<Module>& curr, std::shared_ptr<std::vector<std::shared_ptr<Expr>>>& cell_vector)

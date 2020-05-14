@@ -29,12 +29,17 @@ enum class ExprType {
     XOR,
     NOT,
 
+
+
 //and so on
     CONSTANT,
     VAR,
 
-//only for smv
+//newly added, need to add support
 	COND,
+	SHL,
+	LSHR,
+	ASHR,
 
     DEFAULT,
     UNKNOWN,
@@ -90,4 +95,6 @@ public:
 };
 
 typedef std::initializer_list<std::shared_ptr<Expr>> exl;
+
+std::shared_ptr<Expr> double_fold(ExprType type, std::vector<std::shared_ptr<Expr>>& operands);
 }

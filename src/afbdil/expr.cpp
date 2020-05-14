@@ -117,9 +117,6 @@ std::string to_string(ExprType type) {
         case ExprType::DEFAULT:
             return "default";
 
-        case ExprType::COND:
-            return "cond";
-
         case ExprType::ADD:
             return "add";
         case ExprType::SUB:
@@ -156,6 +153,14 @@ std::string to_string(ExprType type) {
             return "ge";
         case ExprType::REDUCE_BOOL:
             return "reduce_bool";
+        case ExprType::COND:
+            return "cond";
+        case ExprType::SHL:
+            return "shl";
+        case ExprType::LSHR:
+            return "lshr";
+        case ExprType::ASHR:
+            return "ashr";
         default:
             return "unknown";
     }
@@ -303,6 +308,19 @@ namespace afbd {
 
     std::shared_ptr<Constant> constant_int_minus_one = std::make_shared<Constant>(32, -1);
     std::shared_ptr<Expr> expr_int_minus_one = std::make_shared<Expr>(constant_int_minus_one);
+
+    std::shared_ptr<Expr> double_fold(ExprType type, std::vector<std::shared_ptr<Expr>>& operands)
+    {
+        if(operands.size() == 1)
+            return operands[0];
+        if(operands.size() >= 2)
+        {
+            std::shared_ptr<Expr> curr = std::make_shared<Expr>(type, exl{operands[0], operands[1]});
+            for(int i = 2; i < operands.size(); i++)
+                curr = std::make_shared<Expr>(type, exl{curr, operands[i]});
+            return curr;
+        }
+    }
 }
 
 Constant::Constant(int bit, int value): _bit(bit), _value(value) {}
