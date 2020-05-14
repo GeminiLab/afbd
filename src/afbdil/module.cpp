@@ -1,5 +1,6 @@
 #include <afbdil/module.h>
 #include <iostream>
+#include <sstream>
 
 using namespace std;
 using namespace afbd;
@@ -33,10 +34,6 @@ std::shared_ptr<Process> Module::add_proc() {
     _procs->push_back(rv);
 
     return rv;
-}
-
-void Module::add_triggered_proc(shared_ptr<Var> var, shared_ptr<Process> proc) {
-    var->add_sens_proc(proc);
 }
 
 std::string Module::name() const {
@@ -94,4 +91,55 @@ json11::Json Module::to_json()
     ret_map["procs"] = json11::Json(procs_vec);
 
     return json11::Json(ret_map);
+}
+
+std::string Module::to_smv()
+{
+    std::vector<std::shared_ptr<Expr>> expressions;
+    std::map<std::shared_ptr<Expr>, int> expr2id;
+    std::map<std::shared_ptr<Var>, int> vars_next;
+    std::map<std::shared_ptr<Var>, int> vars_init;
+    std::set<std::shared_ptr<Var>> edge_vars;
+
+    for(auto proc: *_procs)
+    {
+        proc->to_smv(expressions, expr2id, vars_next, vars_init, edge_vars);
+    }
+
+    std::stringstream smv_stream;
+
+    smv_stream << "generate by afbd Verilog compiler!\n\n";
+    smv_stream << "MODULE " << name() << "\n\n";
+
+    smv_stream << "VAR\n";
+    smv_stream << " -- original vars --\n";
+    for(auto var: *_vars)
+    {
+        smv_stream << "\t\"" << *(var->name()) << "\" : word[" << var->bit() << "];\n";
+    }
+    /*smv_stream << " -- edge vars --\n";
+    for(auto edge_var: edge_vars)
+    {
+        smv_stream << "\t\"" << edge_var->name() << "\" : -1, 0, 1;\n";
+    }
+    smv_stream << "\n";*/
+
+    smv_stream << "DEFINE\n";
+    for(int i = 0; i < expressions.size(); i++)
+    {
+        auto expr = expressions[i];
+        smv_stream << "\t__expr" << i << " := " << expr->to_smv() << ";\n";
+    }
+
+    smv_stream << "\n -- initialization --\n";
+    for(auto var: *_vars)
+        if(vars_init.find(var) != vars_init.end())
+            smv_stream << "\tinit(\"" << *(var->name()) << "\") = __expr" << vars_init[var] << ";\n";
+
+    smv_stream << "\n -- transformation --\n";
+    for(auto var: *_vars)
+        if(vars_next.find(var) != vars_next.end())
+            smv_stream << "\tnext(\"" << *(var->name()) << "\") = __expr" << vars_next[var] << ";\n";
+
+    return smv_stream.str();
 }

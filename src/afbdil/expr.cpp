@@ -1,5 +1,7 @@
 #include <afbdil/expr.h>
 #include <afbdil/var.h>
+#include <iostream>
+#include <sstream>
 
 using namespace std;
 using namespace afbd;
@@ -111,10 +113,13 @@ std::string to_string(ExprType type) {
             return "var";
         case ExprType::CONSTANT:
             return "constant";
-            /*
+
         case ExprType::DEFAULT:
             return "default";
-             */
+
+        case ExprType::COND:
+            return "cond";
+
         case ExprType::ADD:
             return "add";
         case ExprType::SUB:
@@ -176,12 +181,17 @@ json11::Json Expr::to_json() {
 
 void Expr::all_as_sens(std::shared_ptr<Module>& module, std::shared_ptr<Process>& proc)
 {
+    auto begin = proc->begin();
+    if(begin->type() != InstructionType::Trigger)
+    {
+        std::cout << "shit! begin of a process is not a trigger, during all_as_sens\n";
+        return;
+    }
+
     switch(_type)
     {
         case ExprType::VAR:
-            module->add_triggered_proc(_var, proc);
-            // proc->add_sensitive_var(std::make_pair(_var, EDGE));
-            module->add_triggered_proc(_var, proc);
+            begin->triggers()->push_back(std::make_pair(as_var(), Edge::EDGE));
             return;
         case ExprType::CONSTANT:
             return;
@@ -215,6 +225,70 @@ std::shared_ptr<Expr> Expr::substitute_clone(std::map<std::shared_ptr<Var>, std:
     return ret;
 }
 
+std::string Expr::children_to_smv(std::string delim)
+{
+    std::stringstream smv_stream;
+    smv_stream << "(";
+    for(auto& operand: *_operands)
+    {
+        smv_stream << operand->to_smv();
+        if(operand != _operands->back())
+            smv_stream << " " << delim << " ";
+    }
+    smv_stream << ")";
+    return smv_stream.str();
+}
+
+std::string Expr::binary_to_smv(std::string delim)
+{
+    return std::string("(") + get_operand(0)->to_smv() + " " + delim + " " + get_operand(1)->to_smv() + ")";
+}
+
+std::string Expr::to_smv()
+{
+    switch(type())
+    {
+        case ExprType::VAR:
+            return *(as_var()->name());
+        case ExprType::CONSTANT:
+            return std::to_string(as_constant()->value());
+        case ExprType::ADD:
+            return children_to_smv("+");
+        case ExprType::SUB:
+            return children_to_smv("-");
+        case ExprType::MUL:
+            return children_to_smv("*");
+        case ExprType::DIV:
+            return children_to_smv("/");
+        case ExprType::MOD:
+            return children_to_smv("%");
+        case ExprType::AND:
+            return children_to_smv("&");
+        case ExprType::OR:
+            return children_to_smv("|");
+        case ExprType::NOT:
+            return std::string("~") + get_operand(0)->to_smv();
+        case ExprType::XOR:
+            return children_to_smv("^");
+        case ExprType::EQ:
+            return binary_to_smv("=");
+        case ExprType::NE:
+            return binary_to_smv("!=");
+        case ExprType::GT:
+            return binary_to_smv(">");
+        case ExprType::GE:
+            return binary_to_smv(">=");
+        case ExprType::LT:
+            return binary_to_smv("<");
+        case ExprType::LE:
+            return binary_to_smv("<=");
+        case ExprType::COND:
+            return std::string("(") + get_operand(0)->to_smv() + " ? " + get_operand(1)->to_smv() + " : " + get_operand(2)->to_smv() + ")";
+        default:
+            return std::string("(") + to_string(type()) + std::to_string(int(type())) + " is not supported)";
+    }
+}
+
 namespace afbd {
 
 
@@ -224,7 +298,11 @@ namespace afbd {
     std::shared_ptr<Constant> constant_int_zero = std::make_shared<Constant>(32, 0);
     std::shared_ptr<Expr> expr_int_zero = std::make_shared<Expr>(constant_int_zero);
 
-    std::shared_ptr<Expr> expr_default = std::make_shared<Expr>(ExprType::DEFAULT, exl{});
+    std::shared_ptr<Constant> constant_int_one = std::make_shared<Constant>(32, 1);
+    std::shared_ptr<Expr> expr_int_one = std::make_shared<Expr>(constant_int_one);
+
+    std::shared_ptr<Constant> constant_int_minus_one = std::make_shared<Constant>(32, -1);
+    std::shared_ptr<Expr> expr_int_minus_one = std::make_shared<Expr>(constant_int_minus_one);
 }
 
 Constant::Constant(int bit, int value): _bit(bit), _value(value) {}

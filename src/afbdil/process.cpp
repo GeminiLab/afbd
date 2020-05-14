@@ -9,6 +9,9 @@ using namespace afbd;
 
 namespace afbd {
 	extern std::shared_ptr<Expr> expr_true;
+    extern std::shared_ptr<Expr> expr_int_zero;
+    extern std::shared_ptr<Expr> expr_int_one;
+    extern std::shared_ptr<Expr> expr_int_minus_one;
 }
 
 std::string proc_type_to_str(ProcessType type)
@@ -190,4 +193,136 @@ json11::Json Process::to_json()
     }
     ret_map["instrs"] = instr_map;
     return ret_map;
+}
+
+std::vector<std::shared_ptr<Instruction>> Process::all_instructions()
+{
+    std::vector<std::shared_ptr<Instruction>> ret;
+
+    bool added[MAX_INST_NUM];
+    memset(added, 0, MAX_INST_NUM * sizeof(bool));
+
+    std::vector<std::shared_ptr<Instruction>> tovisit{begin()};
+    while(!tovisit.empty())
+    {
+        auto curr = tovisit.back();
+        tovisit.pop_back();
+
+        for(auto succ : *(curr->succs()))
+        {
+            auto succ_inst = succ.first;
+            if(!added[succ_inst->id()])
+            {
+                added[succ_inst->id()] = true;
+                ret.push_back(succ_inst);
+                tovisit.push_back(succ_inst);
+            }
+        }
+    }
+    return ret;
+}
+
+std::shared_ptr<Expr> generate_condition(Trigger trigger, std::set<std::shared_ptr<Var>>& edge_vars)
+{
+    auto var = trigger.first;
+    auto expr = std::make_shared<Expr>(var);
+    auto edge = trigger.second;
+
+    /*std::shared_ptr<Var> edge_var = nullptr;
+    std::string edge_var_name = (*var->name()) + "_edge";
+    for(auto v: edge_vars)
+        if(*(v->name()) == edge_var_name)
+            edge_var = v;
+    if(!edge_var)
+        edge_var = std::make_shared<Var>(var->bit(), edge_var_name, var->elem_bit());
+    std::shared_ptr<Expr> edge_expr = std::make_shared<Expr>(edge_var);*/
+
+    if(edge == Edge::EDGE)
+        return nullptr;
+        //return std::make_shared<Expr>(ExprType::NE, exl{edge_expr, expr_int_zero});
+    else if(edge == Edge::POSEDGE)
+        return std::make_shared<Expr>(ExprType::EQ, exl{expr, expr_int_one});
+        //return std::make_shared<Expr>(ExprType::EQ, exl{edge_expr, expr_int_one});
+    else if(edge == Edge::NEGEDGE)
+        return std::make_shared<Expr>(ExprType::EQ, exl{expr, expr_int_zero});
+        //return std::make_shared<Expr>(ExprType::EQ, exl{edge_expr, expr_int_minus_one});
+    else
+    {
+        std::cout << "Illegal trigger\n";
+        return nullptr;
+    }
+}
+
+void Process::to_smv(std::vector<std::shared_ptr<Expr>>& expressions, std::map<std::shared_ptr<Expr>, int>& expr2id, std::map<std::shared_ptr<Var>, int>& vars_next, std::map<std::shared_ptr<Var>, int>& vars_init, std::set<std::shared_ptr<Var>>& edge_vars)
+{
+    bool has_condition = true;
+    int condition_id;
+    std::shared_ptr<Expr> condition;
+
+    if(type() == ProcessType::Initial)
+    {
+        has_condition = false;
+    }
+    else
+    {
+        auto triggers = begin()->triggers();
+        switch (triggers->size()) {
+            case 0:
+                has_condition = false;
+                break;
+            case 1:
+                condition = generate_condition((*triggers)[0], edge_vars);
+                if(!condition)
+                    has_condition = false;
+                break;
+            default:
+                condition = std::make_shared<Expr>(ExprType::OR, exl{});
+                for (auto trigger: *triggers)
+                {
+                    auto one_cond = generate_condition(trigger, edge_vars);
+                    if(one_cond)
+                        condition->add_operand(one_cond);
+                }
+                if(condition->operand_num() == 0)
+                    has_condition = false;
+                break;
+        }
+    }
+
+    if(has_condition)
+    {
+        condition_id = expressions.size();
+        expressions.push_back(condition);
+        expr2id[condition] = condition_id;
+    }
+
+    auto instructions = all_instructions();
+    for(auto inst: instructions)
+    {
+        if(inst->type() == InstructionType::Assign && inst->dst())
+        {
+            if(inst->dst()->type() == ExprType::VAR)
+            {
+                auto var = inst->dst()->as_var();
+
+                std::shared_ptr<Expr> src;
+                if(has_condition)
+                    src = std::make_shared<Expr>(ExprType::COND, exl{condition, inst->expr(), inst->dst()});
+                else
+                    src = inst->expr();
+
+                int src_id = expressions.size();
+                expressions.push_back(src);
+                expr2id[src] = src_id;
+
+                std::cout << src_id << " added during assigning " << var->to_json().dump() << " it is " << src->to_json().dump() << "\n";
+
+                if(type() == ProcessType::Initial)
+                    vars_init[var] = src_id;
+                else
+                    vars_next[var] = src_id;
+            }
+        }
+    }
+
 }

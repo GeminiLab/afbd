@@ -33,6 +33,9 @@ enum class ExprType {
     CONSTANT,
     VAR,
 
+//only for smv
+	COND,
+
     DEFAULT,
     UNKNOWN,
 };
@@ -67,6 +70,12 @@ public:
     json11::Json to_json();
 
     void all_as_sens(std::shared_ptr<Module>& module, std::shared_ptr<Process>& proc);
+
+	std::string children_to_smv(std::string delim);
+
+    std::string binary_to_smv(std::string delim);
+
+	std::string to_smv();
 };
 
 class Constant {

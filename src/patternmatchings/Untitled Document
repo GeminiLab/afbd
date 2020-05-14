@@ -1,0 +1,2 @@
+gcc clkcheck.cpp ../afbdil/def.cpp ../afbdil/expr.cpp ../afbdil/instruction.cpp ../afbdil/module.cpp ../afbdil/process.cpp ../afbdil/var.cpp -shared -o clkcheck.so -I ../../3rd -I ../../include -std=c++11 -fPIC
+

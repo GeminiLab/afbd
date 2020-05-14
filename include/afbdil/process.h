@@ -41,6 +41,10 @@ public:
     std::shared_ptr<Process> substitute_clone(std::map<std::shared_ptr<Var>, std::shared_ptr<Expr>>& substitute_map);
 
 	json11::Json to_json();
+
+    std::vector<std::shared_ptr<Instruction>> all_instructions();
+
+    void to_smv(std::vector<std::shared_ptr<Expr>>& expressions, std::map<std::shared_ptr<Expr>, int>& expr2id, std::map<std::shared_ptr<Var>, int>& vars_next, std::map<std::shared_ptr<Var>, int>& vars_init, std::set<std::shared_ptr<Var>>& edge_vars);
 };
 
 }
