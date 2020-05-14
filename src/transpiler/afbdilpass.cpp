@@ -297,17 +297,17 @@ namespace afbd
 
 	void afbdilPass::execute(vector<string> args, RTLIL::Design* design)
 	{
-		std::cout << "Hello World!\n";
+		// std::cout << "Hello World!\n";
 
 		auto current_modules = design->modules();
 		for(auto current_module : current_modules)
 		{
 			AST::AstNode* current_ast = ((AST::AstModule*)(current_module))->ast;
 
-			current_ast->dumpAst(stdout, "    ");
+			// current_ast->dumpAst(stdout, "    ");
 
 			std::string name = current_module->name.c_str();
-			std::cout << name << "\n";
+			// std::cout << name << "\n";
 
 			std::shared_ptr<Module> myModule = std::make_shared<Module>(name);
 			str2module[myModule->name()] = myModule;
@@ -551,23 +551,23 @@ namespace afbd
 
 		for(auto pair : str2module)
 		{
-			std::cout << "we have a module named " << pair.first << "\n";
+			// std::cout << "we have a module named " << pair.first << "\n";
 		}
-		std::cout << "top module is " << top_module_name << "\n";
-		std::cout << "top module is " << top_module->name() << "\n";
+		// std::cout << "top module is " << top_module_name << "\n";
+		// std::cout << "top module is " << top_module->name() << "\n";
 
 		auto empty_vector = std::make_shared<std::vector<std::shared_ptr<Expr>>>();
 		execute_cell(top_module, empty_vector);
 
-		std::cout << "generate unfolded_modules ok\n";
+		// std::cout << "generate unfolded_modules ok\n";
 
 		res = std::make_shared<Module>("");
 		res->modules_in_one(unfolded_modules);
 
-		std::cout << "generating json:\n" << res->to_json().dump() << "\n";
+		// std::cout << "generating json:\n" << res->to_json().dump() << "\n";
 
 #ifdef linux
-		std::cout << "It is linux! We can do PatternMatching!\n";
+		// std::cout << "It is linux! We can do PatternMatching!\n";
 
 		std::vector<PatternMatching*> patterns;
 

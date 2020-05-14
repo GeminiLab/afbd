@@ -124,6 +124,10 @@ llvm::Function *Transpiler::transpile_process(shared_ptr<Process> proc) {
         }
     };
 
+    function<llvm::Value*(llvm::Value*, int32_t)> shrink_to_width = [&](llvm::Value *v, int32_t width) -> llvm::Value* {
+        return builder.CreateAnd(v, builder.getInt32((uint32_t)((1ull << width) - 1)));
+    };
+
     auto instrs = get_all_instrs(proc->begin());
     map<shared_ptr<Instruction>, llvm::BasicBlock*> instr_bb;
     for (auto &x: *instrs) {
@@ -162,11 +166,12 @@ llvm::Function *Transpiler::transpile_process(shared_ptr<Process> proc) {
             }
         } else {
             auto assign_type = x->assign_type();
+            auto dst = x->dst()->as_var();
 
             if (assign_type == AssignType::Blocking) {
                 if (has_delay) {
                     auto temp = builder.CreateAlloca(builder.getInt32Ty());
-                    builder.CreateStore(eval(x->expr()), temp);
+                    builder.CreateStore(shrink_to_width(eval(x->expr()), dst->bit()), temp);
                     if (instr_delay == 0) {
                         builder.CreateCall(delay_for_explicit_zero_delay);
                     } else {
@@ -177,7 +182,7 @@ llvm::Function *Transpiler::transpile_process(shared_ptr<Process> proc) {
                             llvm::ArrayRef<llvm::Value*> {
                                     varAddr[x->dst()->as_var()],
                                     builder.CreateLoad(temp),
-                                    builder.getInt32(var_id->at(x->dst()->as_var())),
+                                    builder.getInt32(var_id->at(dst)),
                             }
                     );
                 } else {
@@ -186,7 +191,7 @@ llvm::Function *Transpiler::transpile_process(shared_ptr<Process> proc) {
                             llvm::ArrayRef<llvm::Value*> {
                                     varAddr[x->dst()->as_var()],
                                     eval(x->expr()),
-                                    builder.getInt32(var_id->at(x->dst()->as_var())),
+                                    builder.getInt32(var_id->at(dst)),
                             }
                     );
                 }
@@ -195,8 +200,8 @@ llvm::Function *Transpiler::transpile_process(shared_ptr<Process> proc) {
                         delayed_nonblocking_assign_update,
                         llvm::ArrayRef<llvm::Value*> {
                                 varAddr[x->dst()->as_var()],
-                                eval(x->expr()),
-                                builder.getInt32(var_id->at(x->dst()->as_var())),
+                                shrink_to_width(eval(x->expr()), dst->bit()),
+                                builder.getInt32(var_id->at(dst)),
                                 builder.getInt32(instr_delay),
                         }
                 );

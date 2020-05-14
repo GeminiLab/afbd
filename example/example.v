@@ -1,6 +1,6 @@
 module counter(clk, rst, o);
 input clk, rst;
-output reg o;
+output reg[3:0] o;
 always begin
 	#4 clk = 1 - clk;
 end

@@ -119,8 +119,12 @@ int main(int argc, char** argv) {
 
     RTLIL::Design* design = new RTLIL::Design;
 
+    cout << "parsing..." << endl;
+
     VerilogFrontend frontend;
     frontend.execute(f, args[1], args, design);
+
+    cout << "analyzing..." << endl;
 
     afbd::afbdilPass p;
     p.execute(args, design);
@@ -138,13 +142,20 @@ int main(int argc, char** argv) {
     }
      */
 
+    cout << "generating llvm ir..." << endl;
+
+    for (auto &v: *m2->vars()) {
+        cout << *v->name() << " " << v->bit() << endl;
+    }
+
     Transpiler tr;
     auto module = tr.transpile(m2, fs);
 
-    module->print(llvm::outs(), nullptr);
+    cout << "writing " << header_output << " ..." << endl;
+    // module->print(llvm::outs(), nullptr);
 
     // gen
-    puts("generating...");
+    puts("generating object file...");
     LLVMInitializeX86TargetInfo();
     LLVMInitializeX86Target();
     LLVMInitializeX86TargetMC();
@@ -187,11 +198,10 @@ int main(int argc, char** argv) {
         return 1;
     }
 
-    puts("emitting...");
     pass.run(*module);
     puts("generated.");
     dest.flush();
 
-    llvm::outs() << "Wrote " << object_output << "\n";
+    llvm::outs() << "written to " << object_output << "\n";
     return 0;
 }
