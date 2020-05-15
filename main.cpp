@@ -152,7 +152,7 @@ int main(int argc, char** argv) {
     auto module = tr.transpile(m2, fs);
 
     cout << "writing " << header_output << " ..." << endl;
-    // module->print(llvm::outs(), nullptr);
+    module->print(llvm::outs(), nullptr);
 
     // gen
     puts("generating object file...");
