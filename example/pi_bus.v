@@ -53,7 +53,33 @@ module
    output 	 REQ;
    output [0:31] mst_data_tmp;
    output [0:2] state;
-
+	
+	initial clk = 0;
+	initial DIN = 32'h00000000;
+	initial ACK = 0;
+	initial GNT = 0;
+	initial TOUT = 0;
+	
+	always begin
+		#2 clk = 1 - clk;
+	end
+	
+	always begin
+		#5 DIN = DIN + 32'h00000100;
+	end
+	
+	always begin
+		#11 ACK = 1 - ACK;
+	end
+	
+	always begin
+		#23 GNT = 1 - GNT;
+	end
+	
+	always begin
+		#47 TOUT = 1 - TOUT;
+	end	
+	
     wire ACK;
    wire 	 mst_rd;
    wire 	 mst_wr;

@@ -8,7 +8,12 @@
 module main (clk);
 input clk;
 reg [2500:0] a,b;	
-	
+
+initial clk = 0;
+always begin
+	#10 clk = 1 - clk;
+end
+
 initial a = 1;
 initial b = 0;
 
