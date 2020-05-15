@@ -61,6 +61,27 @@ module main(eoc, soc, load_dato, add_mpx2, canale, mux_en,  clock, data_in,
     output 	 error;
     output 	 data_out;
 
+	initial eoc = 0;
+	initial clock = 0;
+	initial data_in = 8'h00;
+	initial dsr = 0;
+	
+	always begin
+		#5 clock = 1 - clock;
+	end
+	
+	always begin
+		#11 eoc = 1 - eoc;
+	end
+	
+	always begin
+		#23 data_in = data_in + 8'h03;
+	end
+	
+	always begin
+		#47 dst = 1 - dsr;
+	end
+	
     reg [3:0] 	 canale;
     reg 	 soc, load_dato, add_mpx2, mux_en, error, data_out;
     reg   S1;

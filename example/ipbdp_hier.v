@@ -25,6 +25,47 @@ module main ( P_0 , P_1 , P_2 , P_3 , P_4 , P_5 , P_6 , P_7 , P_8 , P_9 , P_10
  input  [15:0]  P_15 ;
  input  signed  [15:0]  P_16 ;
  input  [15:0]  P_17 ;
+ 
+ initial P_0 = 16'h00;
+ initial P_1 = 16'h10;
+ initial P_2 = 16'h20;
+ initial P_3 = 16'h30;
+ initial P_4 = 16'h40;
+ initial P_5 = 16'h50;
+ initial P_6 = 16'h60;
+ initial P_7 = 16'h70;
+ initial P_8 = 16'h80;
+ initial P_9 = 16'h90;
+ initial P_10 = 16'ha0;
+ initial P_11 = 16'hb0;
+ initial P_12 = 16'hc0;
+ initial P_13 = 16'hd0;
+ initial P_14 = 16'he0;
+ initial P_15 = 16'hf0;
+ initial P_16 = 16'h00;
+ initial P_17 = 16'h10;
+ 
+ always begin
+	#3 P_0 = P_0 + 16'h01;
+	#3 P_1 = P_1 + 16'h02;
+	#3 P_2 = P_2 + 16'h03;
+	#3 P_3 = P_3 + 16'h04;
+	#3 P_4 = P_4 + 16'h05;
+	#3 P_5 = P_5 + 16'h06;
+	#3 P_6 = P_6 + 16'h07;
+	#3 P_7 = P_7 + 16'h08;
+	#3 P_8 = P_8 + 16'h09;
+	#3 P_9 = P_9 + 16'h0a;
+	#3 P_10 = P_10 + 16'h0b;
+	#3 P_11 = P_11 + 16'h0c;
+	#3 P_12 = P_12 + 16'h0d;
+	#3 P_13 = P_13 + 16'h0e;
+	#3 P_14 = P_14 + 16'h0f;
+	#3 P_15 = P_15 + 16'h10;
+	#3 P_16 = P_16 + 16'h11;
+	#3 P_17 = P_17 + 16'h12;
+ end
+ 
  wire  [1:0] E_291529983035 ;
  wire  [1:0] E_291829973034 ;
  wire  [0:15] E_293329963033 ;

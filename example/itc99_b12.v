@@ -51,7 +51,24 @@ module main(clock, start, k, nloss, nl, speaker);
     output 	 nloss;
     output [3:0] nl;
     output 	 speaker;
-
+	
+	initial clock = 0;
+	initial start = 1;
+	initial k = 4'h0;
+	
+	always begin
+		#3 clock = 1 - clock;
+	end
+	
+	always begin
+		#10 k = k + 4'h1;
+	end
+	
+	always begin
+		#97 start = 0;
+		#3 start = 1;
+	end
+	
     parameter 	 RED    = 0;
     parameter 	 GREEN  = 1;
     parameter 	 YELLOW = 2;

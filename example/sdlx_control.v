@@ -143,6 +143,10 @@ module main(
    input   [`DATA1] IR;
   // reg  [`DATA1] IR;
   
+	initial IR = 32'h00000000;
+	always begin
+		#17 IR = IR + IR + 32'h0000000d;
+	end
      
    // Internal Registers
    output 	   IRRW;
@@ -177,6 +181,18 @@ module main(
    output 	  MemRW;
    
    input 	  Reset, Clk;
+   
+   initial Clk = 0;
+   always begin
+		#5 Clk = 1 - Clk;
+	end
+
+	initial Rst = 0;
+	always begin
+		#105 Rst = 1;
+		#2 Rst = 0;
+	end	
+	
    
    wire [5:0] 	  OPcode;
    reg 		  IRRW, PCRW, NPCRW, ARW, BRW, IRW, ALUoutRW, MDRW, BCRW;
