@@ -123,6 +123,12 @@ llvm::Function *Transpiler::transpile_process(shared_ptr<Process> proc) {
                         return builder.CreateOr(opl, opr);
                     case ExprType::XOR:
                         return builder.CreateXor(opl, opr);
+                    case ExprType::SHL:
+                        return builder.CreateShl(opl, opr);
+                    case ExprType::LSHR:
+                        return builder.CreateLShr(opl, opr);
+                    case ExprType::ASHR:
+                        return builder.CreateAShr(opl, opr);
                 }
             }
         }
@@ -194,7 +200,7 @@ llvm::Function *Transpiler::transpile_process(shared_ptr<Process> proc) {
                             update,
                             llvm::ArrayRef<llvm::Value*> {
                                     varAddr[x->dst()->as_var()],
-                                    eval(x->expr()),
+                                    shrink_to_width(eval(x->expr()), dst->bit()),
                                     builder.getInt32(var_id->at(dst)),
                             }
                     );
