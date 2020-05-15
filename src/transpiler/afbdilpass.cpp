@@ -241,8 +241,11 @@ namespace afbd
 		auto inst = std::make_shared<Instruction>(begin->process());
 		begin->add_succ(inst, cond);
 
-		inst->dst(parse_identifier(astnode->children[0], str2expr));
-		inst->expr(parse_expr(astnode->children[1], str2expr));
+        if(astnode->type != AST::AST_NONE)
+        {
+            inst->dst(parse_identifier(astnode->children[0], str2expr));
+            inst->expr(parse_expr(astnode->children[1], str2expr));
+        }
 		inst->assign_type(is_blocking ? AssignType::Blocking : AssignType::NonBlocking);
 
 		//std::cout << astnode->during_delay << " " << astnode->after_delay << "\n";
@@ -327,6 +330,7 @@ namespace afbd
 		case AST::AST_BLOCK:
 			return parse_block(begin, astnode, str2expr, cond);
 		case AST::AST_ASSIGN_LE:
+        case AST::AST_NONE:
 			return parse_assign(begin, astnode, str2expr, cond, false);
 		case AST::AST_ASSIGN:
 		case AST::AST_ASSIGN_EQ:
@@ -348,7 +352,7 @@ namespace afbd
 		{
 			AST::AstNode* current_ast = ((AST::AstModule*)(current_module))->ast;
 
-			//current_ast->dumpAst(stdout, "    ");
+			current_ast->dumpAst(stdout, "    ");
 
 			std::string name = current_module->name.c_str();
 			// std::cout << name << "\n";
@@ -694,8 +698,6 @@ namespace afbd
 		// std::cout << "generating json:\n" << res->to_json().dump() << "\n";
 
 #ifdef linux
-		// std::cout << "It is linux! We can do PatternMatching!\n";
-
 		std::vector<PatternMatching*> patterns;
 
 		for(auto& arg : args) {

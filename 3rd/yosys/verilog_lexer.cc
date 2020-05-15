@@ -2964,39 +2964,42 @@ YY_RULE_SETUP
 #line 342 "frontends/verilog/verilog_lexer.l"
 {
 	yylval->string = new std::string(frontend_verilog_yytext);
-	return TOK_ID;
+	//return TOK_ID;
+	return TOK_USELESS;
 }
 	YY_BREAK
 case 97:
 YY_RULE_SETUP
-#line 347 "frontends/verilog/verilog_lexer.l"
+#line 348 "frontends/verilog/verilog_lexer.l"
 {
 	if (!specify_mode) REJECT;
 	yylval->string = new std::string(frontend_verilog_yytext);
-	return TOK_ID;
+	//return TOK_ID;
+	return TOK_USELESS;
 }
 	YY_BREAK
 case 98:
 YY_RULE_SETUP
-#line 353 "frontends/verilog/verilog_lexer.l"
+#line 355 "frontends/verilog/verilog_lexer.l"
 {
 	yylval->string = new std::string(frontend_verilog_yytext);
-	return TOK_MSG_TASKS;
+	//return TOK_MSG_TASKS;
+	return TOK_USELESS;
 }
 	YY_BREAK
 case 99:
 YY_RULE_SETUP
-#line 358 "frontends/verilog/verilog_lexer.l"
+#line 361 "frontends/verilog/verilog_lexer.l"
 { return TOK_TO_SIGNED; }
 	YY_BREAK
 case 100:
 YY_RULE_SETUP
-#line 359 "frontends/verilog/verilog_lexer.l"
+#line 362 "frontends/verilog/verilog_lexer.l"
 { return TOK_TO_UNSIGNED; }
 	YY_BREAK
 case 101:
 YY_RULE_SETUP
-#line 361 "frontends/verilog/verilog_lexer.l"
+#line 364 "frontends/verilog/verilog_lexer.l"
 {
 	yylval->string = new std::string(std::string("\\") + frontend_verilog_yytext);
 	return TOK_ID;
@@ -3004,7 +3007,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 102:
 YY_RULE_SETUP
-#line 366 "frontends/verilog/verilog_lexer.l"
+#line 369 "frontends/verilog/verilog_lexer.l"
 {
 	yylval->string = new std::string(std::string("\\") + frontend_verilog_yytext);
 	return TOK_ID;
@@ -3012,7 +3015,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 103:
 YY_RULE_SETUP
-#line 371 "frontends/verilog/verilog_lexer.l"
+#line 374 "frontends/verilog/verilog_lexer.l"
 {
 	static bool printed_warning = false;
 	if (!printed_warning) {
@@ -3025,30 +3028,30 @@ YY_RULE_SETUP
 	YY_BREAK
 case 104:
 YY_RULE_SETUP
-#line 380 "frontends/verilog/verilog_lexer.l"
+#line 383 "frontends/verilog/verilog_lexer.l"
 /* ignore synopsys translate_off body */
 	YY_BREAK
 case 105:
 /* rule 105 can match eol */
 YY_RULE_SETUP
-#line 381 "frontends/verilog/verilog_lexer.l"
+#line 384 "frontends/verilog/verilog_lexer.l"
 /* ignore synopsys translate_off body */
 	YY_BREAK
 case 106:
 YY_RULE_SETUP
-#line 382 "frontends/verilog/verilog_lexer.l"
+#line 385 "frontends/verilog/verilog_lexer.l"
 { BEGIN(0); }
 	YY_BREAK
 case 107:
 YY_RULE_SETUP
-#line 384 "frontends/verilog/verilog_lexer.l"
+#line 387 "frontends/verilog/verilog_lexer.l"
 {
 	BEGIN(SYNOPSYS_FLAGS);
 }
 	YY_BREAK
 case 108:
 YY_RULE_SETUP
-#line 387 "frontends/verilog/verilog_lexer.l"
+#line 390 "frontends/verilog/verilog_lexer.l"
 {
 	static bool printed_warning = false;
 	if (!printed_warning) {
@@ -3061,7 +3064,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 109:
 YY_RULE_SETUP
-#line 396 "frontends/verilog/verilog_lexer.l"
+#line 399 "frontends/verilog/verilog_lexer.l"
 {
 	static bool printed_warning = false;
 	if (!printed_warning) {
@@ -3074,18 +3077,18 @@ YY_RULE_SETUP
 	YY_BREAK
 case 110:
 YY_RULE_SETUP
-#line 405 "frontends/verilog/verilog_lexer.l"
+#line 408 "frontends/verilog/verilog_lexer.l"
 /* ignore everything else */
 	YY_BREAK
 case 111:
 YY_RULE_SETUP
-#line 406 "frontends/verilog/verilog_lexer.l"
+#line 409 "frontends/verilog/verilog_lexer.l"
 { BEGIN(0); }
 	YY_BREAK
 case 112:
 /* rule 112 can match eol */
 YY_RULE_SETUP
-#line 408 "frontends/verilog/verilog_lexer.l"
+#line 411 "frontends/verilog/verilog_lexer.l"
 {
 	BEGIN(IMPORT_DPI);
 	return TOK_DPI_FUNCTION;
@@ -3093,7 +3096,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 113:
 YY_RULE_SETUP
-#line 413 "frontends/verilog/verilog_lexer.l"
+#line 416 "frontends/verilog/verilog_lexer.l"
 {
 	yylval->string = new std::string(std::string("\\") + frontend_verilog_yytext);
 	return TOK_ID;
@@ -3102,12 +3105,12 @@ YY_RULE_SETUP
 case 114:
 /* rule 114 can match eol */
 YY_RULE_SETUP
-#line 418 "frontends/verilog/verilog_lexer.l"
+#line 421 "frontends/verilog/verilog_lexer.l"
 /* ignore whitespaces */
 	YY_BREAK
 case 115:
 YY_RULE_SETUP
-#line 420 "frontends/verilog/verilog_lexer.l"
+#line 423 "frontends/verilog/verilog_lexer.l"
 {
 	BEGIN(0);
 	return *frontend_verilog_yytext;
@@ -3115,14 +3118,14 @@ YY_RULE_SETUP
 	YY_BREAK
 case 116:
 YY_RULE_SETUP
-#line 425 "frontends/verilog/verilog_lexer.l"
+#line 428 "frontends/verilog/verilog_lexer.l"
 {
 	return *frontend_verilog_yytext;
 }
 	YY_BREAK
 case 117:
 YY_RULE_SETUP
-#line 429 "frontends/verilog/verilog_lexer.l"
+#line 432 "frontends/verilog/verilog_lexer.l"
 {
 	yylval->string = new std::string(frontend_verilog_yytext);
 	return TOK_ID;
@@ -3130,142 +3133,142 @@ YY_RULE_SETUP
 	YY_BREAK
 case 118:
 YY_RULE_SETUP
-#line 434 "frontends/verilog/verilog_lexer.l"
+#line 437 "frontends/verilog/verilog_lexer.l"
 { return ATTR_BEGIN; }
 	YY_BREAK
 case 119:
 YY_RULE_SETUP
-#line 435 "frontends/verilog/verilog_lexer.l"
+#line 438 "frontends/verilog/verilog_lexer.l"
 { return ATTR_END; }
 	YY_BREAK
 case 120:
 YY_RULE_SETUP
-#line 437 "frontends/verilog/verilog_lexer.l"
+#line 440 "frontends/verilog/verilog_lexer.l"
 { return DEFATTR_BEGIN; }
 	YY_BREAK
 case 121:
 YY_RULE_SETUP
-#line 438 "frontends/verilog/verilog_lexer.l"
+#line 441 "frontends/verilog/verilog_lexer.l"
 { return DEFATTR_END; }
 	YY_BREAK
 case 122:
 YY_RULE_SETUP
-#line 440 "frontends/verilog/verilog_lexer.l"
+#line 443 "frontends/verilog/verilog_lexer.l"
 { return OP_POW; }
 	YY_BREAK
 case 123:
 YY_RULE_SETUP
-#line 441 "frontends/verilog/verilog_lexer.l"
+#line 444 "frontends/verilog/verilog_lexer.l"
 { return OP_LOR; }
 	YY_BREAK
 case 124:
 YY_RULE_SETUP
-#line 442 "frontends/verilog/verilog_lexer.l"
+#line 445 "frontends/verilog/verilog_lexer.l"
 { return OP_LAND; }
 	YY_BREAK
 case 125:
 YY_RULE_SETUP
-#line 443 "frontends/verilog/verilog_lexer.l"
+#line 446 "frontends/verilog/verilog_lexer.l"
 { return OP_EQ; }
 	YY_BREAK
 case 126:
 YY_RULE_SETUP
-#line 444 "frontends/verilog/verilog_lexer.l"
+#line 447 "frontends/verilog/verilog_lexer.l"
 { return OP_NE; }
 	YY_BREAK
 case 127:
 YY_RULE_SETUP
-#line 445 "frontends/verilog/verilog_lexer.l"
+#line 448 "frontends/verilog/verilog_lexer.l"
 { return OP_LE; }
 	YY_BREAK
 case 128:
 YY_RULE_SETUP
-#line 446 "frontends/verilog/verilog_lexer.l"
+#line 449 "frontends/verilog/verilog_lexer.l"
 { return OP_GE; }
 	YY_BREAK
 case 129:
 YY_RULE_SETUP
-#line 448 "frontends/verilog/verilog_lexer.l"
+#line 451 "frontends/verilog/verilog_lexer.l"
 { return OP_EQX; }
 	YY_BREAK
 case 130:
 YY_RULE_SETUP
-#line 449 "frontends/verilog/verilog_lexer.l"
+#line 452 "frontends/verilog/verilog_lexer.l"
 { return OP_NEX; }
 	YY_BREAK
 case 131:
 YY_RULE_SETUP
-#line 451 "frontends/verilog/verilog_lexer.l"
+#line 454 "frontends/verilog/verilog_lexer.l"
 { return OP_NAND; }
 	YY_BREAK
 case 132:
 YY_RULE_SETUP
-#line 452 "frontends/verilog/verilog_lexer.l"
+#line 455 "frontends/verilog/verilog_lexer.l"
 { return OP_NOR;  }
 	YY_BREAK
 case 133:
 YY_RULE_SETUP
-#line 453 "frontends/verilog/verilog_lexer.l"
+#line 456 "frontends/verilog/verilog_lexer.l"
 { return OP_XNOR; }
 	YY_BREAK
 case 134:
 YY_RULE_SETUP
-#line 454 "frontends/verilog/verilog_lexer.l"
+#line 457 "frontends/verilog/verilog_lexer.l"
 { return OP_XNOR; }
 	YY_BREAK
 case 135:
 YY_RULE_SETUP
-#line 456 "frontends/verilog/verilog_lexer.l"
+#line 459 "frontends/verilog/verilog_lexer.l"
 { return OP_SHL; }
 	YY_BREAK
 case 136:
 YY_RULE_SETUP
-#line 457 "frontends/verilog/verilog_lexer.l"
+#line 460 "frontends/verilog/verilog_lexer.l"
 { return OP_SHR; }
 	YY_BREAK
 case 137:
 YY_RULE_SETUP
-#line 458 "frontends/verilog/verilog_lexer.l"
+#line 461 "frontends/verilog/verilog_lexer.l"
 { return OP_SSHL; }
 	YY_BREAK
 case 138:
 YY_RULE_SETUP
-#line 459 "frontends/verilog/verilog_lexer.l"
+#line 462 "frontends/verilog/verilog_lexer.l"
 { return OP_SSHR; }
 	YY_BREAK
 case 139:
 YY_RULE_SETUP
-#line 461 "frontends/verilog/verilog_lexer.l"
+#line 464 "frontends/verilog/verilog_lexer.l"
 { return TOK_PACKAGESEP; }
 	YY_BREAK
 case 140:
 YY_RULE_SETUP
-#line 462 "frontends/verilog/verilog_lexer.l"
+#line 465 "frontends/verilog/verilog_lexer.l"
 { return TOK_INCREMENT; }
 	YY_BREAK
 case 141:
 YY_RULE_SETUP
-#line 463 "frontends/verilog/verilog_lexer.l"
+#line 466 "frontends/verilog/verilog_lexer.l"
 { return TOK_DECREMENT; }
 	YY_BREAK
 case 142:
 YY_RULE_SETUP
-#line 465 "frontends/verilog/verilog_lexer.l"
+#line 468 "frontends/verilog/verilog_lexer.l"
 { return TOK_POS_INDEXED; }
 	YY_BREAK
 case 143:
 YY_RULE_SETUP
-#line 466 "frontends/verilog/verilog_lexer.l"
+#line 469 "frontends/verilog/verilog_lexer.l"
 { return TOK_NEG_INDEXED; }
 	YY_BREAK
 case 144:
 YY_RULE_SETUP
-#line 468 "frontends/verilog/verilog_lexer.l"
+#line 471 "frontends/verilog/verilog_lexer.l"
 { return TOK_WILDCARD_CONNECT; }
 	YY_BREAK
 case 145:
 YY_RULE_SETUP
-#line 470 "frontends/verilog/verilog_lexer.l"
+#line 473 "frontends/verilog/verilog_lexer.l"
 {
 	if (!specify_mode) REJECT;
 	yylval->string = new std::string(frontend_verilog_yytext);
@@ -3274,7 +3277,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 146:
 YY_RULE_SETUP
-#line 476 "frontends/verilog/verilog_lexer.l"
+#line 479 "frontends/verilog/verilog_lexer.l"
 {
 	if (!specify_mode) return TOK_IGNORED_SPECIFY_AND;
 	return TOK_SPECIFY_AND;
@@ -3282,53 +3285,53 @@ YY_RULE_SETUP
 	YY_BREAK
 case 147:
 YY_RULE_SETUP
-#line 481 "frontends/verilog/verilog_lexer.l"
+#line 484 "frontends/verilog/verilog_lexer.l"
 { BEGIN(COMMENT); }
 	YY_BREAK
 case 148:
 YY_RULE_SETUP
-#line 482 "frontends/verilog/verilog_lexer.l"
+#line 485 "frontends/verilog/verilog_lexer.l"
 /* ignore comment body */
 	YY_BREAK
 case 149:
 /* rule 149 can match eol */
 YY_RULE_SETUP
-#line 483 "frontends/verilog/verilog_lexer.l"
+#line 486 "frontends/verilog/verilog_lexer.l"
 /* ignore comment body */
 	YY_BREAK
 case 150:
 YY_RULE_SETUP
-#line 484 "frontends/verilog/verilog_lexer.l"
+#line 487 "frontends/verilog/verilog_lexer.l"
 { BEGIN(0); }
 	YY_BREAK
 case 151:
 /* rule 151 can match eol */
 YY_RULE_SETUP
-#line 486 "frontends/verilog/verilog_lexer.l"
+#line 489 "frontends/verilog/verilog_lexer.l"
 /* ignore whitespaces */
 	YY_BREAK
 case 152:
 /* rule 152 can match eol */
 YY_RULE_SETUP
-#line 487 "frontends/verilog/verilog_lexer.l"
+#line 490 "frontends/verilog/verilog_lexer.l"
 /* ignore continuation sequence */
 	YY_BREAK
 case 153:
 YY_RULE_SETUP
-#line 488 "frontends/verilog/verilog_lexer.l"
+#line 491 "frontends/verilog/verilog_lexer.l"
 /* ignore one-line comments */
 	YY_BREAK
 case 154:
 YY_RULE_SETUP
-#line 490 "frontends/verilog/verilog_lexer.l"
+#line 493 "frontends/verilog/verilog_lexer.l"
 { return *frontend_verilog_yytext; }
 	YY_BREAK
 case 155:
 YY_RULE_SETUP
-#line 492 "frontends/verilog/verilog_lexer.l"
+#line 495 "frontends/verilog/verilog_lexer.l"
 ECHO;
 	YY_BREAK
-#line 3332 "frontends/verilog/verilog_lexer.cc"
+#line 3335 "frontends/verilog/verilog_lexer.cc"
 			case YY_STATE_EOF(INITIAL):
 			case YY_STATE_EOF(COMMENT):
 			case YY_STATE_EOF(STRING):
@@ -4279,7 +4282,7 @@ void frontend_verilog_yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 492 "frontends/verilog/verilog_lexer.l"
+#line 495 "frontends/verilog/verilog_lexer.l"
 
 
 
