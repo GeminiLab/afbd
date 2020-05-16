@@ -106,7 +106,15 @@ namespace afbd
 		if(astnode->children.size() < 2)
 			return std::make_pair(parse_expr(astnode->children[0], str2expr), nullptr);
 		else
-			return std::make_pair(parse_expr(astnode->children[0], str2expr), parse_expr(astnode->children[1], str2expr));
+        {
+            auto first = parse_expr(astnode->children[0], str2expr);
+            auto second = parse_expr(astnode->children[1], str2expr);
+            first->simplify();
+            second->simplify();
+            if(first->type() == ExprType::CONSTANT && second->type() == ExprType::CONSTANT && first->as_constant()->value() < second->as_constant()->value())
+                return std::make_pair(second, first);
+            return std::make_pair(first, second);
+        }
 	}
 
 	std::shared_ptr<Expr> afbdilPass::parse_expr(AST::AstNode* astnode, std::map<std::string, std::shared_ptr<Expr>>& str2expr)
