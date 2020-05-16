@@ -86,7 +86,9 @@ llvm::Function *Transpiler::transpile_process(shared_ptr<Process> proc) {
             if (type == ExprType::NOT) {
                 return builder.CreateNot(eval(expr->get_operand(0)));
             } else if (type == ExprType::REDUCE_BOOL) {
-                return eval(expr->get_operand(0));
+                return builder.CreateIntCast(eval(expr->get_operand(0)), builder.getInt32Ty(), false);
+            } else if (type == ExprType::COND) {
+                return builder.CreateSelect(eval(expr->get_operand(0)), eval(expr->get_operand(1)), eval(expr->get_operand(2)));
             } else {
                 auto opl = eval(expr->get_operand(0));
                 auto opr = eval(expr->get_operand(1));

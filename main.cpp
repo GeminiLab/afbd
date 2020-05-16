@@ -97,8 +97,8 @@ int main(int argc, char** argv) {
     // args hack
     */
 #ifdef ARGS_HACK
-    const char *fin = "/home/gemini/source/bachelor/afbd/example/example.v";
-    const char *mon = "counter";
+    const char *fin = "/home/gemini/source/bachelor/afbd/example/ipbdp_hier_afbd.v";
+    const char *mon = "main";
 
     argc = 3;
     char* new_argv[3] = { argv[0], const_cast<char*>(fin), const_cast<char*>(mon) };

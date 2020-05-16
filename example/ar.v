@@ -7,7 +7,7 @@
 
 module main (clk);
 input clk;
-reg [2500:0] a,b;	
+reg [31:0] a,b;	
 
 initial clk = 0;
 always begin
