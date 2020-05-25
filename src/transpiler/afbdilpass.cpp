@@ -214,11 +214,11 @@ namespace afbd
 			type = ExprType::UNKNOWN;
 			std::cout << AST::type2str(astnode->type) << " is not supported, currently.\n";
 		}
-		auto expr = std::make_shared<Expr>(type, exl{});
-		for(auto child : astnode->children)
-		{
-			expr->add_operand(parse_expr(child, str2expr));
-		}
+
+        std::vector<std::shared_ptr<Expr>> operands;
+        for(auto child : astnode->children)
+            operands.push_back(parse_expr(child, str2expr));
+		auto expr = std::make_shared<Expr>(type, operands);
 		return expr;
 	}
 
@@ -276,7 +276,6 @@ namespace afbd
 		bool has_default = false;
 		int cond_num = 0;
 
-        //std::shared_ptr<Expr> expr_default = std::make_shared<Expr>(ExprType::AND, exl{});
         std::vector<std::shared_ptr<Expr>> conds;
 
 		for(int i = 1; i < astnode->children.size(); i++)
@@ -304,7 +303,6 @@ namespace afbd
 			{
 				auto cond_const = parse_expr(cond_node, str2expr);
 				new_cond = std::make_shared<Expr>(ExprType::EQ, exl{leftExpr, cond_const});
-                //expr_default->add_operand(std::make_shared<Expr>(ExprType::NOT, exl{new_cond}));
                 conds.push_back(std::make_shared<Expr>(ExprType::NOT, exl{new_cond}));
 				cond_num++;
 			}
@@ -360,7 +358,7 @@ namespace afbd
 		{
 			AST::AstNode* current_ast = ((AST::AstModule*)(current_module))->ast;
 
-			current_ast->dumpAst(stdout, "    ");
+			//current_ast->dumpAst(stdout, "    ");
 
 			std::string name = current_module->name.c_str();
 			// std::cout << name << "\n";
@@ -618,18 +616,7 @@ namespace afbd
                     auto myAssign = std::make_shared<Instruction>(myProc);
                     myBegin->add_succ(myAssign, expr_true);
 
-                    std::shared_ptr<Expr> src_expr;
-                    if(child->str == "not")
-                        src_expr = std::make_shared<Expr>(ExprType::NOT, exl{});
-                    else if(child->str == "and")
-                        src_expr = std::make_shared<Expr>(ExprType::AND, exl{});
-                    else if(child->str == "or")
-                        src_expr = std::make_shared<Expr>(ExprType::OR, exl{});
-                    else if(child->str != "buf")
-                    {
-                        std::cout << "PRIVITIVE " << child->str << "is not supported\n";
-                        break;
-                    }
+                    std::vector<std::shared_ptr<Expr>> src_operands;
 
                     bool dst_set = false;
 
@@ -655,13 +642,23 @@ namespace afbd
                             myAssign->dst(expr);
                         }
                         else
-                        {
-                            if(child->str == "buf")
-                                src_expr = expr;
-                            else
-                                src_expr->add_operand(expr);
-                        }
+                            src_operands.push_back(expr);
 					}
+
+                    std::shared_ptr<Expr> src_expr;
+                    if(child->str == "not")
+                        src_expr = std::make_shared<Expr>(ExprType::NOT, src_operands);
+                    else if(child->str == "and")
+                        src_expr = std::make_shared<Expr>(ExprType::AND, src_operands);
+                    else if(child->str == "or")
+                        src_expr = std::make_shared<Expr>(ExprType::OR, src_operands);
+                    else if(child->str == "buf")
+                        src_expr = src_operands[0];
+                    else
+                    {
+                        std::cout << "PRIVITIVE " << child->str << "is not supported\n";
+                        break;
+                    }
                     myAssign->expr(src_expr);
                     src_expr->all_as_sens(myModule, myProc);
 
@@ -673,10 +670,10 @@ namespace afbd
 			}
 		}
 
-		for(auto& mpair : str2module)
+		/*for(auto& mpair : str2module)
 		{
 			std::cout << mpair.second->to_json().dump() << "\n";
-		}
+		}*/
 
 		if(args.size() < 3)
 		{
@@ -705,9 +702,12 @@ namespace afbd
 
 		// std::cout << "generating json:\n" << res->to_json().dump() << "\n";
 
-#ifdef linux
-		std::vector<PatternMatching*> patterns;
+		clkCheck(res);
+		typeCheck(res);
+		passCheck(res);
+		blockCheck(res);
 
+#ifdef linux
 		for(auto& arg : args) {
 			if (arg.substr(arg.size() - 3) != ".so")
 				continue;
@@ -719,18 +719,6 @@ namespace afbd
 				std::cout << arg << " install failed...\n";
 				continue;
 			}
-
-			/*PatternMatching *(*create)();
-			create = (PatternMatching *(*)(void)) (dlsym(so_handle, "create"));
-			if (dlerror() != NULL) {
-				std::cout << dlerror() << "\n";
-				dlclose(so_handle);
-				continue;
-			}
-
-			auto pattern = (*create)();
-			pattern->match(res);
-			delete pattern;*/
 
 			void (*match)(std::shared_ptr<Module>);
 			match = (void(*)(std::shared_ptr<Module>))(dlsym(so_handle, "match"));
@@ -745,7 +733,15 @@ namespace afbd
 		}
 #endif //linux
 
-        //std::cout << res->to_smv() << "\n";
+		if(res->get_error())
+		{
+			std::cout << "afbd terminated due to an error.\n";
+			std::exit(1);
+		}
+
+        std::ofstream smv_out("modelchecking.smv");
+        smv_out << res->to_smv() << "\n";
+        smv_out.close();
 	}
 
 	void afbdilPass::execute_cell(std::shared_ptr<Module>& curr, std::shared_ptr<std::vector<std::shared_ptr<Expr>>>& cell_vector)

@@ -4,14 +4,11 @@
 
 #include <iostream>
 
-namespace afbd
-{
-	class PatternMatching
-	{
-		std::string _name;
-	public:
-		PatternMatching(std::string name): _name(name){}
-		void reportWarning(std::string str) {std::cout << str << "\n";}
-		virtual void match(std::shared_ptr<Module> module) {};
-	};
-}
+using namespace afbd;
+
+void reportDefect(std::shared_ptr<afbd::Module> module, std::string str, bool is_error);
+void clkCheck(std::shared_ptr<afbd::Module> module);
+void typeCheck(std::shared_ptr<afbd::Module> module);
+void passCheck(std::shared_ptr<afbd::Module> module);
+void blockCheck(std::shared_ptr<afbd::Module> module);
+

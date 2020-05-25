@@ -33,6 +33,7 @@ class Instruction {
     std::shared_ptr<InstrEdgeContainer> _succs;
 
     int _id;
+	std::vector<std::pair<int, std::shared_ptr<Expr>>> _preds;
 
     InstructionType _type;
 
@@ -80,6 +81,12 @@ public:
 
     [[nodiscard]]
     int id() const;
+
+	[[nodiscard]]
+	std::vector<std::pair<int, std::shared_ptr<Expr>>>& preds();
+
+	[[nodiscard]]
+	int pred_num() const;
 
     [[nodiscard]]
     InstructionType type() const;

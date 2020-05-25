@@ -2,6 +2,7 @@
 #include <afbdil/var.h>
 #include <iostream>
 #include <sstream>
+#include <algorithm>
 
 using namespace std;
 using namespace afbd;
@@ -21,12 +22,14 @@ Expr::Expr(ExprType type, std::initializer_list<std::shared_ptr<Expr>> operands)
     _var = nullptr;
     _constant = nullptr;
     _operands = make_shared<std::vector<std::shared_ptr<Expr>>>(operands);
+    simplify();
 }
 
 Expr::Expr(ExprType type, std::vector<std::shared_ptr<Expr>> operands) : _type(type) {
     _var = nullptr;
     _constant = nullptr;
     _operands = make_shared<std::vector<std::shared_ptr<Expr>>>(operands);
+    simplify();
 }
 
 ExprType Expr::type() const {
@@ -45,7 +48,7 @@ int Expr::operand_num() const {
     return _operands->size();
 }
 
-std::shared_ptr<Expr> Expr::get_operand(int i) const {
+std::shared_ptr<Expr>& Expr::get_operand(int i) const {
     return _operands->at(i);
 }
 
@@ -57,10 +60,345 @@ void Expr::simplify() {
     if(_type == ExprType::VAR || _type == ExprType::CONSTANT)
         return;
 
-    for(auto operand : *_operands)
-        operand->simplify();
+    //for(auto operand : *_operands)
+    //    operand->simplify();
 
-    int bits = -1;
+    switch(_type)
+    {
+        case ExprType::ADD:
+            if(_operands->at(0)->type() == ExprType::CONSTANT && _operands->at(1)->type() == ExprType::CONSTANT)
+            {
+                auto first = _operands->at(0)->as_constant();
+                auto second = _operands->at(1)->as_constant();
+                auto constant = std::make_shared<Constant>(std::max({first->bit(), second->bit()}), first->value() + second->value());
+                _type = ExprType::CONSTANT;
+                _constant = constant;
+                _operands->clear();
+            }
+            break;
+        case ExprType::SUB:
+            if(_operands->at(0)->type() == ExprType::CONSTANT && _operands->at(1)->type() == ExprType::CONSTANT)
+            {
+                auto first = _operands->at(0)->as_constant();
+                auto second = _operands->at(1)->as_constant();
+                auto constant = std::make_shared<Constant>(std::max({first->bit(), second->bit()}), first->value() - second->value());
+                _type = ExprType::CONSTANT;
+                _constant = constant;
+                _operands->clear();
+            }
+            break;
+        case ExprType::MUL:
+            if(_operands->at(0)->type() == ExprType::CONSTANT && _operands->at(1)->type() == ExprType::CONSTANT)
+            {
+                auto first = _operands->at(0)->as_constant();
+                auto second = _operands->at(1)->as_constant();
+                auto constant = std::make_shared<Constant>(std::max({first->bit(), second->bit()}), first->value() * second->value());
+                _type = ExprType::CONSTANT;
+                _constant = constant;
+                _operands->clear();
+            }
+            else if(_operands->at(0)->type() == ExprType::CONSTANT && _operands->at(0)->as_constant()->value() == 0)
+            {
+                int b = bit();
+                _type = ExprType::CONSTANT;
+                _constant = std::make_shared<Constant>(b, 0);
+                _operands->clear();
+            }
+            else if(_operands->at(1)->type() == ExprType::CONSTANT && _operands->at(1)->as_constant()->value() == 0)
+            {
+                int b = bit();
+                _type = ExprType::CONSTANT;
+                _constant = std::make_shared<Constant>(b, 0);
+                _operands->clear();
+            }
+            break;
+        case ExprType::DIV:
+            if(_operands->at(0)->type() == ExprType::CONSTANT && _operands->at(1)->type() == ExprType::CONSTANT)
+            {
+                auto first = _operands->at(0)->as_constant();
+                auto second = _operands->at(1)->as_constant();
+                auto constant = std::make_shared<Constant>(std::max({first->bit(), second->bit()}), first->value() / second->value());
+                _type = ExprType::CONSTANT;
+                _constant = constant;
+                _operands->clear();
+            }
+            else if(_operands->at(0)->type() == ExprType::CONSTANT && _operands->at(0)->as_constant()->value() == 0)
+            {
+                int b = bit();
+                _type = ExprType::CONSTANT;
+                _constant = std::make_shared<Constant>(b, 0);
+                _operands->clear();
+            }
+            break;
+        case ExprType::MOD:
+            if(_operands->at(0)->type() == ExprType::CONSTANT && _operands->at(1)->type() == ExprType::CONSTANT)
+            {
+                auto first = _operands->at(0)->as_constant();
+                auto second = _operands->at(1)->as_constant();
+                auto constant = std::make_shared<Constant>(std::max({first->bit(), second->bit()}), first->value() % second->value());
+                _type = ExprType::CONSTANT;
+                _constant = constant;
+                _operands->clear();
+            }
+            else if(_operands->at(0)->type() == ExprType::CONSTANT && _operands->at(0)->as_constant()->value() == 0)
+            {
+                int b = bit();
+                _type = ExprType::CONSTANT;
+                _constant = std::make_shared<Constant>(b, 0);
+                _operands->clear();
+            }
+            break;
+        case ExprType::EQ:
+            if(_operands->at(0)->type() == ExprType::CONSTANT && _operands->at(1)->type() == ExprType::CONSTANT)
+            {
+                auto first = _operands->at(0)->as_constant();
+                auto second = _operands->at(1)->as_constant();
+                auto constant = std::make_shared<Constant>(1, int(first->value() == second->value()));
+                _type = ExprType::CONSTANT;
+                _constant = constant;
+                _operands->clear();
+            }
+            else if(_operands->at(0) == _operands->at(1))
+            {
+                _type = ExprType::CONSTANT;
+                _constant = std::make_shared<Constant>(1, 1);
+                _operands->clear();
+            }
+            break;
+        case ExprType::NE:
+            if(_operands->at(0)->type() == ExprType::CONSTANT && _operands->at(1)->type() == ExprType::CONSTANT)
+            {
+                auto first = _operands->at(0)->as_constant();
+                auto second = _operands->at(1)->as_constant();
+                auto constant = std::make_shared<Constant>(1, int(first->value() != second->value()));
+                _type = ExprType::CONSTANT;
+                _constant = constant;
+                _operands->clear();
+            }
+            else if(_operands->at(0) == _operands->at(1))
+            {
+                _type = ExprType::CONSTANT;
+                _constant = std::make_shared<Constant>(1, 0);
+                _operands->clear();
+            }
+            break;
+        case ExprType::GT:
+            if(_operands->at(0)->type() == ExprType::CONSTANT && _operands->at(1)->type() == ExprType::CONSTANT)
+            {
+                auto first = _operands->at(0)->as_constant();
+                auto second = _operands->at(1)->as_constant();
+                auto constant = std::make_shared<Constant>(1, int(first->value() > second->value()));
+                _type = ExprType::CONSTANT;
+                _constant = constant;
+                _operands->clear();
+            }
+            else if(_operands->at(0) == _operands->at(1))
+            {
+                _type = ExprType::CONSTANT;
+                _constant = std::make_shared<Constant>(1, 0);
+                _operands->clear();
+            }
+        case ExprType::GE:
+            if(_operands->at(0)->type() == ExprType::CONSTANT && _operands->at(1)->type() == ExprType::CONSTANT)
+            {
+                auto first = _operands->at(0)->as_constant();
+                auto second = _operands->at(1)->as_constant();
+                auto constant = std::make_shared<Constant>(1, int(first->value() >= second->value()));
+                _type = ExprType::CONSTANT;
+                _constant = constant;
+                _operands->clear();
+            }
+            else if(_operands->at(0) == _operands->at(1))
+            {
+                _type = ExprType::CONSTANT;
+                _constant = std::make_shared<Constant>(1, 1);
+                _operands->clear();
+            }
+        case ExprType::LT:
+            if(_operands->at(0)->type() == ExprType::CONSTANT && _operands->at(1)->type() == ExprType::CONSTANT)
+            {
+                auto first = _operands->at(0)->as_constant();
+                auto second = _operands->at(1)->as_constant();
+                auto constant = std::make_shared<Constant>(1, int(first->value() < second->value()));
+                _type = ExprType::CONSTANT;
+                _constant = constant;
+                _operands->clear();
+            }
+            else if(_operands->at(0) == _operands->at(1))
+            {
+                _type = ExprType::CONSTANT;
+                _constant = std::make_shared<Constant>(1, 0);
+                _operands->clear();
+            }
+        case ExprType::LE:
+            if(_operands->at(0)->type() == ExprType::CONSTANT && _operands->at(1)->type() == ExprType::CONSTANT)
+            {
+                auto first = _operands->at(0)->as_constant();
+                auto second = _operands->at(1)->as_constant();
+                auto constant = std::make_shared<Constant>(1, int(first->value() <= second->value()));
+                _type = ExprType::CONSTANT;
+                _constant = constant;
+                _operands->clear();
+            }
+            else if(_operands->at(0) == _operands->at(1))
+            {
+                _type = ExprType::CONSTANT;
+                _constant = std::make_shared<Constant>(1, 1);
+                _operands->clear();
+            }
+        case ExprType::AND:
+            if(_operands->at(0)->type() == ExprType::CONSTANT && _operands->at(1)->type() == ExprType::CONSTANT)
+            {
+                auto first = _operands->at(0)->as_constant();
+                auto second = _operands->at(1)->as_constant();
+                auto constant = std::make_shared<Constant>(std::max({first->bit(), second->bit()}), first->value() & second->value());
+                _type = ExprType::CONSTANT;
+                _constant = constant;
+                _operands->clear();
+            }
+            else if(_operands->at(0)->type() == ExprType::CONSTANT)
+            {
+                auto constant = _operands->at(0)->as_constant();
+                int bit = constant->bit();
+                int value = constant->value();
+                if(value == (1 << bit) - 1)
+                {
+                    *this = *(_operands->at(1));
+                }
+                else if(value == 0)
+                {
+                    _type = ExprType::CONSTANT;
+                    _constant = std::make_shared<Constant>(bit, 0);
+                    _operands->clear();
+                }
+            }
+            else if(_operands->at(1)->type() == ExprType::CONSTANT)
+            {
+                auto constant = _operands->at(1)->as_constant();
+                int bit = constant->bit();
+                int value = constant->value();
+                if(value == (1 << bit) - 1)
+                {
+                    *this = *(_operands->at(0));
+                }
+                else if(value == 0)
+                {
+                    _type = ExprType::CONSTANT;
+                    _constant = std::make_shared<Constant>(bit, 0);
+                    _operands->clear();
+                }
+            }
+            break;
+        case ExprType::OR:
+            if(_operands->at(0)->type() == ExprType::CONSTANT && _operands->at(1)->type() == ExprType::CONSTANT)
+            {
+                auto first = _operands->at(0)->as_constant();
+                auto second = _operands->at(1)->as_constant();
+                auto constant = std::make_shared<Constant>(std::max({first->bit(), second->bit()}), first->value() | second->value());
+                _type = ExprType::CONSTANT;
+                _constant = constant;
+                _operands->clear();
+            }
+            else if(_operands->at(0)->type() == ExprType::CONSTANT)
+            {
+                auto constant = _operands->at(0)->as_constant();
+                int bit = constant->bit();
+                int value = constant->value();
+                if(value == 0)
+                {
+                    *this = *(_operands->at(1));
+                }
+                else if(value == (1 << bit) - 1)
+                {
+                    _type = ExprType::CONSTANT;
+                    _constant = std::make_shared<Constant>(bit, (1 << bit) - 1);
+                    _operands->clear();
+                }
+            }
+            else if(_operands->at(1)->type() == ExprType::CONSTANT)
+            {
+                auto constant = _operands->at(1)->as_constant();
+                int bit = constant->bit();
+                int value = constant->value();
+                if(value == 0)
+                {
+                    *this = *(_operands->at(0));
+                }
+                else if(value == (1 << bit) - 1)
+                {
+                    _type = ExprType::CONSTANT;
+                    _constant = std::make_shared<Constant>(bit, (1 << bit) - 1);
+                    _operands->clear();
+                }
+            }
+            break;
+        case ExprType::NOT:
+            if(_operands->at(0)->type() == ExprType::CONSTANT)
+            {
+                auto first = _operands->at(0)->as_constant();
+                auto constant = std::make_shared<Constant>(first->bit(), (first->value() ^ ((1 << bit()) - 1)));
+                _type = ExprType::CONSTANT;
+                _constant = constant;
+                _operands->clear();
+            }
+
+    }
+
+    std::shared_ptr<Expr> var_expr;
+    std::shared_ptr<Expr> constant_expr;
+
+    switch(_type)
+    {
+        case ExprType::ADD:
+        case ExprType::SUB:
+        case ExprType::MUL:
+        case ExprType::DIV:
+        case ExprType::MOD:
+        case ExprType::AND:
+        case ExprType::OR:
+        case ExprType::XOR:
+        case ExprType::EQ:
+        case ExprType::NE:
+        case ExprType::GT:
+        case ExprType::GE:
+        case ExprType::LT:
+        case ExprType::LE:
+            if(get_operand(0)->type() == ExprType::VAR && get_operand(1)->type() == ExprType::CONSTANT)
+            {
+                var_expr = get_operand(0);
+                constant_expr = get_operand(1);
+            }
+            else if(get_operand(1)->type() == ExprType::VAR && get_operand(0)->type() == ExprType::CONSTANT)
+            {
+                var_expr = get_operand(1);
+                constant_expr = get_operand(0);
+            }
+            break;
+        case ExprType::COND:
+            if(get_operand(1)->type() == ExprType::VAR && get_operand(2)->type() == ExprType::CONSTANT)
+            {
+                var_expr = get_operand(1);
+                constant_expr = get_operand(2);
+            }
+            else if(get_operand(2)->type() == ExprType::VAR && get_operand(1)->type() == ExprType::CONSTANT)
+            {
+                var_expr = get_operand(2);
+                constant_expr = get_operand(1);
+            }
+            break;
+        default:
+            break;
+    }
+    /*
+    //make room for pattern matching
+    if(var_expr && constant_expr && constant_expr->bit() > var_expr->bit())
+    {
+        auto old_constant = constant_expr->as_constant();
+        auto new_constant = std::make_shared<Constant>(var_expr->bit(), old_constant->value());
+        constant_expr->_constant = new_constant;
+    }*/
+
+    /*int bits = -1;
     for(auto operand : *_operands)
     {
         if(operand->_type != ExprType::CONSTANT)
@@ -69,6 +407,8 @@ void Expr::simplify() {
         if(operand_bits > bits)
             bits = operand_bits;
     }
+
+
 
     switch(_type)
     {
@@ -87,7 +427,7 @@ void Expr::simplify() {
             _constant = std::make_shared<Constant>(bits, _operands->at(0)->as_constant()->value() * _operands->at(1)->as_constant()->value());
             _operands->clear();
             break;
-    }
+    }*/
 }
 
 int Expr::bit() const {
@@ -106,63 +446,61 @@ int Expr::bit() const {
     return ret;
 }
 
-std::string to_string(ExprType type) {
-    switch(type)
-    {
-        case ExprType::VAR:
-            return "var";
-        case ExprType::CONSTANT:
-            return "constant";
+namespace afbd {
+    std::string to_string(ExprType type) {
+        switch (type) {
+            case ExprType::VAR:
+                return "var";
+            case ExprType::CONSTANT:
+                return "constant";
 
-        case ExprType::DEFAULT:
-            return "default";
-
-        case ExprType::ADD:
-            return "add";
-        case ExprType::SUB:
-            return "sub";
-        case ExprType::MUL:
-            return "mul";
-        case ExprType::DIV:
-            return "div";
-        case ExprType::MOD:
-            return "mod";
-        case ExprType::AND:
-            return "and";
-        case ExprType::OR:
-            return "or";
-        case ExprType::XOR:
-            return "xor";
-        case ExprType::NOT:
-            return "not";
-        case ExprType::CONCAT:
-            return "concat";
-        case ExprType::SUBVEC:
-            return "subvec";
-        case ExprType::EQ:
-            return "eq";
-        case ExprType::NE:
-            return "ne";
-        case ExprType::LT:
-            return "lt";
-        case ExprType::LE:
-            return "le";
-        case ExprType::GT:
-            return "gt";
-        case ExprType::GE:
-            return "ge";
-        case ExprType::REDUCE_BOOL:
-            return "reduce_bool";
-        case ExprType::COND:
-            return "cond";
-        case ExprType::SHL:
-            return "shl";
-        case ExprType::LSHR:
-            return "lshr";
-        case ExprType::ASHR:
-            return "ashr";
-        default:
-            return "unknown";
+            case ExprType::ADD:
+                return "add";
+            case ExprType::SUB:
+                return "sub";
+            case ExprType::MUL:
+                return "mul";
+            case ExprType::DIV:
+                return "div";
+            case ExprType::MOD:
+                return "mod";
+            case ExprType::AND:
+                return "and";
+            case ExprType::OR:
+                return "or";
+            case ExprType::XOR:
+                return "xor";
+            case ExprType::NOT:
+                return "not";
+            case ExprType::CONCAT:
+                return "concat";
+            case ExprType::SUBVEC:
+                return "subvec";
+            case ExprType::EQ:
+                return "eq";
+            case ExprType::NE:
+                return "ne";
+            case ExprType::LT:
+                return "lt";
+            case ExprType::LE:
+                return "le";
+            case ExprType::GT:
+                return "gt";
+            case ExprType::GE:
+                return "ge";
+            case ExprType::REDUCE_BOOL:
+                return "reduce_bool";
+            case ExprType::COND:
+                return "cond";
+            case ExprType::SHL:
+                return "shl";
+            case ExprType::LSHR:
+                return "lshr";
+            case ExprType::ASHR:
+                return "ashr";
+            default:
+                return "unknown";
+        }
     }
 }
 
@@ -209,25 +547,21 @@ void Expr::all_as_sens(std::shared_ptr<Module>& module, std::shared_ptr<Process>
 
 std::shared_ptr<Expr> Expr::substitute_clone(std::map<std::shared_ptr<Var>, std::shared_ptr<Expr>>& substitute_map)
 {
-    std::shared_ptr<Expr> ret;
     switch(_type)
     {
     case ExprType::CONSTANT:
     {
         auto constant = as_constant();
-        ret = std::make_shared<Expr>(std::make_shared<Constant>(constant->bit(), constant->value()));
-        break;
+        return std::make_shared<Expr>(std::make_shared<Constant>(constant->bit(), constant->value()));
     }
     case ExprType::VAR:
-        ret = substitute_map[_var];
-        break;
+        return substitute_map[_var];
     default:
-        ret = std::make_shared<Expr>(_type, exl{});
+        std::vector<std::shared_ptr<Expr>> operands;
         for(auto operand : *_operands)
-            ret->_operands->push_back(operand->substitute_clone(substitute_map));
-        break;
+            operands.push_back(operand->substitute_clone(substitute_map));
+        return std::make_shared<Expr>(_type, operands);
     }
-    return ret;
 }
 
 std::string Expr::children_to_smv(std::string delim)
@@ -249,6 +583,21 @@ std::string Expr::binary_to_smv(std::string delim)
     return std::string("(") + get_operand(0)->to_smv() + " " + delim + " " + get_operand(1)->to_smv() + ")";
 }
 
+std::string constant_to_smv(std::shared_ptr<Constant> constant)
+{
+    int bit = constant->bit();
+    int value = constant->value();
+
+    if(bit == -1)
+        return std::to_string(value);
+
+    std::stringstream smv_stream;
+    smv_stream << "0b" << constant->bit() << "_";
+    for(int i = bit - 1; i >= 0; i--)
+        smv_stream << ((value >> i) & 1);
+    return smv_stream.str();
+}
+
 std::string Expr::to_smv()
 {
     switch(type())
@@ -256,7 +605,7 @@ std::string Expr::to_smv()
         case ExprType::VAR:
             return *(as_var()->name());
         case ExprType::CONSTANT:
-            return std::to_string(as_constant()->value());
+            return constant_to_smv(as_constant());
         case ExprType::ADD:
             return children_to_smv("+");
         case ExprType::SUB:
@@ -272,7 +621,7 @@ std::string Expr::to_smv()
         case ExprType::OR:
             return children_to_smv("|");
         case ExprType::NOT:
-            return std::string("~") + get_operand(0)->to_smv();
+            return std::string("!") + get_operand(0)->to_smv();
         case ExprType::XOR:
             return children_to_smv("^");
         case ExprType::EQ:
@@ -289,9 +638,32 @@ std::string Expr::to_smv()
             return binary_to_smv("<=");
         case ExprType::COND:
             return std::string("(") + get_operand(0)->to_smv() + " ? " + get_operand(1)->to_smv() + " : " + get_operand(2)->to_smv() + ")";
+        case ExprType::REDUCE_BOOL:
+            return get_operand(0)->to_smv();
         default:
             return std::string("(") + to_string(type()) + std::to_string(int(type())) + " is not supported)";
     }
+}
+
+bool Expr::operator==(const Expr& right) const
+{
+    if(_type != right._type)
+        return false;
+
+    if(_type == ExprType::CONSTANT)
+        return _constant->bit() == right._constant->bit() && _constant->value() == right._constant->value();
+
+    if(_type == ExprType::VAR)
+        return _var->bit() == right._var->bit() && *(_var->name()) == *(right._var->name());
+
+    if(_operands->size() != right._operands->size())
+        return false;
+
+    for(int i = 0; i < _operands->size(); i++)
+        if(!(_operands->at(i) == right._operands->at(i)))
+            return false;
+
+    return true;
 }
 
 namespace afbd {
@@ -308,6 +680,15 @@ namespace afbd {
 
     std::shared_ptr<Constant> constant_int_minus_one = std::make_shared<Constant>(32, -1);
     std::shared_ptr<Expr> expr_int_minus_one = std::make_shared<Expr>(constant_int_minus_one);
+
+    std::shared_ptr<Constant> constant_nobit_zero = std::make_shared<Constant>(-1, 0);
+    std::shared_ptr<Expr> expr_nobit_zero = std::make_shared<Expr>(constant_nobit_zero);
+
+    std::shared_ptr<Constant> constant_nobit_one = std::make_shared<Constant>(-1, 1);
+    std::shared_ptr<Expr> expr_nobit_one = std::make_shared<Expr>(constant_nobit_one);
+
+    std::shared_ptr<Constant> constant_nobit_minus_one = std::make_shared<Constant>(-1, -1);
+    std::shared_ptr<Expr> expr_nobit_minus_one = std::make_shared<Expr>(constant_nobit_minus_one);
 
     std::shared_ptr<Expr> double_fold(ExprType type, std::vector<std::shared_ptr<Expr>>& operands)
     {

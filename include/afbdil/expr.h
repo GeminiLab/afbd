@@ -7,11 +7,24 @@
 namespace afbd {
 
 enum class ExprType {
+    //terminal
+    CONSTANT,
+    VAR,
+
+    //non-terminal
     ADD,
     SUB,
     MUL,
     DIV,
     MOD,
+    SHL,
+    LSHR,
+    ASHR,
+
+    AND,
+    OR,
+    XOR,
+    NOT,
 
     EQ,
     NE,
@@ -20,29 +33,12 @@ enum class ExprType {
     LT,
     LE,
 
+    COND,
     SUBVEC,
     CONCAT,
     REDUCE_BOOL,
 
-    AND,
-    OR,
-    XOR,
-    NOT,
-
-
-
-//and so on
-    CONSTANT,
-    VAR,
-
-//newly added, need to add support
-	COND,
-	SHL,
-	LSHR,
-	ASHR,
-
-    DEFAULT,
-    UNKNOWN,
+    UNKNOWN
 };
 
 class Expr {
@@ -61,7 +57,7 @@ public:
     std::shared_ptr<Var> as_var() const;
     std::shared_ptr<Constant> as_constant() const;
     int operand_num() const;
-    std::shared_ptr<Expr> get_operand(int i) const;
+    std::shared_ptr<Expr>& get_operand(int i) const;
     inline void add_operand(std::shared_ptr<Expr> operand) { _operands->push_back(operand); }
 
     bool is_true() const;
@@ -81,6 +77,8 @@ public:
     std::string binary_to_smv(std::string delim);
 
 	std::string to_smv();
+
+	bool operator==(const Expr& right) const;
 };
 
 class Constant {
@@ -97,4 +95,6 @@ public:
 typedef std::initializer_list<std::shared_ptr<Expr>> exl;
 
 std::shared_ptr<Expr> double_fold(ExprType type, std::vector<std::shared_ptr<Expr>>& operands);
+
+std::string to_string(ExprType type);
 }

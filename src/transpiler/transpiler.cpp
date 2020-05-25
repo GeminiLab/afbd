@@ -227,7 +227,7 @@ llvm::Function *Transpiler::transpile_process(shared_ptr<Process> proc) {
             auto instr = s.first;
             auto cond = s.second;
 
-            if (cond == nullptr || cond->type() == ExprType::DEFAULT) {
+            if (cond == nullptr) { // || cond->type() == ExprType::DEFAULT) {
                 builder.CreateBr(instr_bb[instr]);
                 end = true;
                 break;
