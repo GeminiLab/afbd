@@ -266,6 +266,17 @@ void Transpiler::load_static_functions() {
             false
     );
 
+    set_var_count = llvm::Function::Create(
+            llvm::FunctionType::get(
+                    voidTy,
+                    llvm::ArrayRef<llvm::Type *>{varIdTy},
+                    false
+            ),
+            llvm::GlobalValue::LinkageTypes::ExternalLinkage,
+            "set_var_count",
+            m
+    );
+
     push_process = llvm::Function::Create(
             llvm::FunctionType::get(
                     voidTy,
@@ -425,6 +436,8 @@ llvm::Module *Transpiler::transpile(shared_ptr<Module> module, shared_ptr<fstrea
     builder.SetInsertPoint(bb);
 
     initializer->arg_begin()->setName("s");
+
+    builder.CreateCall(set_var_count, llvm::ArrayRef<llvm::Value*> { builder.getInt32(module->vars()->size()) });
 
     for (auto &proc: *module->procs()) {
         builder.CreateCall(push_process, llvm::ArrayRef<llvm::Value*> { transpile_process(proc), initializer->arg_begin() });

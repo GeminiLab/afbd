@@ -97,7 +97,7 @@ int main(int argc, char** argv) {
     // args hack
     */
 #ifdef ARGS_HACK
-    const char *fin = "/home/gemini/source/bachelor/afbd/example/ipbdp_hier_afbd.v";
+    const char *fin = "/home/gemini/source/bachelor/afbd/example/complex_op_afbd.v";
     const char *mon = "main";
 
     argc = 3;

@@ -20,6 +20,8 @@ private:
     llvm::StructType *sim_type;
     llvm::FunctionType *process_type;
 
+    llvm::Function *set_var_count;
+
     llvm::Function *push_process;
     llvm::Function *process_end;
     llvm::Function *exec_until;

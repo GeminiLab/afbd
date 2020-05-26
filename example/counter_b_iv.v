@@ -6,6 +6,7 @@ always begin
 end
 initial begin
 	clk = 0;
+	#10485760 $finish;
 end
 always @(posedge clk or posedge rst) begin
 	if (rst)

@@ -15,6 +15,8 @@ enum edge_t: int32_t {
 extern "C" {
 
 // all these things are thread_local
+void set_var_count(var_id_t count);
+
 void push_process(process proc, void *sim);
 void process_end();
 void exec_until(tick_t t);

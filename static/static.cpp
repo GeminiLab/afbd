@@ -38,19 +38,38 @@ extern "C" {
 // all these things are thread_local
 thread_local bool _r_very_beginning = true;
 thread_local tick_t _r_tick = 0;
+thread_local var_id_t _r_var_cnt = 0;
+
 thread_local set<coroutine::routine_t> _r_routines;
 thread_local set<coroutine::routine_t> _r_routines_to_delete;
 thread_local priority_queue<RoutineInDelay> _r_routines_in_delay;
 thread_local set<coroutine::routine_t> _r_curr_events;
 thread_local set<coroutine::routine_t> _r_curr_events_inactive;
 thread_local set<coroutine::routine_t> _r_curr_events_nau;
-thread_local map<coroutine::routine_t, size_t> _r_success_wait_count;
-thread_local map<var_id_t, map<coroutine::routine_t, size_t>> _r_wait_list_all;
-thread_local map<var_id_t, map<coroutine::routine_t, size_t>> _r_wait_list_pos;
-thread_local map<var_id_t, map<coroutine::routine_t, size_t>> _r_wait_list_neg;
+
+// thread_local map<coroutine::routine_t, size_t> _r_success_wait_count;
+// thread_local map<var_id_t, map<coroutine::routine_t, size_t>> _r_wait_list_all;
+// thread_local map<var_id_t, map<coroutine::routine_t, size_t>> _r_wait_list_pos;
+// thread_local map<var_id_t, map<coroutine::routine_t, size_t>> _r_wait_list_neg;
+thread_local vector<size_t> _r_success_wait_count;
+thread_local map<coroutine::routine_t, size_t> *_r_wait_list_all;
+thread_local map<coroutine::routine_t, size_t> *_r_wait_list_pos;
+thread_local map<coroutine::routine_t, size_t> *_r_wait_list_neg;
 
 }
 
+
+void set_var_count(var_id_t count) {
+    _r_var_cnt = count;
+
+    delete _r_wait_list_all;
+    delete _r_wait_list_pos;
+    delete _r_wait_list_neg;
+
+    _r_wait_list_all = new map<coroutine::routine_t, size_t>[_r_var_cnt];
+    _r_wait_list_pos = new map<coroutine::routine_t, size_t>[_r_var_cnt];
+    _r_wait_list_neg = new map<coroutine::routine_t, size_t>[_r_var_cnt];
+}
 
 void push_process(process proc, void *sim) {
     debug("push_process");
@@ -59,7 +78,7 @@ void push_process(process proc, void *sim) {
 
 void process_end() {
     debug("process_end");
-    auto now = coroutine::ordinator.current;
+    auto now = coroutine::current();
     _r_routines_to_delete.insert(now);
     coroutine::yield();
 }
@@ -157,25 +176,25 @@ void reset() {
 void delay(tick_t span) {
     debugf("delay %d\n", span);
     if (span == 0) {
-        _r_curr_events.insert(coroutine::ordinator.current);
+        _r_curr_events.insert(coroutine::current());
     } else {
-        _r_routines_in_delay.push(RoutineInDelay(_r_tick + span, coroutine::ordinator.current));
+        _r_routines_in_delay.push(RoutineInDelay(_r_tick + span, coroutine::current()));
     }
     coroutine::yield();
 }
 
 void delay_for_explicit_zero_delay() {
     debug("delay_ezd");
-    _r_curr_events_inactive.insert(coroutine::ordinator.current);
+    _r_curr_events_inactive.insert(coroutine::current());
     coroutine::yield();
 }
 
 void delay_for_nonblocking_assign_update(tick_t span) {
     debug("delay_nau");
     if (span == 0) {
-        _r_curr_events_inactive.insert(coroutine::ordinator.current);
+        _r_curr_events_inactive.insert(coroutine::current());
     } else {
-        _r_routines_in_delay.push(RoutineInDelay(_r_tick + span, coroutine::ordinator.current, true));
+        _r_routines_in_delay.push(RoutineInDelay(_r_tick + span, coroutine::current(), true));
     }
     coroutine::yield();
 }
@@ -194,26 +213,22 @@ void delayed_nonblocking_assign_update(int32_t *dst, int32_t val, var_id_t v, ti
 
 void prepare_wait() {
     debug("prepare_wait");
-    if (_r_success_wait_count.find(coroutine::ordinator.current) == _r_success_wait_count.end()) {
-        _r_success_wait_count[coroutine::ordinator.current] = 0;
+    if (_r_success_wait_count.size() <= coroutine::current()) {
+        _r_success_wait_count.resize(coroutine::current() + 1);
     }
 }
 
-map<var_id_t, map<coroutine::routine_t, size_t>>* edge_to_list(edge_t e) {
+map<coroutine::routine_t, size_t>* edge_to_list(edge_t e) {
     return
-        e == edge_t::pos ? &_r_wait_list_pos :
-        e == edge_t::neg ? &_r_wait_list_neg :
-        &_r_wait_list_all;
+        e == edge_t::pos ? _r_wait_list_pos :
+        e == edge_t::neg ? _r_wait_list_neg :
+        _r_wait_list_all;
 }
 
 void add_wait(var_id_t v, edge_t e) {
     debug("add_wait");
     auto list = edge_to_list(e);
-    if (list->find(v) == list->end()) {
-        (*list)[v] = map<coroutine::routine_t, size_t>();
-    }
-
-    (*list)[v][coroutine::ordinator.current] = _r_success_wait_count[coroutine::ordinator.current];
+    list[v][coroutine::current()] = _r_success_wait_count[coroutine::current()];
 }
 
 void do_wait() {
