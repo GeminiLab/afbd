@@ -212,7 +212,6 @@ std::vector<std::shared_ptr<Instruction>> Process::all_instructions() //topologi
 
     std::list<std::shared_ptr<Instruction>> tovisit{begin()};
     added[begin()->id()] = true;
-    ret.push_back(begin());
     while(!tovisit.empty())
     {
         for(auto curr = tovisit.begin(); curr != tovisit.end();)
@@ -253,13 +252,13 @@ std::shared_ptr<Expr> generate_condition(Trigger trigger, std::set<std::shared_p
     std::shared_ptr<Expr> edge_expr = std::make_shared<Expr>(edge_var);
 
     if(edge == Edge::EDGE)
-        //return nullptr;
         return std::make_shared<Expr>(ExprType::NE, exl{edge_expr, expr_nobit_zero});
     else if(edge == Edge::POSEDGE)
-        //return std::make_shared<Expr>(ExprType::EQ, exl{expr, expr_int_one});
+    {
+        //std::cout << "create a no bit one, its bit is " << expr_nobit_one->bit() << "\n";
         return std::make_shared<Expr>(ExprType::EQ, exl{edge_expr, expr_nobit_one});
+    }
     else if(edge == Edge::NEGEDGE)
-        //return std::make_shared<Expr>(ExprType::EQ, exl{expr, expr_int_zero});
         return std::make_shared<Expr>(ExprType::EQ, exl{edge_expr, expr_nobit_minus_one});
     else
     {

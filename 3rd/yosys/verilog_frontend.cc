@@ -50,7 +50,7 @@ static void error_on_dpi_function(AST::AstNode *node)
 
 void VerilogFrontend::execute(std::istream *&f, std::string filename, std::vector<std::string> args, RTLIL::Design *design) // YS_OVERRIDE
 {
-	bool flag_dump_ast1 = true;
+	bool flag_dump_ast1 = false;
 	bool flag_dump_ast2 = false;
 	bool flag_no_dump_ptr = false;
 	bool flag_dump_vlog1 = false;

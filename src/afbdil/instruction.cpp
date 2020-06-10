@@ -35,6 +35,7 @@ Instruction::Instruction(std::shared_ptr<Process> proc) {
 
 	_type = InstructionType::Assign;
 	_delay = -1;
+    _line = -1;
 	_triggers = nullptr;
 }
 
@@ -48,6 +49,7 @@ Instruction::Instruction(Process* proc)
 
 	_type = InstructionType::Assign;
 	_delay = -1;
+    _line = -1;
 	_triggers = nullptr;
 }
 
@@ -170,6 +172,7 @@ json11::Json Instruction::to_json() {
 	}
 
     ret_map["pred_num"] = pred_num();
+    ret_map["line"] = line();
 
     return ret_map;
 }

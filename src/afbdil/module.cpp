@@ -1,6 +1,7 @@
 #include <afbdil/module.h>
 #include <iostream>
 #include <sstream>
+#include <sys/time.h>
 
 using namespace std;
 using namespace afbd;
@@ -96,6 +97,9 @@ json11::Json Module::to_json()
 
 std::string Module::to_smv()
 {
+    struct timeval t1, t2;
+    gettimeofday(&t1, NULL);
+
     std::vector<std::shared_ptr<Expr>> expressions;
     std::map<std::shared_ptr<Var>, int> vars_next;
     std::map<std::shared_ptr<Var>, int> vars_init;
@@ -188,9 +192,8 @@ std::string Module::to_smv()
         smv_stream << "next(" << countdown_ok_name << ") := (" << countdown_last_name << " = 1);\n";
     }
 
-    smv_stream << "SPEC\n";
-
     smv_stream << "-- all states can lead to initial state --\n";
+    smv_stream << "SPEC\n";
     smv_stream << "    AG(EF(";
     for(auto var_init = vars_init.begin(); var_init != vars_init.end(); var_init++)
     {
@@ -203,6 +206,7 @@ std::string Module::to_smv()
     smv_stream << "));\n";
 
     smv_stream << "-- all statements are reachable --\n";
+    smv_stream << "SPEC\n";
     for(auto condition_it = conditions.begin(); condition_it != conditions.end(); condition_it++)
     {
         if(condition_it != conditions.begin())
@@ -217,6 +221,10 @@ std::string Module::to_smv()
             smv_stream << "EF(" << condition <<  ")";
     }
     smv_stream << ";\n";
+
+    gettimeofday(&t2, NULL);
+    auto deltaT = (t2.tv_sec-t1.tv_sec) * 1000000 + t2.tv_usec-t1.tv_usec;
+    std::cout << "SMV generation time(us): " << deltaT << "\n";
 
     return smv_stream.str();
 }

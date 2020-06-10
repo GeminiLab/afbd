@@ -34,6 +34,7 @@ class Instruction {
 
     int _id;
 	std::vector<std::pair<int, std::shared_ptr<Expr>>> _preds;
+	int _line;
 
     InstructionType _type;
 
@@ -92,6 +93,9 @@ public:
     InstructionType type() const;
 
     json11::Json to_json();
+
+	int line() {return _line;}
+	void line(int l) {_line = l;}
 };
 
 }

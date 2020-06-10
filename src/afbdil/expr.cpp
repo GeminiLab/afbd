@@ -341,7 +341,39 @@ void Expr::simplify() {
                 _constant = constant;
                 _operands->clear();
             }
-
+        case ExprType::SHL:
+            if(_operands->at(0)->type() == ExprType::CONSTANT && _operands->at(1)->type() == ExprType::CONSTANT)
+            {
+                auto first = _operands->at(0)->as_constant();
+                auto second = _operands->at(1)->as_constant();
+                auto constant = std::make_shared<Constant>(std::max({first->bit(), second->bit()}), first->value() << second->value());
+                _type = ExprType::CONSTANT;
+                _constant = constant;
+                _operands->clear();
+            }
+            break;
+        case ExprType::LSHR:
+            if(_operands->at(0)->type() == ExprType::CONSTANT && _operands->at(1)->type() == ExprType::CONSTANT)
+            {
+                auto first = _operands->at(0)->as_constant();
+                auto second = _operands->at(1)->as_constant();
+                auto constant = std::make_shared<Constant>(std::max({first->bit(), second->bit()}), unsigned(first->value()) >> second->value());
+                _type = ExprType::CONSTANT;
+                _constant = constant;
+                _operands->clear();
+            }
+            break;
+        case ExprType::ASHR:
+            if(_operands->at(0)->type() == ExprType::CONSTANT && _operands->at(1)->type() == ExprType::CONSTANT)
+            {
+                auto first = _operands->at(0)->as_constant();
+                auto second = _operands->at(1)->as_constant();
+                auto constant = std::make_shared<Constant>(std::max({first->bit(), second->bit()}), first->value() >> second->value());
+                _type = ExprType::CONSTANT;
+                _constant = constant;
+                _operands->clear();
+            }
+            break;
     }
 
     std::shared_ptr<Expr> var_expr;
@@ -389,45 +421,14 @@ void Expr::simplify() {
         default:
             break;
     }
-    /*
+
     //make room for pattern matching
-    if(var_expr && constant_expr && constant_expr->bit() > var_expr->bit())
+    if(var_expr && constant_expr && constant_expr->bit() != -1 && constant_expr->bit() != var_expr->bit())
     {
         auto old_constant = constant_expr->as_constant();
         auto new_constant = std::make_shared<Constant>(var_expr->bit(), old_constant->value());
         constant_expr->_constant = new_constant;
-    }*/
-
-    /*int bits = -1;
-    for(auto operand : *_operands)
-    {
-        if(operand->_type != ExprType::CONSTANT)
-            return;
-        int operand_bits = operand->bit();
-        if(operand_bits > bits)
-            bits = operand_bits;
     }
-
-
-
-    switch(_type)
-    {
-        case ExprType::ADD:
-            _type = ExprType::CONSTANT;
-            _constant = std::make_shared<Constant>(bits, _operands->at(0)->as_constant()->value() + _operands->at(1)->as_constant()->value());
-            _operands->clear();
-            break;
-        case ExprType::SUB:
-            _type = ExprType::CONSTANT;
-            _constant = std::make_shared<Constant>(bits, _operands->at(0)->as_constant()->value() - _operands->at(1)->as_constant()->value());
-            _operands->clear();
-            break;
-        case ExprType::MUL:
-            _type = ExprType::CONSTANT;
-            _constant = std::make_shared<Constant>(bits, _operands->at(0)->as_constant()->value() * _operands->at(1)->as_constant()->value());
-            _operands->clear();
-            break;
-    }*/
 }
 
 int Expr::bit() const {
@@ -580,7 +581,30 @@ std::string Expr::children_to_smv(std::string delim)
 
 std::string Expr::binary_to_smv(std::string delim)
 {
-    return std::string("(") + get_operand(0)->to_smv() + " " + delim + " " + get_operand(1)->to_smv() + ")";
+    auto opl = get_operand(0);
+    auto opr = get_operand(1);
+
+    //std::cout << "binary_to_smv called opl is " << to_string(opl->type()) << " opr is " << to_string(opr->type()) << "\n";
+    //std::cout << to_json().dump() << "\n";
+
+    if(opr->type() == ExprType::CONSTANT)
+    {
+        while(opl->type() == ExprType::REDUCE_BOOL)
+            opl = opl->get_operand(0);
+
+        if(opl->type() >= ExprType::EQ && opr->type() <= ExprType::LE)
+            return std::string("(") + opl->to_smv() + " " + delim + " " + opr->to_smv(true) + ")";
+    }
+    if(opl->type() == ExprType::CONSTANT)
+    {
+        while(opr->type() == ExprType::REDUCE_BOOL)
+            opr = opr->get_operand(0);
+
+        if(opr->type() >= ExprType::EQ && opr->type() <= ExprType::LE)
+            return std::string("(") + opl->to_smv(true) + " " + delim + " " + opr->to_smv() + ")";
+    }
+
+    return std::string("(") + opl->to_smv() + " " + delim + " " + opr->to_smv() + ")";
 }
 
 std::string constant_to_smv(std::shared_ptr<Constant> constant)
@@ -598,13 +622,15 @@ std::string constant_to_smv(std::shared_ptr<Constant> constant)
     return smv_stream.str();
 }
 
-std::string Expr::to_smv()
+std::string Expr::to_smv(bool as_bool)
 {
     switch(type())
     {
         case ExprType::VAR:
             return *(as_var()->name());
         case ExprType::CONSTANT:
+            if(as_bool)
+                return as_constant()->value() != 0 ? "TRUE" : "FALSE";
             return constant_to_smv(as_constant());
         case ExprType::ADD:
             return children_to_smv("+");
@@ -698,7 +724,10 @@ namespace afbd {
         {
             std::shared_ptr<Expr> curr = std::make_shared<Expr>(type, exl{operands[0], operands[1]});
             for(int i = 2; i < operands.size(); i++)
-                curr = std::make_shared<Expr>(type, exl{curr, operands[i]});
+            {
+                auto next = curr;
+                curr = std::make_shared<Expr>(type, exl{next, operands[i]});
+            }
             return curr;
         }
     }

@@ -76,7 +76,7 @@ public:
 
     std::string binary_to_smv(std::string delim);
 
-	std::string to_smv();
+	std::string to_smv(bool as_bool = false);
 
 	bool operator==(const Expr& right) const;
 };
