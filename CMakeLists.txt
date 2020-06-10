@@ -29,6 +29,7 @@ add_library(yosysf STATIC
         ${SOURCE_3RD_MINISAT} ${SOURCE_3RD_SHA1} ${SOURCE_3RD_SUBCIRCUIT})
 
 target_include_directories(yosysf PUBLIC 3rd)
+target_compile_options(yosysf PRIVATE -O2)
 
 
 # target afbdil
@@ -38,6 +39,7 @@ add_library(afbdil STATIC ${SOURCE_AFBDIL})
 target_include_directories(afbdil PUBLIC include)
 target_include_directories(afbdil PRIVATE 3rd/include)
 target_include_directories(afbdil PRIVATE 3rd)
+target_compile_options(afbdil PRIVATE -O2)
 
 
 # target transpiler
@@ -75,3 +77,4 @@ llvm_map_components_to_libnames(llvm_libs support core irreader
         )
 
 target_link_libraries(afbd afbdil ${llvm_libs} yosysf)
+target_compile_options(afbd PRIVATE -O2)
