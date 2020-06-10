@@ -19,6 +19,7 @@
 
 #ifdef linux
 #include <dlfcn.h>
+#include <sys/time.h>
 #endif //linux
 
 USING_YOSYS_NAMESPACE
@@ -44,10 +45,17 @@ namespace afbd
 			std::shared_ptr<Expr> doubleExprRight;
 
 			std::shared_ptr<Expr> elemBit;
+            bool is_array;
 			if(identifierExpr->type() == ExprType::VAR)
-				elemBit = std::make_shared<Expr>(std::make_shared<Constant>(32, identifierExpr->as_var()->elem_bit()));
+            {
+                elemBit = std::make_shared<Expr>(std::make_shared<Constant>(32, identifierExpr->as_var()->elem_bit()));
+                is_array = (identifierExpr->as_var()->bit() > identifierExpr->as_var()->elem_bit());
+            }
 			else
+            {
 				elemBit = std::make_shared<Expr>(std::make_shared<Constant>(32, identifierExpr->as_constant()->bit()));
+                is_array = false;
+            }
 
 			for(auto child : astnode->children)
 			{
@@ -69,26 +77,40 @@ namespace afbd
 				}
 			}
 
-			if(!singleExpr)
-			{
-				singleExpr = expr_int_zero;
-			}
-			if(!doubleExprLeft)
-			{
-				doubleExprLeft = std::make_shared<Expr>(std::make_shared<Constant>(32, identifierExpr->as_var()->elem_bit() - 1));
-				doubleExprRight = expr_int_zero;
-			}
+            auto ret = std::make_shared<Expr>(ExprType::SUBVEC, exl{});
+            ret->add_operand(identifierExpr);
 
-			auto ret = std::make_shared<Expr>(ExprType::SUBVEC, exl{});
-			ret->add_operand(identifierExpr);
+            if(is_array) {
+                if (!singleExpr) {
+                    singleExpr = expr_int_zero;
+                }
+                if (!doubleExprLeft) {
+                    doubleExprLeft = std::make_shared<Expr>(
+                            std::make_shared<Constant>(32, identifierExpr->as_var()->elem_bit() - 1));
+                    doubleExprRight = expr_int_zero;
+                }
 
-			std::shared_ptr<Expr> offset = std::make_shared<Expr>(ExprType::MUL, exl{singleExpr, elemBit});
-			std::shared_ptr<Expr> leftBound = std::make_shared<Expr>(ExprType::ADD, exl{offset, doubleExprLeft});
-			std::shared_ptr<Expr> rightBound = std::make_shared<Expr>(ExprType::ADD, exl{offset, doubleExprRight});
 
-			ret->add_operand(leftBound);
-			ret->add_operand(rightBound);
-			ret->simplify();
+                std::shared_ptr<Expr> offset = std::make_shared<Expr>(ExprType::MUL, exl{singleExpr, elemBit});
+                std::shared_ptr<Expr> leftBound = std::make_shared<Expr>(ExprType::ADD, exl{offset, doubleExprLeft});
+                std::shared_ptr<Expr> rightBound = std::make_shared<Expr>(ExprType::ADD, exl{offset, doubleExprRight});
+
+                ret->add_operand(leftBound);
+                ret->add_operand(rightBound);
+            }
+            else {
+                if(singleExpr)
+                {
+                    ret->add_operand(singleExpr);
+                    ret->add_operand(singleExpr);
+                }
+                else if(doubleExprLeft)
+                {
+                    ret->add_operand(doubleExprLeft);
+                    ret->add_operand(doubleExprRight);
+                }
+            }
+            ret->simplify();
 			return ret;
 		}
 	}
@@ -214,11 +236,11 @@ namespace afbd
 			type = ExprType::UNKNOWN;
 			std::cout << AST::type2str(astnode->type) << " is not supported, currently.\n";
 		}
-		auto expr = std::make_shared<Expr>(type, exl{});
-		for(auto child : astnode->children)
-		{
-			expr->add_operand(parse_expr(child, str2expr));
-		}
+
+        std::vector<std::shared_ptr<Expr>> operands;
+        for(auto child : astnode->children)
+            operands.push_back(parse_expr(child, str2expr));
+		auto expr = std::make_shared<Expr>(type, operands);
 		return expr;
 	}
 
@@ -241,12 +263,14 @@ namespace afbd
 		if(astnode->after_delay != 0)
 		{
 			auto delay = std::make_shared<Instruction>(begin->process());
+            delay->line(astnode->location.first_line);
 			delay->delay(astnode->after_delay);
 			begin->add_succ(delay, expr_true);
 			begin = delay;
 		}
 
 		auto inst = std::make_shared<Instruction>(begin->process());
+        inst->line(astnode->location.first_line);
 		begin->add_succ(inst, cond);
 
         if(astnode->type != AST::AST_NONE)
@@ -269,14 +293,14 @@ namespace afbd
 		auto leftExpr = parse_expr(astnode->children[0], str2expr);
 
 		auto this_begin = std::make_shared<Instruction>(begin->process());
+        this_begin->line(astnode->location.first_line);
 		auto this_end = std::make_shared<Instruction>(begin->process());
-
+        this_end->line(astnode->location.last_line);
 		begin->add_succ(this_begin, cond);
 
 		bool has_default = false;
 		int cond_num = 0;
 
-        //std::shared_ptr<Expr> expr_default = std::make_shared<Expr>(ExprType::AND, exl{});
         std::vector<std::shared_ptr<Expr>> conds;
 
 		for(int i = 1; i < astnode->children.size(); i++)
@@ -304,7 +328,6 @@ namespace afbd
 			{
 				auto cond_const = parse_expr(cond_node, str2expr);
 				new_cond = std::make_shared<Expr>(ExprType::EQ, exl{leftExpr, cond_const});
-                //expr_default->add_operand(std::make_shared<Expr>(ExprType::NOT, exl{new_cond}));
                 conds.push_back(std::make_shared<Expr>(ExprType::NOT, exl{new_cond}));
 				cond_num++;
 			}
@@ -353,14 +376,14 @@ namespace afbd
 
 	void afbdilPass::execute(vector<string> args, RTLIL::Design* design)
 	{
-		// std::cout << "Hello World!\n";
-
+        std::cout << "hello world\n";
+        std::string filename = args[1];
 		auto current_modules = design->modules();
 		for(auto current_module : current_modules)
 		{
 			AST::AstNode* current_ast = ((AST::AstModule*)(current_module))->ast;
 
-			current_ast->dumpAst(stdout, "    ");
+			//current_ast->dumpAst(stdout, "    ");
 
 			std::string name = current_module->name.c_str();
 			// std::cout << name << "\n";
@@ -450,6 +473,7 @@ namespace afbd
 					if(bounds.first->type() != ExprType::CONSTANT || bounds.second->type() != ExprType::CONSTANT)
 					{
 						std::cout << "error: bounds of range are not AST_CONSTANT.\n";
+                        std::cout << bounds.first->to_json().dump() << "\n" << bounds.second->to_json().dump() << "\n";
 						std::exit(0);
 					}
 					int arraySize = bounds.first->as_constant()->value() - bounds.second->as_constant()->value() + 1;
@@ -473,6 +497,7 @@ namespace afbd
 						if(bounds.first->type() != ExprType::CONSTANT || bounds.second->type() != ExprType::CONSTANT)
 						{
 							std::cout << "error: bounds of range are not AST_CONSTANT.\n";
+                            std::cout << bounds.first->to_json().dump() << "\n" << bounds.second->to_json().dump() << "\n";
 							std::exit(0);
 						}
 						bits = bounds.first->as_constant()->value() - bounds.second->as_constant()->value() + 1;
@@ -489,6 +514,7 @@ namespace afbd
 					myProc->type(child->type == AST::AST_ALWAYS ? ProcessType::Always : ProcessType::Initial);
 					auto triggers = std::make_shared<TriggerContainer>();
 					auto begin = std::make_shared<Instruction>(myProc);
+                    begin->line(child->location.first_line);
 					begin->triggers(triggers);
 					myProc->begin(begin);
 
@@ -537,7 +563,7 @@ namespace afbd
 					for(auto& grandchild : child->children)
 					{
 						if(grandchild->type == AST::AST_CELLTYPE)
-							cellname = grandchild->str;//cellname = no_slash(grandchild->str);
+							cellname = grandchild->str;
 						if(grandchild->type == AST::AST_ARGUMENT)
 						{
 							auto expr = parse_expr(grandchild->children[0], str2expr);
@@ -563,12 +589,14 @@ namespace afbd
 								auto myProc = myModule->add_proc();
 
 								auto myBegin = std::make_shared<Instruction>(myProc);
+                                myBegin->line(grandchild->location.first_line);
 								myProc->begin(myBegin);
 
 								auto myTriggers = std::make_shared<TriggerContainer>();
 								myBegin->triggers(myTriggers);
 
 								auto inst = std::make_shared<Instruction>(myProc);
+                                inst->line(grandchild->location.first_line);
 								myProc->begin()->add_succ(inst, expr_true);
 								inst->dst(dst_expr);
 								inst->expr(expr);
@@ -584,10 +612,7 @@ namespace afbd
 						}
 					}
                     cellname = no_slash(cellname);
-                    //std::cout << "one cell is inserted " << cellname << "\n";
 					myModule->cells.push_back(std::make_pair(cellname, cell_vector));
-					//std::cout << myModule->name() << "has a new cell " << cellname << "\n";
-					//std::cout << myModule->name() << "has a new cell " << str2module[cellname]->name() << "\n";
 					break;
 				}
 				case AST::AST_ASSIGN:
@@ -595,6 +620,7 @@ namespace afbd
 					auto myProc = myModule->add_proc();
 
 					auto myBegin = std::make_shared<Instruction>(myProc);
+                    myBegin->line(child->location.first_line);
 					myProc->begin(myBegin);
 
 					auto myTriggers = std::make_shared<TriggerContainer>();
@@ -610,6 +636,7 @@ namespace afbd
 					auto myProc = myModule->add_proc();
 
 					auto myBegin = std::make_shared<Instruction>(myProc);
+                    myBegin->line(child->location.first_line);
 					myProc->begin(myBegin);
 
 					auto myTriggers = std::make_shared<TriggerContainer>();
@@ -618,18 +645,7 @@ namespace afbd
                     auto myAssign = std::make_shared<Instruction>(myProc);
                     myBegin->add_succ(myAssign, expr_true);
 
-                    std::shared_ptr<Expr> src_expr;
-                    if(child->str == "not")
-                        src_expr = std::make_shared<Expr>(ExprType::NOT, exl{});
-                    else if(child->str == "and")
-                        src_expr = std::make_shared<Expr>(ExprType::AND, exl{});
-                    else if(child->str == "or")
-                        src_expr = std::make_shared<Expr>(ExprType::OR, exl{});
-                    else if(child->str != "buf")
-                    {
-                        std::cout << "PRIVITIVE " << child->str << "is not supported\n";
-                        break;
-                    }
+                    std::vector<std::shared_ptr<Expr>> src_operands;
 
                     bool dst_set = false;
 
@@ -652,16 +668,27 @@ namespace afbd
                         if(!dst_set)
                         {
                             dst_set = true;
+                            myAssign->line(grandchild->location.first_line);
                             myAssign->dst(expr);
                         }
                         else
-                        {
-                            if(child->str == "buf")
-                                src_expr = expr;
-                            else
-                                src_expr->add_operand(expr);
-                        }
+                            src_operands.push_back(expr);
 					}
+
+                    std::shared_ptr<Expr> src_expr;
+                    if(child->str == "not")
+                        src_expr = std::make_shared<Expr>(ExprType::NOT, src_operands);
+                    else if(child->str == "and")
+                        src_expr = std::make_shared<Expr>(ExprType::AND, src_operands);
+                    else if(child->str == "or")
+                        src_expr = std::make_shared<Expr>(ExprType::OR, src_operands);
+                    else if(child->str == "buf")
+                        src_expr = src_operands[0];
+                    else
+                    {
+                        std::cout << "PRIVITIVE " << child->str << "is not supported\n";
+                        break;
+                    }
                     myAssign->expr(src_expr);
                     src_expr->all_as_sens(myModule, myProc);
 
@@ -671,11 +698,6 @@ namespace afbd
 					std::cout << AST::type2str(child->type) << "is not supported in a module, currently.\n";
 				}
 			}
-		}
-
-		for(auto& mpair : str2module)
-		{
-			std::cout << mpair.second->to_json().dump() << "\n";
 		}
 
 		if(args.size() < 3)
@@ -688,26 +710,21 @@ namespace afbd
 
 		std::shared_ptr<Module> top_module = str2module[top_module_name];
 
-		for(auto pair : str2module)
-		{
-			// std::cout << "we have a module named " << pair.first << "\n";
-		}
-		// std::cout << "top module is " << top_module_name << "\n";
-		// std::cout << "top module is " << top_module->name() << "\n";
-
 		auto empty_vector = std::make_shared<std::vector<std::shared_ptr<Expr>>>();
 		execute_cell(top_module, empty_vector);
-
-		// std::cout << "generate unfolded_modules ok\n";
 
 		res = std::make_shared<Module>("");
 		res->modules_in_one(unfolded_modules);
 
-		// std::cout << "generating json:\n" << res->to_json().dump() << "\n";
+        for(auto str_module : str2module)
+        {
+            clkCheck(str_module.second);
+            typeCheck(str_module.second);
+            passCheck(str_module.second);
+            blockCheck(str_module.second);
+        }
 
 #ifdef linux
-		std::vector<PatternMatching*> patterns;
-
 		for(auto& arg : args) {
 			if (arg.substr(arg.size() - 3) != ".so")
 				continue;
@@ -720,18 +737,6 @@ namespace afbd
 				continue;
 			}
 
-			/*PatternMatching *(*create)();
-			create = (PatternMatching *(*)(void)) (dlsym(so_handle, "create"));
-			if (dlerror() != NULL) {
-				std::cout << dlerror() << "\n";
-				dlclose(so_handle);
-				continue;
-			}
-
-			auto pattern = (*create)();
-			pattern->match(res);
-			delete pattern;*/
-
 			void (*match)(std::shared_ptr<Module>);
 			match = (void(*)(std::shared_ptr<Module>))(dlsym(so_handle, "match"));
 			if (dlerror() != NULL) {
@@ -742,10 +747,23 @@ namespace afbd
 			(*match)(res);
 
 			dlclose(so_handle);
-		}
+//		}
 #endif //linux
 
-        //std::cout << res->to_smv() << "\n";
+        std::ofstream smv_out(filename + ".smv");
+        smv_out << res->to_smv() << "\n";
+        smv_out.close();
+
+        for(auto str_module: str2module)
+        {
+            auto module = str_module.second;
+            if(module->get_error())
+            {
+                std::cout << "afbd terminated due to an error.\n";
+                std::exit(1);
+            }
+        }
+
 	}
 
 	void afbdilPass::execute_cell(std::shared_ptr<Module>& curr, std::shared_ptr<std::vector<std::shared_ptr<Expr>>>& cell_vector)
@@ -779,24 +797,10 @@ namespace afbd
 
 			auto new_cell_vector_substitute = std::make_shared<std::vector<std::shared_ptr<Expr>>>();
 
-			//std::cout << "cell succ is " << succ->name() << "\n";
-
 			for(auto& new_cell_elem : *new_cell_vector)
 			{
-				/*std::cout << to_string(new_cell_elem->type()) << " ";
-				if(new_cell_elem->type() == EXPR_VAR)
-					std::cout << new_cell_elem->as_var()->name() << " ";
-
-				std::cout << " -> ";*/
-
 				auto new_cell_elem_substitute = new_cell_elem->substitute_clone(substitute_map);
 				new_cell_vector_substitute->push_back(new_cell_elem_substitute);
-
-				/*std::cout << to_string(new_cell_elem_substitute->type()) << " ";
-				if(new_cell_elem_substitute->type() == EXPR_VAR)
-					std::cout << new_cell_elem_substitute->as_var()->name() << " ";
-
-				std::cout << "\n";*/
 			}
 
 			execute_cell(succ, new_cell_vector_substitute);

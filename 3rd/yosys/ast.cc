@@ -330,6 +330,9 @@ void AstNode::dumpAst(FILE *f, std::string indent) const
 	if (is_enum) {
 		fprintf(f, " type=enum");
 	}
+
+	fprintf(f, " line=%d-%d", location.first_line, location.last_line);
+
 	fprintf(f, "\n");
 
 	for (auto &it : attributes) {
@@ -968,7 +971,7 @@ static AstModule* process_module(AstNode *ast, bool defer, AstNode *original_ast
 
 	if (flag_dump_ast1) {
 		log("Dumping AST before simplification:\n");
-		ast->dumpAst(NULL, "    ");
+		ast->dumpAst(stdout, "    ");
 		log("--- END OF AST DUMP ---\n");
 	}
 	if (flag_dump_vlog1) {
@@ -1000,7 +1003,7 @@ static AstModule* process_module(AstNode *ast, bool defer, AstNode *original_ast
 
 		if (flag_dump_ast2) {
 			log("Dumping AST after simplification:\n");
-			ast->dumpAst(NULL, "    ");
+			ast->dumpAst(stdout, "    ");
 			log("--- END OF AST DUMP ---\n");
 		}
 

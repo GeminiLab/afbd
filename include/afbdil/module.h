@@ -16,6 +16,8 @@ private:
     std::shared_ptr<VarContainer> _vars;
     std::shared_ptr<ProcContainer> _procs;
 
+    bool _has_error;
+
 public:
     Module(std::string name);
 
@@ -39,6 +41,8 @@ public:
 
     std::string to_smv();
 
+    void set_error() {_has_error = true;}
+    bool get_error() {return _has_error;}
 };
 
 }

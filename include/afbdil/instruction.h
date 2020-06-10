@@ -33,6 +33,8 @@ class Instruction {
     std::shared_ptr<InstrEdgeContainer> _succs;
 
     int _id;
+	std::vector<std::pair<int, std::shared_ptr<Expr>>> _preds;
+	int _line;
 
     InstructionType _type;
 
@@ -81,10 +83,19 @@ public:
     [[nodiscard]]
     int id() const;
 
+	[[nodiscard]]
+	std::vector<std::pair<int, std::shared_ptr<Expr>>>& preds();
+
+	[[nodiscard]]
+	int pred_num() const;
+
     [[nodiscard]]
     InstructionType type() const;
 
     json11::Json to_json();
+
+	int line() {return _line;}
+	void line(int l) {_line = l;}
 };
 
 }

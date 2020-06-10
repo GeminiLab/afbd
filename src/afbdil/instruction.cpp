@@ -35,6 +35,7 @@ Instruction::Instruction(std::shared_ptr<Process> proc) {
 
 	_type = InstructionType::Assign;
 	_delay = -1;
+    _line = -1;
 	_triggers = nullptr;
 }
 
@@ -48,6 +49,7 @@ Instruction::Instruction(Process* proc)
 
 	_type = InstructionType::Assign;
 	_delay = -1;
+    _line = -1;
 	_triggers = nullptr;
 }
 
@@ -107,6 +109,7 @@ shared_ptr<InstrEdgeContainer> Instruction::succs() {
 
 void Instruction::add_succ(const shared_ptr<Instruction> &dst, const shared_ptr<Expr> &cond) {
     _succs->push_back(make_pair(dst, cond));
+    dst->preds().push_back(std::make_pair(id(), cond));
 }
 
 Process* Instruction::process() const {
@@ -115,6 +118,14 @@ Process* Instruction::process() const {
 
 int Instruction::id() const {
     return _id;
+}
+
+std::vector<std::pair<int, std::shared_ptr<Expr>>>& Instruction::preds() {
+    return _preds;
+}
+
+int Instruction::pred_num() const {
+    return _preds.size();
 }
 
 InstructionType Instruction::type() const {
@@ -159,6 +170,9 @@ json11::Json Instruction::to_json() {
 			triggers_vec.push_back(json11::Json::object{{"var", *(trigger.first->name())}, {"edge", int(trigger.second)}});
 		ret_map["triggers"] = triggers_vec;
 	}
+
+    ret_map["pred_num"] = pred_num();
+    ret_map["line"] = line();
 
     return ret_map;
 }

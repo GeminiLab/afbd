@@ -44,7 +44,7 @@ public:
 
     std::vector<std::shared_ptr<Instruction>> all_instructions();
 
-    void to_smv(std::vector<std::shared_ptr<Expr>>& expressions, std::map<std::shared_ptr<Expr>, int>& expr2id, std::map<std::shared_ptr<Var>, int>& vars_next, std::map<std::shared_ptr<Var>, int>& vars_init, std::set<std::shared_ptr<Var>>& edge_vars);
+    void to_smv(std::vector<std::shared_ptr<Expr>>& expressions, std::map<std::shared_ptr<Var>, int>& vars_next, std::map<std::shared_ptr<Var>, int>& vars_init, std::set<std::shared_ptr<Var>>& edge_vars, std::vector<std::pair<int, std::shared_ptr<Expr>>>& countdowns, std::vector<std::shared_ptr<Var>>& vars, int& temp_var_num, std::set<std::string>& conditions);
 };
 
 }
