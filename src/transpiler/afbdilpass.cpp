@@ -747,7 +747,7 @@ namespace afbd
 			(*match)(res);
 
 			dlclose(so_handle);
-//		}
+		}
 #endif //linux
 
         std::ofstream smv_out(filename + ".smv");

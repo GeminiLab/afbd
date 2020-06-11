@@ -87,3 +87,8 @@ build/
 
 *.exe
 *.run
+
+/eg/*
+!/eg/counter.v
+!/eg/*.sh
+!/eg/entry.cpp

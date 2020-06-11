@@ -43,7 +43,7 @@ target_compile_options(afbdil PRIVATE -O2)
 
 
 # target transpiler
-set(CMAKE_PREFIX_PATH "${CMAKE_PREFIX_PATH};/usr/lib/llvm-8/cmake;E:/Programming/llvm-7.0.0.src/build/lib/cmake/llvm")
+set(CMAKE_PREFIX_PATH "/usr/lib/llvm-8/cmake;${CMAKE_PREFIX_PATH};E:/Programming/llvm-7.0.0.src/build/lib/cmake/llvm")
 find_package(LLVM REQUIRED CONFIG)
 message(STATUS "Found LLVM ${LLVM_PACKAGE_VERSION} at ${LLVM_DIR}")
 
